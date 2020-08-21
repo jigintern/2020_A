@@ -49,14 +49,21 @@ class MyServer extends Server {
             return json;
         }
 
-        // 答え合わせをする ( req = {"questId": ~~~, "answer": ~~~} )
+        // 答え合わせをする ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
         else if (path === "/api/checkans") {
-            const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
-            const org = json.find(dat => dat.questId === req.questId);
+            const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+            const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            // 問題の特定
+            const org = qjson.find(dat => dat.questId === req.questId);
             if (org.answer === req.answer) {
                 var rlt = "correct";
             } else {
                 var rlt = "incorrect";
+            }
+            // 回答時間の計算
+            const usralarm = ajson.find(dat => dat.id === req.id);
+            if ((new Date().getTime() - usralarm.time) > (org.timeLimit*60000)) {
+                var rlt = "timeover";
             }
             return { result: rlt, answer: org.answer };
         }

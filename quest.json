@@ -5,7 +5,8 @@
         "answerList": ["50", "55", "47", "70"],
         "author": "すずとも",
         "difficulty": "C",
-        "point": 10
+        "point": 10,
+        "timeLimit": 5
     },
     {
         "questId": 1,
@@ -14,7 +15,8 @@
         "answerList": ["2", "-2", "±2", "定義されない"],
         "author": "はーど",
         "difficulty": "D",
-        "point": 15
+        "point": 15,
+        "timeLimit": 5
     },
     {
         "questId": 2,
@@ -23,7 +25,8 @@
         "answerList": ["糖質", "ビタミン", "脂質", "カルシウム", "タンパク質"],
         "author": "すずとも",
         "difficulty": "B",
-        "point": 20
+        "point": 20,
+        "timeLimit": 5
     },
     {
         "questId": 3,
@@ -32,7 +35,8 @@
         "answerList": ["1", "11", "8", "23", "52"],
         "author": "すずとも",
         "difficulty": "A",
-        "point": 30
+        "point": 30,
+        "timeLimit": 5
     },
     {
         "questId": 4,
@@ -41,7 +45,8 @@
         "answerList": ["○", "×"],
         "author": "すずとも",
         "difficulty": "B",
-        "point": 20
+        "point": 20,
+        "timeLimit": 5
     },
     {
         "questId": 5,
@@ -50,6 +55,7 @@
         "answerList": ["31", "63", "127", "255", "511", "1023"],
         "author": "すずとも",
         "difficulty": "A",
-        "point": 30
+        "point": 30,
+        "timeLimit": 5
     }
 ]
