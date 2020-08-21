@@ -56,7 +56,7 @@
 					ta.value = "回答が選択されていません";
 				} else {
 					const res = await fetchJSON("/api/checkans", {
-						//userId: uuid,
+						id: uuid,
 						questId: selectedQuestid,
 						answer: answer,
 					});
@@ -64,6 +64,8 @@
 						ta.value = "正解！！！";
 					} else if (res.result === "incorrect") {
 						ta.value = `不正解！\n正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
+					} else if (res.result === "timeover") {
+						ta.value = `時間切れ～！\n正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
 					}
 					else {
 						ta.value = JSON.stringify(res);

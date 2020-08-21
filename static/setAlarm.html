@@ -10,9 +10,6 @@
 </head>
 
 <body>
-	<h1>起床時間の設定</h1>
-	<h1 id="time"></h1>
-
 	<font1>
 		<h1>起床時間の設定</h1>
 	</font1>
@@ -37,17 +34,6 @@
 		setInterval('time()', 1000);
 	</script>
 
-
-
-	<!--<script>
-		time();
-		function time() {
-			var now = new Date();
-			document.getElementById("time").innerHTML = now.toLocaleString();
-		}
-		setInterval('time()', 1000);
-	</script>-->
-
 	<form id="input-form">
 
 		<br><br>
@@ -69,11 +55,11 @@
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 		import { getUuid } from "./util.js";
 
-		var uuid = ""
+		var uuid = undefined;
 
 		window.onload = async () => {
 			// cookie読み込み
-			var uuid = getUuid();
+			uuid = getUuid();
 			if (uuid === undefined) {
 				uuid = await generateUuid();
 				document.cookie = "uuid=" + uuid + "; expires= Mon, 31 Aug 2030 00:00:00 GMT";   // cookie作成
@@ -81,69 +67,51 @@
 			console.log(uuid);
 
 			var idtmp = "";
-			window.onload = async () => {
-				// 通知を許可するかユーザに問いかける
-				navigator.serviceWorker.register("sw.js").then(() => {
-					Notification.requestPermission(function (permission) {
-						if (permission === 'denied') {
-							ta.value = 'プッシュ通知を有効にできません。ブラウザの設定を確認して下さい。';
-						}
-					});
-				});
-				const uuid = await (await fetch("/api/getid")).json();
-			}
-			function getCookieArray() {
-				var arr = new Array();
-				if (document.cookie != '') {
-					var tmp = document.cookie.split('; ');
-					for (var i = 0; i < tmp.length; i++) {
-						var data = tmp[i].split('=');
-						arr[data[0]] = decodeURIComponent(data[1]);
+			// 通知を許可するかユーザに問いかける
+			navigator.serviceWorker.register("sw.js").then(() => {
+				Notification.requestPermission(function (permission) {
+					if (permission === 'denied') {
+						ta.value = 'プッシュ通知を有効にできません。ブラウザの設定を確認して下さい。';
 					}
-				}
-				return arr;
-			}
-			// keyを指定して取得
-			// 「 key1=val1; key2=val2; key3=val3; ・・・ 」というCookie情報が保存されているとする
-			var arr = getCookieArray();
-			var uuid = "";
-
-			if (arr['uuid'] === undefined) {
-				generateUuid();
-				uuid = idtmp;
-				document.cookie = "uuid=" + uuid + "; expires= Mon, 31 Aug 2030 00:00:00 GMT";   // cookie作成
-			}
-			else {
-				uuid = arr['uuid'];
-				// cookie読み込み
-			}
-			console.log(uuid);
-
-			async function generateUuid() {
-				idtmp = await (await fetch("/api/getid")).json();
-			}
-
-
-			const inputForm = document.getElementById("input-form");
-			inputForm.addEventListener('submit', async (event) => {
-				event.preventDefault();
-
-				const utc = new Date(datetime.value).getTime();
-
-				const status = document.getElementById("status");
-				if (isNaN(utc)) {
-					ta.value = "入力したデータが無効です";
-				} else {
-					const res = await fetchJSON("/api/setalarm", { id: uuid, time: utc });
-					ta.value = JSON.stringify(res);
-				}
+				});
 			});
+			//const uuid = await (await fetch("/api/getid")).json();
+		}
+
+		async function generateUuid() {
+			/*const res = await (await fetch("/api/getid")).json();
+			return res;
+			*/
+			let chars = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".split("");
+			for (let i = 0, len = chars.length; i < len; i++) {
+				switch (chars[i]) {
+					case "x":
+						chars[i] = Math.floor(Math.random() * 16).toString(16);
+						break;
+					case "y":
+						chars[i] = (Math.floor(Math.random() * 4) + 8).toString(16);
+						break;
+				}
+			}
+			return chars.join("");
+		}
+
+		const inputForm = document.getElementById("input-form");
+		inputForm.addEventListener('submit', async (event) => {
+			event.preventDefault();
+
+			const utc = new Date(datetime.value).getTime();
+
+			const status = document.getElementById("status");
+			if (isNaN(utc)) {
+				ta.value = "入力したデータが無効です";
+			} else {
+				const res = await fetchJSON("/api/setalarm", { id: uuid, time: utc });
+				ta.value = JSON.stringify(res);
+			}
+		});
 
 	</script>
 </body>
 
-<<<<<<< HEAD </html>
-	=======
-
 </html>
->>>>>>> master
