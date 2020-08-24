@@ -42,12 +42,19 @@ class MyServer extends Server {
             }
         }
         
-        // 問題一覧を取得する
+        // 問題一覧を取得する ( req = {"id": ~~~} )
         else if (path === "/api/getquest") {
-            const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
-            // 答えを除く時は以下を実行
-            // json.map(dat => { delete dat.answer });
-            return json;
+            const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+            const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            // 解答データを削除
+            qjson.map(dat => { delete dat.answer });
+            const dup = ajson.find(dat => dat.id === req.id);
+            if (dup === undefined) {
+                return { res: "Failed" };
+            } else {
+                const rtjson = [qjson, { "difficultyChoice": dup.difficultyChoice }];
+                return rtjson;
+            }
         }
 
         // 答え合わせをする ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
