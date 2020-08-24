@@ -4,7 +4,7 @@ import { v4 } from "https://deno.land/std/uuid/mod.ts";
 class MyServer extends Server {
     api(path, req) {
 
-        // アラームを追加する ( req = {アラームのデータ} )
+        // アラームを追加する ( req = {"id": ~~~, "alarm": ~~~, "difficultyChoice": ~~~} )
         if (path === "/api/setalarm") {
             var json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             // 重複を確認 なければ追加 あれば更新
@@ -13,6 +13,7 @@ class MyServer extends Server {
                 json.push(req);
             } else {
                 dup.time = req.time;
+                dup.difficultyChoice = req.difficultyChoice;
             }
             Deno.writeTextFileSync("./alarm.json", JSON.stringify(json));
             return { res: "OK" };
@@ -41,13 +42,20 @@ class MyServer extends Server {
                 return { res: "Failed" };
             }
         }
-
-        // 問題一覧を取得する
+        
+        // 問題一覧を取得する ( req = {"id": ~~~} )
         else if (path === "/api/getquest") {
-            const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
-            // 答えを除く時は以下を実行
-            // json.map(dat => { delete dat.answer });
-            return json;
+            const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+            const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            // 解答データを削除
+            qjson.map(dat => { delete dat.answer });
+            const dup = ajson.find(dat => dat.id === req.id);
+            if (dup === undefined) {
+                return { res: "Failed" };
+            } else {
+                const rtjson = [qjson, { "difficultyChoice": dup.difficultyChoice }];
+                return rtjson;
+            }
         }
 
         // 答え合わせをする ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
@@ -68,6 +76,20 @@ class MyServer extends Server {
             }
             return { result: rlt, answer: org.answer };
         }
+        
+        // ポイントを加減算する ( req = {"id": ~~~, "point": ~~~} )
+        else if (path === "/api/adjustpt") {
+            const json = JSON.parse(Deno.readTextFileSync('./point.json'));
+            const dup = json.find(dat => dat.id === req.id);
+            if (dup === undefined) {
+                json.push(req);
+            } else {
+                dup.point += req.point;
+            }
+            Deno.writeTextFileSync("./point.json", JSON.stringify(json));
+            return { res: "OK" };
+        }
+        
         // idの取得
         else if (path === "/api/getid") {
             const uuid = v4.generate();
