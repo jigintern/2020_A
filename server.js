@@ -10,8 +10,10 @@ class MyServer extends Server {
             // 重複を確認 なければ追加 あれば更新
             const dup = json.find(dat => dat.id === req.id);
             if (dup === undefined) {
+                
                 json.push(req);
             } else {
+                dup.last = dup.time;
                 dup.time = req.time;
                 dup.difficultyChoice = req.difficultyChoice;
             }
