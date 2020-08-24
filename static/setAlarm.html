@@ -50,6 +50,7 @@
 		</center>
 
 	</form>
+	<h3 id="set-result"></h3>
 	<br><br><br>
 	<font1>res:</font1>
 	<br>
@@ -57,31 +58,16 @@
 
 	<script type="module">
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-		import { getUuid } from "./util.js";
+		import { askNotification, getUuid } from "./util.js";
 
 		var uuid = undefined;
 
 		window.onload = async () => {
-			// cookie読み込み
-			uuid = getUuid();
-			if (uuid === undefined) {
-				uuid = (await (await fetch("/api/getid")).json()).id;
-				document.cookie = "uuid=" + uuid + "; expires= Mon, 31 Aug 2030 00:00:00 GMT";   // cookie作成
-			}
+			askNotification();
+
+			uuid = await getUuid();
 			console.log(uuid);
-
-			var idtmp = "";
-			// 通知を許可するかユーザに問いかける
-			navigator.serviceWorker.register("sw.js").then(() => {
-				Notification.requestPermission(function (permission) {
-					if (permission === 'denied') {
-						ta.value = 'プッシュ通知を有効にできません。ブラウザの設定を確認して下さい。';
-					}
-				});
-			});
-			//const uuid = await (await fetch("/api/getid")).json();
 		}
-
 
 		const inputForm = document.getElementById("input-form");
 		inputForm.addEventListener('submit', async (event) => {
@@ -91,10 +77,15 @@
 
 			const status = document.getElementById("status");
 			if (isNaN(utc)) {
-				ta.value = "入力したデータが無効です";
+				window.alert("入力したデータが無効です");
 			} else {
 				const res = await fetchJSON("/api/setalarm", { id: uuid, time: utc });
 				ta.value = JSON.stringify(res);
+				const setResult = document.getElementById("set-result");
+
+				if (res.res === "OK") {
+					setResult.textContent = "アラーム設定完了！";
+				}
 			}
 		});
 
