@@ -1,4 +1,5 @@
 import { Server } from "https://code4sabae.github.io/js/Server.js"
+import { v4 } from "https://deno.land/std/uuid/mod.ts";
 
 class MyServer extends Server {
     api(path, req) {
@@ -17,13 +18,13 @@ class MyServer extends Server {
             Deno.writeTextFileSync("./alarm.json", JSON.stringify(json));
             return { res: "OK" };
         }
-        
+
         // アラーム一覧を取得する
         else if (path === "/api/getalarm") {
             const json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             return json;
         }
-        
+
         // 問題を追加する ( req = {問題データ} )
         else if (path === "/api/setquest") {
             const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
@@ -70,12 +71,12 @@ class MyServer extends Server {
             }
             // 回答時間の計算
             const usralarm = ajson.find(dat => dat.id === req.id);
-            if ((new Date().getTime() - usralarm.time) > (org.timeLimit*60000)) {
+            if ((new Date().getTime() - usralarm.time) > (org.timeLimit * 60000)) {
                 var rlt = "timeover";
             }
             return { result: rlt, answer: org.answer };
         }
-
+        
         // ポイントを加減算する ( req = {"id": ~~~, "point": ~~~} )
         else if (path === "/api/adjustpt") {
             const json = JSON.parse(Deno.readTextFileSync('./point.json'));
@@ -88,7 +89,14 @@ class MyServer extends Server {
             Deno.writeTextFileSync("./point.json", JSON.stringify(json));
             return { res: "OK" };
         }
+        
+        // idの取得
+        else if (path === "/api/getid") {
+            const uuid = v4.generate();
+            return { id: uuid };
+        }
     }
+
 }
 
 new MyServer(8881);
