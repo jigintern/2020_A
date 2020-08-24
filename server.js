@@ -53,41 +53,41 @@ class MyServer extends Server {
             if (dup === undefined) {
                 return { res: "Failed" };
             } else {
-                const rtjson = [qjson, { "difficultyChoice": dup.difficultyChoice }];
+                const rtjson = { quests: qjson, difficultyChoice: dup.difficultyChoice }
                 return rtjson;
             }
         }
 
-        // 答え合わせをする ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
+        // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
         else if (path === "/api/checkans") {
             const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+            const pjson = JSON.parse(Deno.readTextFileSync('./point.json'));
             const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
             // 問題の特定
             const org = qjson.find(dat => dat.questId === req.questId);
+            var deltapt;
             if (org.answer === req.answer) {
                 var rlt = "correct";
+                deltapt = org.point;
             } else {
                 var rlt = "incorrect";
+                deltapt = -org.point;
             }
             // 回答時間の計算
             const usralarm = ajson.find(dat => dat.id === req.id);
             if ((new Date().getTime() - usralarm.time) > (org.timeLimit * 60000)) {
                 var rlt = "timeover";
+                deltapt = -org.point;
             }
-            return { result: rlt, answer: org.answer };
-        }
-        
-        // ポイントを加減算する ( req = {"id": ~~~, "point": ~~~} )
-        else if (path === "/api/adjustpt") {
-            const json = JSON.parse(Deno.readTextFileSync('./point.json'));
-            const dup = json.find(dat => dat.id === req.id);
+            // ポイントの変更
+            const dup = pjson.find(dat => dat.id === req.id);
             if (dup === undefined) {
-                json.push(req);
+                pjson.push( { "id": req.id, "point": deltapt } );
             } else {
-                dup.point += req.point;
+                dup.point += deltapt;
             }
-            Deno.writeTextFileSync("./point.json", JSON.stringify(json));
-            return { res: "OK" };
+            Deno.writeTextFileSync("./point.json", JSON.stringify(pjson));
+            return { result: rlt, answer: org.answer };
         }
         
         // idの取得
