@@ -71,7 +71,8 @@ class MyServer extends Server {
     // idの取得
     else if (path === "/api/getid") {
             const uuid = v4.generate();
-            return uuid;
+            return {id:uuid};
+
     }
 }
 
