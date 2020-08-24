@@ -23,53 +23,29 @@ hr1{
 
 .button {
   display       : inline-block;
-  font-size     : 18pt;        /* �����T�C�Y */
-  text-align    : center;      /* �����ʒu   */
-  cursor        : pointer;     /* �J�[�\��   */
-  padding       : 12px 33px;   /* �]��       */
-  background    : #1a1aff;     /* �w�i�F     */
-  color         : #ffffff;     /* �����F     */
-  line-height   : 1em;         /* 1�s�̍���  */
-  transition    : .3s;         /* �Ȃ߂炩�ω� */
-  border        : 2px solid #1a1aff;    /* �g�̎w�� */
+  font-size     : 18pt;       
+  text-align    : center;      
+  cursor        : pointer;    
+  padding       : 12px 33px;   
+  background    : #1a1aff;    
+  color         : #ffffff;    
+  line-height   : 1em;         
+  transition    : .3s;       
+  border        : 2px solid #1a1aff;  
 }
 .button:hover {
-  color         : #007fff;     /* �w�i�F     */
-  background    : #ffffff;     /* �����F     */
+  color         : #007fff;    
+  background    : #ffffff;    
 }
 
 
-label {
-  position: relative;
-  display: inline-block;
-  width: 200px;
-  height: 36px;
-  border: 2px solid #ccc;
-  border-radius: 15px;
+textarea {
+  border: 2px solid #0a0;  /* 枠線 */
+  border-radius: 0.67em;   /* 角丸 */
+  padding: 0.5em;          /* 内側の余白量 */
+  background-color: snow;  /* 背景色 */
+  width: 20em;             /* 横幅 */
+  height: 120px;           /* 高さ */
+  font-size: 1em;          /* 文字サイズ */
+  line-height: 1.2;        /* 行の高さ */
 }
-input[type="date"] {
-  position: relative;
-  padding: 0 10px;
-  width: 200px;
-  height: 36px;
-  border: 0;
-  background: #ffffff;
-  box-sizing: border-box;
-  font-size: 20px;
-  color: #000000;
-}
-label::before {
-  position: absolute;
-  content: "";
-  top: 0;
-  right: -43px;
-  width: 36px;
-  height: 36px;
-  background-color: #06c;
-  background-image: url("icon_calendar.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  border-radius: 10px;
-}
-
-
