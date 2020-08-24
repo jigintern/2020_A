@@ -67,6 +67,19 @@ class MyServer extends Server {
             }
             return { result: rlt, answer: org.answer };
         }
+
+        // ポイントを加減算する ( req = {"id": ~~~, "point": ~~~} )
+        else if (path === "/api/adjustpt") {
+            const json = JSON.parse(Deno.readTextFileSync('./point.json'));
+            const dup = json.find(dat => dat.id === req.id);
+            if (dup === undefined) {
+                json.push(req);
+            } else {
+                dup.point += req.point;
+            }
+            Deno.writeTextFileSync("./point.json", JSON.stringify(json));
+            return { res: "OK" };
+        }
     }
 }
 
