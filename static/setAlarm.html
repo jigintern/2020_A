@@ -50,7 +50,6 @@
 		</center>
 
 	</form>
-	<h3 id="set-result"></h3>
 	<br><br><br>
 	<font1>res:</font1>
 	<br>
@@ -66,7 +65,7 @@
 			// cookie読み込み
 			uuid = getUuid();
 			if (uuid === undefined) {
-				uuid = await generateUuid();
+				uuid = (await (await fetch("/api/getid")).json()).id;
 				document.cookie = "uuid=" + uuid + "; expires= Mon, 31 Aug 2030 00:00:00 GMT";   // cookie作成
 			}
 			console.log(uuid);
@@ -83,23 +82,6 @@
 			//const uuid = await (await fetch("/api/getid")).json();
 		}
 
-		async function generateUuid() {
-			/*const res = await (await fetch("/api/getid")).json();
-			return res;
-			*/
-			let chars = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".split("");
-			for (let i = 0, len = chars.length; i < len; i++) {
-				switch (chars[i]) {
-					case "x":
-						chars[i] = Math.floor(Math.random() * 16).toString(16);
-						break;
-					case "y":
-						chars[i] = (Math.floor(Math.random() * 4) + 8).toString(16);
-						break;
-				}
-			}
-			return chars.join("");
-		}
 
 		const inputForm = document.getElementById("input-form");
 		inputForm.addEventListener('submit', async (event) => {
@@ -109,17 +91,11 @@
 
 			const status = document.getElementById("status");
 			if (isNaN(utc)) {
-				window.alert("入力したデータが無効です");
+				ta.value = "入力したデータが無効です";
 			} else {
 				const res = await fetchJSON("/api/setalarm", { id: uuid, time: utc });
 				ta.value = JSON.stringify(res);
-				const setResult = document.getElementById("set-result");
-
-				if (res.res === "OK") {
-					setResult.textContent = "アラーム設定完了！";
-				}
 			}
-
 		});
 
 	</script>
