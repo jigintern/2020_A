@@ -43,12 +43,24 @@
 			
 				<input type="datetime-local" id="datetime">
 
-		
-
+			</lavel>
+			<lavel>
+				難易度
+				<select name="difficulty" id="difficulty">
+					<option value="">なし</option>
+					<option value="S">S</option>
+					<option value="A">A</option>
+					<option value="B">B</option>
+					<option value="C">C</option>
+					<option value="D">D</option>
+					<option value="E">E</option>
+				</select>
+			</lavel>
 			<input type="submit" value"送信" class="button">
 		</center>
 
 	</form>
+	<h3 id="set-result"></h3>
 	<br><br><br>
 	<font1>res:</font1>
 	<br>
@@ -56,47 +68,15 @@
 
 	<script type="module">
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-		import { getUuid } from "./util.js";
+		import { askNotification, getUuid } from "./util.js";
 
 		var uuid = undefined;
 
 		window.onload = async () => {
-			// cookie読み込み
-			uuid = getUuid();
-			if (uuid === undefined) {
-				uuid = await generateUuid();
-				document.cookie = "uuid=" + uuid + "; expires= Mon, 31 Aug 2030 00:00:00 GMT";   // cookie作成
-			}
+			askNotification();
+
+			uuid = await getUuid();
 			console.log(uuid);
-
-			var idtmp = "";
-			// 通知を許可するかユーザに問いかける
-			navigator.serviceWorker.register("sw.js").then(() => {
-				Notification.requestPermission(function (permission) {
-					if (permission === 'denied') {
-						ta.value = 'プッシュ通知を有効にできません。ブラウザの設定を確認して下さい。';
-					}
-				});
-			});
-			//const uuid = await (await fetch("/api/getid")).json();
-		}
-
-		async function generateUuid() {
-			/*const res = await (await fetch("/api/getid")).json();
-			return res;
-			*/
-			let chars = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".split("");
-			for (let i = 0, len = chars.length; i < len; i++) {
-				switch (chars[i]) {
-					case "x":
-						chars[i] = Math.floor(Math.random() * 16).toString(16);
-						break;
-					case "y":
-						chars[i] = (Math.floor(Math.random() * 4) + 8).toString(16);
-						break;
-				}
-			}
-			return chars.join("");
 		}
 
 		const inputForm = document.getElementById("input-form");
@@ -107,10 +87,17 @@
 
 			const status = document.getElementById("status");
 			if (isNaN(utc)) {
-				ta.value = "入力したデータが無効です";
+				window.alert("入力したデータが無効です");
 			} else {
-				const res = await fetchJSON("/api/setalarm", { id: uuid, time: utc });
+				const res = await fetchJSON("/api/setalarm", {
+					id: uuid, time: utc, difficultyChoice: difficulty.value
+				});
 				ta.value = JSON.stringify(res);
+				const setResult = document.getElementById("set-result");
+
+				if (res.res === "OK") {
+					setResult.textContent = "アラーム設定完了！";
+				}
 			}
 		});
 

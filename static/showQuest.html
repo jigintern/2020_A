@@ -24,11 +24,17 @@
 		<form id="answer-list"></form>
 		<br>
 		<Button id="answer-send">回答送信！</Button>
+
 		<br><br>
         <p1>
 		res:</p1><br>
 		
 		<textarea id="ta" style="width:60vw; height:8em;"></textarea>
+
+		<div id="answer-div" hidden>
+			<h4>結果</h4>
+			<p></p>
+		</div>
 	</div>
 
 <br><br><br>
@@ -53,46 +59,58 @@
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 		import { getUuid } from "./util.js";
 
-		let questJson = {};
+		let uuid = "";
+		let getJSON = {};
+		let questJson = [];
 		let selectedQuestid = undefined;
+		window.onload = async () => {
+			uuid = await getUuid();
+			console.log(uuid);
 
-		getQuest();
+
+
+			getQuest();
+		}
 
 		const submitBtn = document.getElementById("answer-send");
 		submitBtn.onclick = async () => {
-			const uuid = getUuid();
-			if (uuid === undefined) {
-				ta.value = "idが割り振られていません";
-			}
-			else {
-				const form = document.getElementById("answer-list");
-				const list = form.choices;
-				const answer = parseInt(list.value);
-				if (isNaN(answer)) {
-					ta.value = "回答が選択されていません";
-				} else {
-					const res = await fetchJSON("/api/checkans", {
-						id: uuid,
-						questId: selectedQuestid,
-						answer: answer,
-					});
-					if (res.result === "correct") {
-						ta.value = "正解！！！";
-					} else if (res.result === "incorrect") {
-						ta.value = `不正解！\n正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
-					} else if (res.result === "timeover") {
-						ta.value = `時間切れ～！\n正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
-					}
-					else {
-						ta.value = JSON.stringify(res);
-					}
-					document.getElementById("answer-send").disabled = true;
+			const form = document.getElementById("answer-list");
+			const list = form.choices;
+			const answer = parseInt(list.value);
+			if (isNaN(answer)) {
+				window.alert("回答が選択されていません");
+			} else {
+				const res = await fetchJSON("/api/checkans", {
+					id: uuid,
+					questId: selectedQuestid,
+					answer: answer,
+				});
+
+				let text = "";
+				const answerDiv = document.getElementById("answer-div");
+
+				if (res.result === "correct") {
+					text = "正解！！！";
+				} else if (res.result === "incorrect") {
+					text = `不正解！<br>正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
+				} else if (res.result === "timeover") {
+					text = `時間切れ～！<br>正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
 				}
+				else {
+					text = JSON.stringify(res);
+				}
+				answerDiv.childNodes[1].innerHTML = text;
+
+				answerDiv.hidden = false;
+				document.getElementById("answer-send").disabled = true;
+				form.childNodes.forEach(item => item.childNodes[0].disabled = true);
+				quests.childNodes.forEach(item => item.onclick = null);
 			}
 		}
 
 		async function getQuest() {
-			questJson = await (await fetch("/api/getquest")).json();
+			getJSON = await fetchJSON("/api/getquest", { id: uuid });
+			questJson = getJSON.quests;
 			document.getElementById("sort-type").onchange();
 		}
 
@@ -100,8 +118,11 @@
 			const difficultyList = ["S", "A", "B", "C", "D", "E"];
 			let questList = [];
 			if (this.value === "standard") {
-				// そのまま並べる
-				questList = questList.concat(questJson);
+				// アラーム設定時の難易度設定によって変える
+				questList = questList.concat(questJson.filter(e => e.difficulty === getJSON.difficultyChoice));
+				questList = questList.concat(questJson.filter(e => e.difficulty !== getJSON.difficultyChoice));
+
+				//questList = questList.concat(questJson);
 			} else if (this.value === "difficulty-up") {
 				difficultyList.forEach(d => {
 					questList = questList.concat(questJson.filter(e => e.difficulty === d));
@@ -120,6 +141,7 @@
 			for (let i = 0; i < questList.length; i++) {
 				const li = document.createElement("li");
 				li.textContent = `${questList[i].question} 難易度：${questList[i].difficulty} ポイント：${questList[i].point}`;
+				console.log(li.onclick);
 				li.onclick = () => {
 					selectedQuestid = questList[i].questId;
 					question.textContent = questList[i].question;
