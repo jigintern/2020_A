@@ -3,7 +3,7 @@ import { Server } from "https://code4sabae.github.io/js/Server.js"
 class MyServer extends Server {
     api(path, req) {
 
-        // アラームを追加する ( req = {アラームのデータ} )
+        // アラームを追加する ( req = {"id": ~~~, "alarm": ~~~, "difficultyChoice": ~~~} )
         if (path === "/api/setalarm") {
             var json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             // 重複を確認 なければ追加 あれば更新
@@ -12,6 +12,7 @@ class MyServer extends Server {
                 json.push(req);
             } else {
                 dup.time = req.time;
+                dup.difficultyChoice = req.difficultyChoice;
             }
             Deno.writeTextFileSync("./alarm.json", JSON.stringify(json));
             return { res: "OK" };
