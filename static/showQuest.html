@@ -82,6 +82,7 @@
 
 					answerDiv.hidden = false;
 					document.getElementById("answer-send").disabled = true;
+					form.childNodes.forEach(item => item.childNodes[0].disabled = true);
 					quests.childNodes.forEach(item => item.onclick = null);
 				}
 			}
