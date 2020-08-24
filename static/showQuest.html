@@ -41,15 +41,21 @@
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 		import { getUuid } from "./util.js";
 
-		let questJson = {};
+		let uuid = "";
+		let getJSON = {};
+		let questJson = [];
 		let selectedQuestid = undefined;
+		window.onload = async () => {
+			uuid = await getUuid();
+			console.log(uuid);
 
-		getQuest();
+
+
+			getQuest();
+		}
 
 		const submitBtn = document.getElementById("answer-send");
 		submitBtn.onclick = async () => {
-			const uuid = getUuid();
-
 			const form = document.getElementById("answer-list");
 			const list = form.choices;
 			const answer = parseInt(list.value);
@@ -85,7 +91,8 @@
 		}
 
 		async function getQuest() {
-			questJson = await (await fetch("/api/getquest")).json();
+			getJSON = await fetchJSON("/api/getquest", { id: uuid });
+			questJson = getJSON.quests;
 			document.getElementById("sort-type").onchange();
 		}
 
@@ -93,8 +100,11 @@
 			const difficultyList = ["S", "A", "B", "C", "D", "E"];
 			let questList = [];
 			if (this.value === "standard") {
-				// そのまま並べる
-				questList = questList.concat(questJson);
+				// アラーム設定時の難易度設定によって変える
+				questList = questList.concat(questJson.filter(e => e.difficulty === getJSON.difficultyChoice));
+				questList = questList.concat(questJson.filter(e => e.difficulty !== getJSON.difficultyChoice));
+
+				//questList = questList.concat(questJson);
 			} else if (this.value === "difficulty-up") {
 				difficultyList.forEach(d => {
 					questList = questList.concat(questJson.filter(e => e.difficulty === d));
