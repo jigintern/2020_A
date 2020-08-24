@@ -19,10 +19,15 @@ class MyServer extends Server {
             return { res: "OK" };
         }
 
-        // アラーム一覧を取得する
+        // アラーム一覧を取得する ( req = {"id": ~~~} )
         else if (path === "/api/getalarm") {
             const json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
-            return json;
+            const dup = json.find(dat => dat.id === req.id);
+            if (dup === undefined) {
+                return null;
+            } else {
+                return dup;
+            }
         }
 
         // 問題を追加する ( req = {問題データ} )
