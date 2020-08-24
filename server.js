@@ -67,8 +67,7 @@ class MyServer extends Server {
             }
             return { result: rlt, answer: org.answer };
         }
-    }
-    // idの取得
+         // idの取得
     else if (path === "/api/getid") {
             const uuid = v4.generate();
             return {id:uuid};
@@ -98,6 +97,8 @@ class MyServer extends Server {
             }// 5位と同率でも送る
             return JSON.stringify(ret);
         }
+    }
+   
 }
 
 new MyServer(8881);
