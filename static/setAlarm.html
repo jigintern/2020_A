@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./setAlarm.css">
+	<title>時刻設定</title>
+
+</head>
+
+<body>
+	<br>
+
+	<font1>
+		<h1>起床時間の設定</h1>
+	</font1>
+	<hr color="red">
+
+	<br><br><br>
+
+	<center>
+		<font1>
+			<h1 id="time"></h1>
+		</font1>
+	</center>
+
+	<br><br>
+
+	<script>
+		time();
+		function time() {
+			var now = new Date();
+			document.getElementById("time").innerHTML = now.toLocaleString();
+		}
+		setInterval('time()', 1000);
+	</script>
+
+	<form id="input-form">
+
+		<br><br>
+
+		<center>
+			<lavel>
+				<input type="datetime-local" id="datetime">
+
+			</lavel>
+
+			<input type="submit" value"送信" class="button">
+		</center>
+
+	</form>
+	<br><br><br>
+	<font1>res:</font1>
+	<br>
+	<textarea id="ta" style="width:60vw; height:8em;"></textarea>
+
+	<script type="module">
+		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+		import { getUuid } from "./util.js";
+
+		var uuid = undefined;
+
+		window.onload = async () => {
+			// cookie読み込み
+			uuid = getUuid();
+			if (uuid === undefined) {
+				uuid = await (await fetch("/api/getid")).json();
+				document.cookie = "uuid=" + uuid + "; expires= Mon, 31 Aug 2030 00:00:00 GMT";   // cookie作成
+			}
+			console.log(uuid);
+
+			var idtmp = "";
+			// 通知を許可するかユーザに問いかける
+			navigator.serviceWorker.register("sw.js").then(() => {
+				Notification.requestPermission(function (permission) {
+					if (permission === 'denied') {
+						ta.value = 'プッシュ通知を有効にできません。ブラウザの設定を確認して下さい。';
+					}
+				});
+			});
+			//const uuid = await (await fetch("/api/getid")).json();
+		}
+
+
+		const inputForm = document.getElementById("input-form");
+		inputForm.addEventListener('submit', async (event) => {
+			event.preventDefault();
+
+			const utc = new Date(datetime.value).getTime();
+
+			const status = document.getElementById("status");
+			if (isNaN(utc)) {
+				ta.value = "入力したデータが無効です";
+			} else {
+				const res = await fetchJSON("/api/setalarm", { id: uuid, time: utc });
+				ta.value = JSON.stringify(res);
+			}
+		});
+
+	</script>
+</body>
+
+</html>

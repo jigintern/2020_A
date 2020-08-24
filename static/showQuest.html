@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./showQuest.css">
+	<title>ミッション一覧</title>
+</head>
+
+<body>
+	<h1>ミッション選択画面</h1>
+	<hr color="red">
+
+	<div id=quest hidden>
+		<h2>今日のミッション</h2>
+		<h3>問題</h3>
+		<p id="question"></p>
+		<h4>選択肢</h4>
+		<form id="answer-list"></form>
+		<Button id="answer-send">回答送信！</Button>
+		res:<br>
+		<textarea id="ta" style="width:60vw; height:8em;"></textarea>
+	</div>
+
+	<h2>ミッション一覧</h2>
+	<div id="missions">
+		<span>並び順：</span>
+		<select id="sort-type">
+			<option value="standard">標準</option>
+			<option value="difficulty-up">難易度（昇順）</option>
+			<option value="difficulty-down">難易度（降順）</option>
+			<option value="point">獲得ポイント</option>
+		</select>
+		<ul id="quests"></ul>
+	</div>
+
+	<script type="module">
+		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+		import { getUuid } from "./util.js";
+
+		let questJson = {};
+		let selectedQuestid = undefined;
+
+		getQuest();
+
+		const submitBtn = document.getElementById("answer-send");
+		submitBtn.onclick = async () => {
+			const uuid = getUuid();
+			if (uuid === undefined) {
+				ta.value = "idが割り振られていません";
+			}
+			else {
+				const form = document.getElementById("answer-list");
+				const list = form.choices;
+				const answer = parseInt(list.value);
+				if (isNaN(answer)) {
+					ta.value = "回答が選択されていません";
+				} else {
+					const res = await fetchJSON("/api/checkans", {
+						id: uuid,
+						questId: selectedQuestid,
+						answer: answer,
+					});
+					if (res.result === "correct") {
+						ta.value = "正解！！！";
+					} else if (res.result === "incorrect") {
+						ta.value = `不正解！\n正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
+					} else if (res.result === "timeover") {
+						ta.value = `時間切れ～！\n正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
+					}
+					else {
+						ta.value = JSON.stringify(res);
+					}
+					document.getElementById("answer-send").disabled = true;
+				}
+			}
+		}
+
+		async function getQuest() {
+			questJson = await (await fetch("/api/getquest")).json();
+			document.getElementById("sort-type").onchange();
+		}
+
+		document.getElementById("sort-type").onchange = function () {
+			const difficultyList = ["S", "A", "B", "C", "D", "E"];
+			let questList = [];
+			if (this.value === "standard") {
+				// そのまま並べる
+				questList = questList.concat(questJson);
+			} else if (this.value === "difficulty-up") {
+				difficultyList.forEach(d => {
+					questList = questList.concat(questJson.filter(e => e.difficulty === d));
+				});
+			} else if (this.value === "difficulty-down") {
+				difficultyList.reverse().forEach(d => {
+					questList = questList.concat(questJson.filter(e => e.difficulty === d));
+				});
+			} else if (this.value === "point") {
+				questList = questList.concat(questJson);
+				questList.sort((a, b) => b.point - a.point);
+			}
+
+			// リスト作成
+			quests.innerHTML = "";
+			for (let i = 0; i < questList.length; i++) {
+				const li = document.createElement("li");
+				li.textContent = `${questList[i].question} 難易度：${questList[i].difficulty} ポイント：${questList[i].point}`;
+				li.onclick = () => {
+					selectedQuestid = questList[i].questId;
+					question.textContent = questList[i].question;
+
+					const answerList = document.getElementById("answer-list");
+					answerList.innerHTML = "";
+					questList[i].answerList.forEach((e, idx) => {
+						const lavel = document.createElement("label");
+						const choice = document.createElement("input");
+						choice.type = "radio";
+						choice.name = "choices";
+						choice.value = idx;
+						choice.textContent = e;
+						lavel.appendChild(choice);
+						const text = document.createTextNode(e);
+						lavel.appendChild(text);
+						answerList.appendChild(lavel);
+					});
+					quest.hidden = false;
+				}
+				quests.appendChild(li);
+			}
+		}
+
+	</script>
+</body>
+
+</html>

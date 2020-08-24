@@ -1,0 +1,35 @@
+body{
+	background-color:rgb(30,36,47);
+}
+h1,h2{
+ color:#ffffff;
+}
+h3{
+    color:#ffffff;
+    font-size:20px;
+}
+
+ul {
+    border: solid 2px #ffb03f;
+    padding: 0 0.5em;
+    position: relative;
+  }
+  
+  ul li {
+    line-height: 1.5;
+    padding: 0.5em 0 0.5em 1.4em;
+    border-bottom: dashed 1px silver;
+    list-style-type: none!important;
+  }
+  
+  ul li:before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f138";/*アイコン種類*/
+    position: absolute;
+    left : 0.5em; /*左端からのアイコンまで*/
+    color: #ffb03f; /*アイコン色*/
+  }
+  
+  ul li:last-of-type {
+    border-bottom: none;
+  }

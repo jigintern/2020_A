@@ -1,0 +1,61 @@
+[{
+        "questId": 0,
+        "question": "1から10まで数字を全部足すと？",
+        "answer": 1,
+        "answerList": ["50", "55", "47", "70"],
+        "author": "すずとも",
+        "difficulty": "C",
+        "point": 10,
+        "timeLimit": 5
+    },
+    {
+        "questId": 1,
+        "question": "√4=?",
+        "answer": 0,
+        "answerList": ["2", "-2", "±2", "定義されない"],
+        "author": "はーど",
+        "difficulty": "D",
+        "point": 15,
+        "timeLimit": 5
+    },
+    {
+        "questId": 2,
+        "question": "栄養5大要素でないものを選ぶ",
+        "answer": 3,
+        "answerList": ["糖質", "ビタミン", "脂質", "カルシウム", "タンパク質"],
+        "author": "すずとも",
+        "difficulty": "B",
+        "point": 20,
+        "timeLimit": 5
+    },
+    {
+        "questId": 3,
+        "question": "C言語のdouble型で、仮数部は何bit？",
+        "answer": 4,
+        "answerList": ["1", "11", "8", "23", "52"],
+        "author": "すずとも",
+        "difficulty": "A",
+        "point": 30,
+        "timeLimit": 5
+    },
+    {
+        "questId": 4,
+        "question": "JavascriptはJavaの派生言語である",
+        "answer": 1,
+        "answerList": ["○", "×"],
+        "author": "すずとも",
+        "difficulty": "B",
+        "point": 20,
+        "timeLimit": 5
+    },
+    {
+        "questId": 5,
+        "question": "ハノイの塔で、板の数が8枚の時、最小移動回数は？",
+        "answer": 3,
+        "answerList": ["31", "63", "127", "255", "511", "1023"],
+        "author": "すずとも",
+        "difficulty": "A",
+        "point": 30,
+        "timeLimit": 5
+    }
+]

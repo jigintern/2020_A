@@ -1,0 +1,29 @@
+body{
+	background-color:rgb(30,36,47);
+}
+
+h1{
+	color:#ffffff;
+}
+
+ul, ol {
+  padding: 0;
+  position: relative;
+}
+
+font{
+  font-size: 20px;
+}
+
+ul, ol {
+  color: #1e366a;
+  border: dotted #1e366a 4px;
+  padding: 0.5em 0.5em 0.5em 2em;
+  background: #ffffff;
+}
+
+ul li, ol li {
+  line-height: 1.5;
+  padding: 0.5em 0;
+}
+
