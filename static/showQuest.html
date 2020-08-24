@@ -73,6 +73,7 @@
 						ta.value = JSON.stringify(res);
 					}
 					document.getElementById("answer-send").disabled = true;
+					quests.childNodes.forEach(item => item.onclick = null);
 				}
 			}
 		}
@@ -106,6 +107,7 @@
 			for (let i = 0; i < questList.length; i++) {
 				const li = document.createElement("li");
 				li.textContent = `${questList[i].question} 難易度：${questList[i].difficulty} ポイント：${questList[i].point}`;
+				console.log(li.onclick);
 				li.onclick = () => {
 					selectedQuestid = questList[i].questId;
 					question.textContent = questList[i].question;
