@@ -53,7 +53,7 @@ class MyServer extends Server {
             if (dup === undefined) {
                 return { res: "Failed" };
             } else {
-                const rtjson = [qjson, { "difficultyChoice": dup.difficultyChoice }];
+                const rtjson = { quests: qjson, difficultyChoice: dup.difficultyChoice }
                 return rtjson;
             }
         }
