@@ -89,14 +89,38 @@ class MyServer extends Server {
             Deno.writeTextFileSync("./point.json", JSON.stringify(pjson));
             return { result: rlt, answer: org.answer };
         }
-        
+
         // idの取得
         else if (path === "/api/getid") {
             const uuid = v4.generate();
             return { id: uuid };
         }
-    }
 
+        // ポイント上位5人の成績取得
+        else if (path = "/api/getpointrank") {
+            const json = JSON.parse(Deno.readTextFileSync('./point.json'));
+            let align = json;
+            align.sort(function(val1,val2){
+                var val1 = val1.point;
+                var val2 = val2.point;
+                if( val1 < val2 ) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
+            let ret =[];
+            let i = 0;
+            for (; i < 5; i++) {
+                ret.push(align[i]);
+            }   // top5
+            console.log(align[i].point);
+            for(;align[4].point === align[i].point;i++) {
+                ret.push(align[i]);
+            }// 5位と同率でも送る
+            return JSON.stringify(ret);
+        }
+    }
 }
 
 new MyServer(8881);
