@@ -49,42 +49,38 @@
 		const submitBtn = document.getElementById("answer-send");
 		submitBtn.onclick = async () => {
 			const uuid = getUuid();
-			if (uuid === undefined) {
-				window.alert("idが割り振られていません\nアラーム設定画面から予め設定しておいて下さい");
-			}
-			else {
-				const form = document.getElementById("answer-list");
-				const list = form.choices;
-				const answer = parseInt(list.value);
-				if (isNaN(answer)) {
-					window.alert("回答が選択されていません");
-				} else {
-					const res = await fetchJSON("/api/checkans", {
-						id: uuid,
-						questId: selectedQuestid,
-						answer: answer,
-					});
 
-					let text = "";
-					const answerDiv = document.getElementById("answer-div");
+			const form = document.getElementById("answer-list");
+			const list = form.choices;
+			const answer = parseInt(list.value);
+			if (isNaN(answer)) {
+				window.alert("回答が選択されていません");
+			} else {
+				const res = await fetchJSON("/api/checkans", {
+					id: uuid,
+					questId: selectedQuestid,
+					answer: answer,
+				});
 
-					if (res.result === "correct") {
-						text = "正解！！！";
-					} else if (res.result === "incorrect") {
-						text = `不正解！<br>正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
-					} else if (res.result === "timeover") {
-						text = `時間切れ～！<br>正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
-					}
-					else {
-						text = JSON.stringify(res);
-					}
-					answerDiv.childNodes[1].innerHTML = text;
+				let text = "";
+				const answerDiv = document.getElementById("answer-div");
 
-					answerDiv.hidden = false;
-					document.getElementById("answer-send").disabled = true;
-					form.childNodes.forEach(item => item.childNodes[0].disabled = true);
-					quests.childNodes.forEach(item => item.onclick = null);
+				if (res.result === "correct") {
+					text = "正解！！！";
+				} else if (res.result === "incorrect") {
+					text = `不正解！<br>正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
+				} else if (res.result === "timeover") {
+					text = `時間切れ～！<br>正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
 				}
+				else {
+					text = JSON.stringify(res);
+				}
+				answerDiv.childNodes[1].innerHTML = text;
+
+				answerDiv.hidden = false;
+				document.getElementById("answer-send").disabled = true;
+				form.childNodes.forEach(item => item.childNodes[0].disabled = true);
+				quests.childNodes.forEach(item => item.onclick = null);
 			}
 		}
 

@@ -4,42 +4,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel= "stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./index.css">
     <title>オンライン授業になって朝がつらい高専生が、
-朝決めた時間に起きることで生活リズムを整えるやーつ</title>
+        朝決めた時間に起きることで生活リズムを整えるやーつ</title>
 </head>
 
 <body>
-<header>
-</header>
+    <header>
+    </header>
 
 
-<br>
-<br>
+    <br>
+    <br>
 
-<div style="text-shadow: 1px 1px 0px #ffffff, 
-3px 3px 2px #44141e; font:32pt 'Arial'; font-weight:bold; 
+    <div style="text-shadow: 1px 1px 0px #ffffff,
+3px 3px 2px #44141e; font:32pt 'Arial'; font-weight:bold;
 color:#fdfdfd">
-    オンライン授業になって朝がつらい高専生が  <br>
-朝決めた時間に起きることで
-<br>生活リズムを整えるやーつ
+        オンライン授業になって朝がつらい高専生が <br>
+        朝決めた時間に起きることで
+        <br>生活リズムを整えるやーつ
     </div>
 
 
 
 
-<br>
-<br>
-<hr color="red">
-<br>
+    <br>
+    <br>
+    <hr color="red">
+    <br>
 
-<font>
-    <ol>
-        <li><a href="setAlarm.html">起床時間の設定</a></li>
-        <li><a href="showQuest.html">ミッション一覧</a></li>
-    </ol>
+    <font>
+        <ol>
+            <li><a href="setAlarm.html">起床時間の設定</a></li>
+            <li><a href="showQuest.html">ミッション一覧</a></li>
+        </ol>
     </font>
 
 </body>
+<script type="module">
+
+    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+    import { askNotification, getUuid } from "./util.js";
+    // import { compareTime } from "./js/compareTime.js";
+
+    let state = null;
+    // state -> 過ぎてたら 1 、ピッタリで 0、まだだったら -1
+
+    // 仮の設定時間の定義
+    window.onload = async function () {
+
+        let uuid = (await (await fetch("/api/getid")).json()).id;
+        console.log(uuid);
+
+        //let myId = idCheck(uuid);
+        // document.getElementById("id").innerHTML= myId;
+
+        window.name = "aka-top";
+        console.log(window.name);
+
+        var json = await (await fetch("/api/getalarm")).json();
+        const dup = json.find((dat) => dat.id === uuid);
+        console.log(json);
+        if (dup === undefined) {
+            console.log("起きる時刻を設定してください");
+        } else {
+            console.log("----");
+            console.log(dup.id);
+            console.log(dup.time);
+
+            state = compareTime(dup.time);
+            console.log("compareTime", state);
+            if (state >= 0) {
+                // document.getElementById("text").innerHTML= "gone...";
+                /*var newData = json;
+                let delIndex = -1;
+                var f = newData.filter(function (item, index) {
+                    if (item.id === myId) {
+                        delIndex = index;
+                        return true;
+                    }
+                });
+                delete newData[delIndex];*/
+                // 過ぎていた場合データを消す。更新方法はまだ未定
+                // ↑過ぎていた場合はサーバ側で消せばいいと思う by すずとも
+
+            } else {
+
+                var cnt = setInterval(function () {
+                    state = compareTime(dup.time);
+                    if (state >= 0) {
+                        console.log("now");
+                        const notification = new Notification("It's time now!");
+                        notification.onclick = () => {
+                            window.open("?", "_self");
+                            //location.href("./index.html");
+                        }
+                        // document.getElementById("text").innerHTML= "good morning";
+                        clearInterval(cnt);
+                        // cmp(compareTimeの返り値)が0以上なら時間が過ぎているのでループを抜ける
+                    }
+
+                }, 200);
+                // 200msごとにまわしている
+            }
+        }
+    }
+
+    function compareTime(setTime) {
+        var now = new Date();
+        var nowTime = now.getTime();
+        if (setTime < nowTime) {
+            return 1;
+        } else if (setTime > nowTime) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+</script>
 
 </html>
