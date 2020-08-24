@@ -19,8 +19,10 @@
 		<h4>選択肢</h4>
 		<form id="answer-list"></form>
 		<Button id="answer-send">回答送信！</Button>
-		res:<br>
-		<textarea id="ta" style="width:60vw; height:8em;"></textarea>
+		<div id="answer-div" hidden>
+			<h4>結果</h4>
+			<p></p>
+		</div>
 	</div>
 
 	<h2>ミッション一覧</h2>
@@ -48,31 +50,40 @@
 		submitBtn.onclick = async () => {
 			const uuid = getUuid();
 			if (uuid === undefined) {
-				ta.value = "idが割り振られていません";
+				window.alert("idが割り振られていません\nアラーム設定画面から予め設定しておいて下さい");
 			}
 			else {
 				const form = document.getElementById("answer-list");
 				const list = form.choices;
 				const answer = parseInt(list.value);
 				if (isNaN(answer)) {
-					ta.value = "回答が選択されていません";
+					window.alert("回答が選択されていません");
 				} else {
 					const res = await fetchJSON("/api/checkans", {
 						id: uuid,
 						questId: selectedQuestid,
 						answer: answer,
 					});
+
+					let text = "";
+					const answerDiv = document.getElementById("answer-div");
+
 					if (res.result === "correct") {
-						ta.value = "正解！！！";
+						text = "正解！！！";
 					} else if (res.result === "incorrect") {
-						ta.value = `不正解！\n正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
+						text = `不正解！<br>正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
 					} else if (res.result === "timeover") {
-						ta.value = `時間切れ～！\n正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
+						text = `時間切れ～！<br>正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
 					}
 					else {
-						ta.value = JSON.stringify(res);
+						text = JSON.stringify(res);
 					}
+					answerDiv.childNodes[1].innerHTML = text;
+
+					answerDiv.hidden = false;
 					document.getElementById("answer-send").disabled = true;
+					form.childNodes.forEach(item => item.childNodes[0].disabled = true);
+					quests.childNodes.forEach(item => item.onclick = null);
 				}
 			}
 		}
@@ -106,6 +117,7 @@
 			for (let i = 0; i < questList.length; i++) {
 				const li = document.createElement("li");
 				li.textContent = `${questList[i].question} 難易度：${questList[i].difficulty} ポイント：${questList[i].point}`;
+				console.log(li.onclick);
 				li.onclick = () => {
 					selectedQuestid = questList[i].questId;
 					question.textContent = questList[i].question;
