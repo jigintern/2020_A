@@ -68,6 +68,11 @@ class MyServer extends Server {
             return { result: rlt, answer: org.answer };
         }
     }
+    // idの取得
+    else if (path === "/api/getid") {
+            const uuid = v4.generate();
+            return uuid;
+    }
 }
 
 new MyServer(8881);
