@@ -1,29 +1,60 @@
 body{
-	background-color:rgb(30,36,47);
+  background-color:rgb(30,36,47);
+  margin:0;
+  padding:0;
 }
 
-h1{
+h1,h2,h3{
 	color:#ffffff;
 }
 
-ul, ol {
-  padding: 0;
-  position: relative;
+ul {
+  list-style: none;
+}
+header{
+  background-color:#ffffff;
+  position: relative; top: 0; 
+  height:50px;
+}
+footer{
+  text-align:center;
+  color:#ffffff;
+  font-size:12px;
+  padding:20px 0;
+
 }
 
-font{
-  font-size: 20px;
-}
+.example {/*親div*/
+  position: relative;/*相対配置*/
+  margin:0px;
+  
+  }
 
-ul, ol {
-  color: #1e366a;
-  border: dotted #1e366a 4px;
-  padding: 0.5em 0.5em 0.5em 2em;
-  background: #ffffff;
-}
+.example p {
+  position: absolute;/*絶対配置*/
+  color: #000000;/*文字は白に*/
+  font-size: 50px;
+  right: 0; bottom: 0;
+  font-weight: 900;
+  }
 
-ul li, ol li {
-  line-height: 1.5;
-  padding: 0.5em 0;
-}
+.example img {
+  width: 100%;
+  }
 
+  .firstStr {
+    display      : inline-block;
+    width        : 200px;              /* 枠のサイズ   */
+    background   : #ffffff;            /* 背景色       */
+    border       : 1px solid #999;     /* 枠線         */
+    font-size    : 12pt;               /* 文字のサイズ */
+    text-align   : left;               /* 文字位置     */
+    padding      : 5px;                /* 枠の余白     */
+    line-height  : 1.2;                /* 1行の高さ    */
+  }
+   /*--- 先頭文字の定義 ------------------------------ */
+  .firstStr:first-letter {
+    font-size    : 3em;                /* 文字サイズ   */
+    padding      : 0px 4px 0px 0px;    /* 余白         */
+    color        : rgba(255, 0, 0, 0.73);            /* 文字の色     */
+  }

@@ -1,18 +1,22 @@
 body{
-	background-color:rgb(30,36,47);
+	background-color:rgb(30, 36, 47);
 }
-h1,h2{
+h1,h2,h3,h4{
  color:#ffffff;
 }
 h3{
     color:#ffffff;
     font-size:20px;
 }
+p1{
+  color:#ffffff;
+}
 
 ul {
-    border: solid 2px #ffb03f;
+    border: solid 2px rgb(66, 160, 255);
     padding: 0 0.5em;
     position: relative;
+    background-color:#ffffff;
   }
   
   ul li {
@@ -27,9 +31,133 @@ ul {
     content: "\f138";/*アイコン種類*/
     position: absolute;
     left : 0.5em; /*左端からのアイコンまで*/
-    color: #ffb03f; /*アイコン色*/
+    color: #06c; /*アイコン色*/
   }
   
   ul li:last-of-type {
     border-bottom: none;
   }
+
+  ul.li {
+    list-style-type: none; /* Ａ */
+    margin-left: -20px;    /* Ｂ1 */
+  }
+  ul.a {
+    padding-left: 20px;    /* Ｂ2 */
+    background-image: url("note.gif"); /* Ｃ1 */
+    background-repeat: no-repeat;      /* Ｃ2 */
+    background-position: 5px center;   /* Ｃ3 */
+  }
+
+  .cp_ipselect {
+    overflow: hidden;
+    width: 50%;
+    margin: 2em auto;
+    text-align: center;
+  }
+  .cp_ipselect select {
+    width: 20% ;
+    padding-right: 1em;
+    cursor: pointer;
+    text-indent: 0.01px;
+    text-overflow: ellipsis;
+    border: none;
+    outline: none;
+    background: transparent;
+    background-image: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .cp_ipselect select::-ms-expand {
+      display: none;
+  }
+  .cp_ipselect.cp_sl04 {
+    position: relative;
+    border-radius: 2px;
+    border: 2px solid #da3c41;
+    border-radius: 50px;
+    background: rgb(30, 36, 47);
+  }
+  .cp_ipselect.cp_sl04::before {
+    position: absolute;
+    top: 0.8em;
+    right: 0.8em;
+    width: 0;
+    height: 0;
+    padding: 0;
+    content: '';
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #da3c41;
+    pointer-events: none;
+  }
+  .cp_ipselect.cp_sl04 select {
+    padding: 8px 38px 8px 8px;
+    color: #da3c41;
+  }
+
+p{
+  padding: 0.5em 1em;
+  margin: 2em 0;
+  color: #232323;
+  background: #fff8e8;
+  border-left: solid 10px #06c;
+  font-family: "游ゴシック","arial unicode ms",sans-serif;
+  font-size:20px;
+  font-weight: bold;
+ 
+}
+p p {
+  margin: 0; 
+  padding: 0;
+}
+form{
+  color:#ffffff;
+  font-size:20px;
+  font-family: "游ゴシック","arial unicode ms",sans-serif;
+
+  padding: 0.5em 1em;
+    margin: 2em 0;
+    color: #232323;
+    background:#ffffff;/*背景色*/
+    border-top: solid 6px #06c;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.32);/*影*/
+    font-weight: bold;
+}
+form p {
+    margin: 0; 
+    padding: 0;
+}
+
+Button{
+display       : inline-block;
+border-radius : 5%;          /* 角丸       */
+font-size     : 18pt;        /* 文字サイズ */
+text-align    : center;      /* 文字位置   */
+cursor        : pointer;     /* カーソル   */
+padding       : 12px 12px;   /* 余白       */
+background    : rgba(26, 26, 255, 0.80);     /* 背景色     */
+color         : #ffffff;     /* 文字色     */
+line-height   : 1em;         /* 1行の高さ  */
+transition    : .3s;         /* なめらか変化 */
+
+border        : 2px solid rgba(26, 26, 255, 0.80);    /* 枠の指定 */
+}
+Button:hover {
+box-shadow    : none;        /* カーソル時の影消去 */
+color         : rgba(26, 26, 255, 0.80);     /* 背景色     */
+background    : #ffffff;     /* 文字色     */
+}
+
+
+textarea {
+  border: 2px solid #0a0;  /* 枠線 */
+  border-radius: 0.67em;   /* 角丸 */
+  padding: 0.5em;          /* 内側の余白量 */
+  background-color: snow;  /* 背景色 */
+  width: 20em;             /* 横幅 */
+  height: 120px;           /* 高さ */
+  font-size: 1em;          /* 文字サイズ */
+  line-height: 1.2;        /* 行の高さ */
+}
