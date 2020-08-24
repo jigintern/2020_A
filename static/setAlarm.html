@@ -50,6 +50,7 @@
 		</center>
 
 	</form>
+	<h3 id="set-result"></h3>
 	<br><br><br>
 	<font1>res:</font1>
 	<br>
@@ -108,11 +109,17 @@
 
 			const status = document.getElementById("status");
 			if (isNaN(utc)) {
-				ta.value = "入力したデータが無効です";
+				window.alert("入力したデータが無効です");
 			} else {
 				const res = await fetchJSON("/api/setalarm", { id: uuid, time: utc });
 				ta.value = JSON.stringify(res);
+				const setResult = document.getElementById("set-result");
+
+				if (res.res === "OK") {
+					setResult.textContent = "アラーム設定完了！";
+				}
 			}
+
 		});
 
 	</script>
