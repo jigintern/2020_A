@@ -52,7 +52,7 @@ color:#fdfdfd">
     // 仮の設定時間の定義
     window.onload = async function () {
 
-        let uuid = await (await fetch("/api/getid")).json();
+        let uuid = (await (await fetch("/api/getid")).json()).id;
         console.log(uuid);
 
         let myId = idCheck(uuid);
