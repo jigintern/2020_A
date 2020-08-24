@@ -1,0 +1,6 @@
+{
+  "short_name": "Firebase のプッシュ通知購読アプリ",
+  "name": "Firebaseのプッシュ通知購読アプリ",
+  "start_url": "test.html",
+  "gcm_sender_id": "103953800507"
+}

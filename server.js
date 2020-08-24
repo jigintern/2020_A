@@ -67,7 +67,32 @@ class MyServer extends Server {
             }
             return { result: rlt, answer: org.answer };
         }
+
+        // testing : 通知トークンの追加 (req = {"id": ~~~, "token": ~~~})
+        else if (path === "/api/checktoken") {
+            const json = JSON.parse(Deno.readTextFileSync('./token.json'));
+            const dup = json.find(dat => dat.id === req.id);
+            if (dup === undefined) {
+                json.push(req);
+            } else {
+                dup.token = req.token;
+            }
+            Deno.writeTextFileSync("./token.json", JSON.stringify(json));
+            return { res: "OK" };
+        }
     }
 }
+
+/*
+// アラームの時間のチェック
+setInterval(function() {
+    const json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+    json.forEach(dat => {
+        if (new Date().getTime() > dat.time) {
+            
+        }
+    });
+}, 1000);
+*/
 
 new MyServer(8881);
