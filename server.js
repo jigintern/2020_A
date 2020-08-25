@@ -74,7 +74,7 @@ class MyServer extends Server {
             if (elapsedTime > (longest * 60000)) {
                 return { res: "timeover", quests: [], difficultyChoice: null };
             }
-            return { res: "OK", quests: qjson, difficultyChoice: dup.difficultyChoice }
+            return { res: "OK", quests: qjson, difficultyChoice: dup.difficultyChoice };
         }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
