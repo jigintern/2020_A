@@ -4,14 +4,17 @@ import { v4 } from "https://deno.land/std/uuid/mod.ts";
 class MyServer extends Server {
     api(path, req) {
 
-        // アラームを追加する ( req = {"id": ~~~, "alarm": ~~~, "difficultyChoice": ~~~} )
+        // アラームを追加する ( req = {"id": ~~~, "time": ~~~, "difficultyChoice": ~~~} )
         if (path === "/api/setalarm") {
             var json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             // 重複を確認 なければ追加 あれば更新
             const dup = json.find(dat => dat.id === req.id);
             if (dup === undefined) {
+                let pushData = req;
+                pushData.prevTime = -1;
                 json.push(req);
             } else {
+                dup.prevTime = dup.time;
                 dup.time = req.time;
                 dup.difficultyChoice = req.difficultyChoice;
             }
@@ -19,7 +22,7 @@ class MyServer extends Server {
             return { res: "OK" };
         }
 
-        // アラーム一覧を取得する ( req = {"id": ~~~} )
+        // アラームを取得する ( req = {"id": ~~~} )
         else if (path === "/api/getalarm") {
             const json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const dup = json.find(dat => dat.id === req.id);
