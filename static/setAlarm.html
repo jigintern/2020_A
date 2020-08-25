@@ -10,6 +10,9 @@
 </head>
 
 <body>
+	<header>
+
+	</header>
 	<br>
 
 	<font1>
@@ -40,12 +43,12 @@
 
 		<br><br>
 		<center>
-			
-				<input type="datetime-local" id="datetime">
-
-			</lavel>
-			<lavel>
-				難易度
+			<div class="size">
+				<input type="datetime-local" id="datetime" size=50 style="font-size:30px;">
+			</div>
+			<br>
+			<div class="cp_ipselect cp_sl04">
+				<span style="color:white">難易度：</span>
 				<select name="difficulty" id="difficulty">
 					<option value="">なし</option>
 					<option value="S">S</option>
@@ -55,28 +58,32 @@
 					<option value="D">D</option>
 					<option value="E">E</option>
 				</select>
-			</lavel>
+			</div>
+			<br><br>
 			<input type="submit" value"送信" class="button">
 		</center>
 
+		<h3 id="set-result"></h3>
+
+		<br>
+
 	</form>
-	<h3 id="set-result"></h3>
 	<br><br><br>
-	<font1>res:</font1>
-	<br>
-	<textarea id="ta" style="width:60vw; height:8em;"></textarea>
+
+
+	<br><br>
 
 	<script type="module">
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-		import { askNotification, getUuid } from "./util.js";
+		import { showNotification, getUuid } from "./util.js";
 
 		var uuid = undefined;
 
 		window.onload = async () => {
-			askNotification();
-
 			uuid = await getUuid();
 			console.log(uuid);
+
+			showNotification(uuid);
 		}
 
 		const inputForm = document.getElementById("input-form");
@@ -92,11 +99,12 @@
 				const res = await fetchJSON("/api/setalarm", {
 					id: uuid, time: utc, difficultyChoice: difficulty.value
 				});
-				ta.value = JSON.stringify(res);
+				//ta.value = JSON.stringify(res);
 				const setResult = document.getElementById("set-result");
 
 				if (res.res === "OK") {
 					setResult.textContent = "アラーム設定完了！";
+					showNotification(uuid);
 				}
 			}
 		});

@@ -108,25 +108,35 @@ class MyServer extends Server {
         else if (path = "/api/getpointrank") {
             const json = JSON.parse(Deno.readTextFileSync('./point.json'));
             let align = json;
-            align.sort(function(val1,val2){
+            if (json.length > 4){
+                align.sort(function(val1,val2){
                 var val1 = val1.point;
                 var val2 = val2.point;
                 if( val1 < val2 ) {
                     return 1;
-                } else {
-                    return -1;
-                }
-            });
-            let ret =[];
-            let i = 0;
-            for (; i < 5; i++) {
-                ret.push(align[i]);
-            }   // top5
-            console.log(align[i].point);
-            for(;align[4].point === align[i].point;i++) {
-                ret.push(align[i]);
-            }// 5位と同率でも送る
-            return JSON.stringify(ret);
+                    } else {
+                        return -1;
+                    }
+                });
+                let tmp = align[0].point;
+                let ranking = 0;
+                let ret =[];
+                let i = 1;
+                ret.push(align[0]);
+                for (; ranking < 5; i++) {
+                    console.log(align[i]);
+                    ret.push(align[i]);
+                    console.log(tmp, align[i].point);
+                    if (tmp !== align[i].point) {
+                        ranking += 1;
+                        tmp = align[i].point;
+                    }
+                }   
+                return JSON.stringify(ret);
+            }　else {
+                return json;
+            }
+
         }
 
         // 課題を表示させるかどうか判定する ( req = {"id": ~~~} )
