@@ -4,16 +4,17 @@ import { v4 } from "https://deno.land/std/uuid/mod.ts";
 class MyServer extends Server {
     api(path, req) {
 
-        // アラームを追加する ( req = {"id": ~~~, "alarm": ~~~, "difficultyChoice": ~~~} )
+        // アラームを追加する ( req = {"id": ~~~, "time": ~~~, "difficultyChoice": ~~~} )
         if (path === "/api/setalarm") {
             var json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             // 重複を確認 なければ追加 あれば更新
             const dup = json.find(dat => dat.id === req.id);
             if (dup === undefined) {
-                
+                let pushData = req;
+                pushData.prevTime = -1;
                 json.push(req);
             } else {
-                dup.last = dup.time;
+                dup.prevTime = dup.time;
                 dup.time = req.time;
                 dup.difficultyChoice = req.difficultyChoice;
             }
@@ -21,7 +22,7 @@ class MyServer extends Server {
             return { res: "OK" };
         }
 
-        // アラーム一覧を取得する ( req = {"id": ~~~} )
+        // アラームを取得する ( req = {"id": ~~~} )
         else if (path === "/api/getalarm") {
             const json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const dup = json.find(dat => dat.id === req.id);
@@ -136,6 +137,30 @@ class MyServer extends Server {
                 return json;
             }
 
+        }
+
+        // 課題を表示させるかどうか判定する ( req = {"id": ~~~} )
+        // 戻り値
+        //   アラームを設定していない -> notset
+        //   設定時刻の前 -> early
+        //   全問題時間切れ -> timeover
+        //   問題なし -> OK
+        else if (path === "/api/checkright") {
+            const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+            const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            const dup = ajson.find(dat => dat.id === req.id);
+            if (dup === undefined) {
+                return { res: "notset" };
+            } 
+            const elapsedTime = new Date().getTime() - dup.time;
+            if (elapsedTime < 0) {
+                return { res: "early" };
+            }
+            const longest = qjson.map(dat => dat.timeLimit).reduce((max, dat) => (max < dat) ? dat : max);
+            if (elapsedTime > (longest * 60000)) {
+                return { res: "timeover" };
+            }
+            return { res: "OK" };
         }
     }
 }
