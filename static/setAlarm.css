@@ -9,17 +9,10 @@ body{
 
 font1{
     font-family: sans-serif;
-    font-size: 20px;
-  	color:#ffffff;
+    font-size: 50px;
+    color:#ffffff;
+    font-weight:bold;
 }
-
-hr1{
-	border: none;
-	border-top: solid 1px red;
-	border-bottom: solid 1px red;
-}
-
-
 
 .button {
   display       : inline-block;
@@ -85,4 +78,47 @@ select {
 h3{
   color:#ffffff;
   font-size:20px;
+}
+header{
+  background-color:#ffffff;
+  position: relative; top: 0; 
+  height:50px;
+  margin:0px;
+  padding:0px;
+}
+body {
+  padding: 0;
+  margin: 0;
+}
+header nav ul {
+  height: 60px;
+  margin-top: 0;
+}
+.header-list {
+  height: 60px;
+  float: left;
+  list-style: none;
+  text-align: right;
+}
+*{
+  margin:0px;
+  padding:0px;
+}
+
+
+h1 {
+  position: relative;
+  padding: 0.5em;
+  background: #a6d3c8;
+  color: white;
+}
+
+h1::before {
+  position: absolute;
+  content: '';
+  top: 100%;
+  left: 0;
+  border: none;
+  border-bottom: solid 15px transparent;
+  border-right: solid 20px rgb(149, 158, 155);
 }
