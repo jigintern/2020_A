@@ -1,6 +1,6 @@
 import { Server } from "https://code4sabae.github.io/js/Server.js"
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
-import  ky from 'https://unpkg.com/ky/index.js';
+
 
 class MyServer extends Server {
     api(path, req) {
@@ -182,12 +182,7 @@ class MyServer extends Server {
 
         }
         
-        // slackへの通信
-        else if (path === "/api/slack") {
-            const parsed =  ky.post(req.url, {json: {text: req.text}});
-            return { res: "OK" };
-
-        }
+        
     }
 }
 
