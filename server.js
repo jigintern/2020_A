@@ -12,7 +12,7 @@ class MyServer extends Server {
             const dup = json.find(dat => dat.id === req.id);
             if (dup === undefined) {
                 let pushData = req;
-                pushData.prevTime = -1;
+                pushData.prevTime = null;
                 json.push(req);
             } else {
                 dup.prevTime = dup.time;
