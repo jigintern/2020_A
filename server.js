@@ -32,6 +32,37 @@ class MyServer extends Server {
                 return dup;
             }
         }
+        
+        // 一日延ばして更新
+        else if (path === "/api/updatealarm") {
+            var json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+            // 重複を確認 なければ追加 あれば更新
+            const dup = json.find(dat => dat.id === req.id);
+            // if (dup === undefined) {
+            //     json.push(req);
+            // } else {
+                dup.time = req.time + 86400000;
+                dup.difficultyChoice = req.difficultyChoice;
+                dup.repeat = req.repeat;
+            // }
+            Deno.writeTextFileSync("./alarm.json", JSON.stringify(json));
+            return { res: "OK" };
+        }
+
+        // 任意のIDのアラームを一覧から消す
+        else if (path === "/api/delalarm") {
+                const json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+                const dup = json.filter(
+                    function(item,index) {
+                    if(item.id !== req) {
+                        return true;
+                    }
+                }
+                );
+                Deno.writeTextFileSync("./alarm.json", JSON.stringify(dup));
+                return {res: "OK"};
+        }
+
 
         // 問題を追加する ( req = {問題データ} )
         else if (path === "/api/setquest") {
