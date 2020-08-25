@@ -88,7 +88,7 @@
 			const date = new Date();
 			const now = {
 				Y: ("0000" + date.getFullYear()).slice(-4),
-				M: ("00" + date.getMonth()).slice(-2),
+				M: ("00" + (date.getMonth() + 1)).slice(-2),
 				D: ("00" + date.getDate()).slice(-2),
 				h: ("00" + date.getHours()).slice(-2),
 				m: ("00" + date.getMinutes()).slice(-2),
