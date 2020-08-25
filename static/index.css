@@ -58,3 +58,8 @@ footer{
     padding      : 0px 4px 0px 0px;    /* 余白         */
     color        : rgba(255, 0, 0, 0.73);            /* 文字の色     */
   }
+
+  *{
+    margin:0px;
+    padding:0px;
+  }
