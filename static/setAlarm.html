@@ -46,6 +46,16 @@
 			<div class="size">
 				<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
 			</div>
+
+			<div>
+				<span>現在設定されてる時刻：</span>
+				<span id="nowset-time"></span>
+			</div>
+			<div>
+				<span>前回設定した時刻：</span>
+				<span id="lastset-time"></span>
+			</div>
+
 			<br>
 			<div class="cp_ipselect cp_sl04">
 				<span style="color:white">難易度：</span>
@@ -94,6 +104,14 @@
 				m: ("00" + date.getMinutes()).slice(-2),
 			}
 			datetime.value = `${now.Y}-${now.M}-${now.D}T${now.h}:${now.m}`;
+
+			const getData = await fetchJSON("/api/getalarm", { id: uuid });
+			//console.log(new Date(getData.time).toLocaleString());
+			document.getElementById("nowset-time").textContent = new Date(getData.time).toLocaleString();
+
+			const lastsetTime = document.getElementById("lastset-time");
+			if (getData.prevTime === null) lastsetTime.textContent = "-";
+			else lastsetTime.textContent = new Date(getData.prevTime).toLocaleString();
 		}
 
 		const inputForm = document.getElementById("input-form");
