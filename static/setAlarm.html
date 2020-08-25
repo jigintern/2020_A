@@ -83,7 +83,7 @@
 			uuid = await getUuid();
 			console.log(uuid);
 
-			showNotification();
+			showNotification(uuid);
 		}
 
 		const inputForm = document.getElementById("input-form");
@@ -104,6 +104,7 @@
 
 				if (res.res === "OK") {
 					setResult.textContent = "アラーム設定完了！";
+					showNotification(uuid);
 				}
 			}
 		});
