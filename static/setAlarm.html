@@ -44,7 +44,7 @@
 		<br><br>
 		<center>
 			<div class="size">
-				<input type="datetime-local" id="datetime" size=50 style="font-size:30px;">
+				<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
 			</div>
 			<br>
 			<div class="cp_ipselect cp_sl04">
@@ -84,6 +84,16 @@
 			console.log(uuid);
 
 			showNotification(uuid);
+
+			const date = new Date();
+			const now = {
+				Y: ("0000" + date.getFullYear()).slice(-4),
+				M: ("00" + date.getMonth()).slice(-2),
+				D: ("00" + date.getDate()).slice(-2),
+				h: ("00" + date.getHours()).slice(-2),
+				m: ("00" + date.getMinutes()).slice(-2),
+			}
+			datetime.value = `${now.Y}-${now.M}-${now.D}T${now.h}:${now.m}`;
 		}
 
 		const inputForm = document.getElementById("input-form");
@@ -92,6 +102,7 @@
 
 			const utc = new Date(datetime.value).getTime();
 
+			console.log(datetime.value);
 			const status = document.getElementById("status");
 			if (isNaN(utc)) {
 				window.alert("入力したデータが無効です");
