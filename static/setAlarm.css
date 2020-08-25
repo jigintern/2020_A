@@ -23,53 +23,66 @@ hr1{
 
 .button {
   display       : inline-block;
-  font-size     : 18pt;        /* �����T�C�Y */
-  text-align    : center;      /* �����ʒu   */
-  cursor        : pointer;     /* �J�[�\��   */
-  padding       : 12px 33px;   /* �]��       */
-  background    : #1a1aff;     /* �w�i�F     */
-  color         : #ffffff;     /* �����F     */
-  line-height   : 1em;         /* 1�s�̍���  */
-  transition    : .3s;         /* �Ȃ߂炩�ω� */
-  border        : 2px solid #1a1aff;    /* �g�̎w�� */
+  font-size     : 18pt;       
+  text-align    : center;      
+  cursor        : pointer;    
+  padding       : 12px 33px;   
+  background    : #1a1aff;    
+  color         : #ffffff;    
+  line-height   : 1em;         
+  transition    : .3s;       
+  border        : 2px solid #1a1aff;  
 }
 .button:hover {
-  color         : #007fff;     /* �w�i�F     */
-  background    : #ffffff;     /* �����F     */
+  color         : #007fff;    
+  background    : #ffffff;    
 }
 
-
-label {
-  position: relative;
-  display: inline-block;
-  width: 200px;
-  height: 36px;
-  border: 2px solid #ccc;
-  border-radius: 15px;
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
-input[type="date"] {
-  position: relative;
-  padding: 0 10px;
-  width: 200px;
-  height: 36px;
-  border: 0;
-  background: #ffffff;
-  box-sizing: border-box;
-  font-size: 20px;
-  color: #000000;
+.cp_ipselect {
+ overflow: hidden;
+ width: 40%;
+ margin: 2em auto;
+ text-align: center;
 }
-label::before {
-  position: absolute;
-  content: "";
-  top: 0;
-  right: -43px;
-  width: 36px;
-  height: 36px;
-  background-color: #06c;
-  background-image: url("icon_calendar.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  border-radius: 10px;
+.cp_ipselect select {
+ width: 50%;
+ padding-right: 1em;
+ cursor: pointer;
+ text-indent: 0.01px;
+ text-overflow: ellipsis;
+ border: none;
+ outline: none;
+ background: transparent;
+ background-image: none;
+ box-shadow: none;
+ -webkit-appearance: none;
+ appearance: none;
+
+}
+.cp_ipselect select::-ms-expand {
+   display: none;
+}
+.cp_ipselect.cp_sl04 {
+ position: relative;
+ border-radius: 2px;
+ border: 2px solid #da3c41;
+ border-radius: 50px;
+ background: transparent;
+
 }
 
+.cp_ipselect.cp_sl04 select {
+ padding: 8px 38px 8px 8px;
+ color: #da3c41;
+ 
+}
 
+h3{
+  color:#ffffff;
+  font-size:20px;
+}
