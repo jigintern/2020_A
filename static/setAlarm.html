@@ -11,7 +11,7 @@
 
 <body>
 	<header>
-	
+
 	</header>
 	<br>
 
@@ -62,28 +62,28 @@
 			<br><br>
 			<input type="submit" value"送信" class="button">
 		</center>
-	
+
 		<h3 id="set-result"></h3>
-		
-	<br>
-	
+
+		<br>
+
 	</form>
 	<br><br><br>
-	
-	
+
+
 	<br><br>
 
 	<script type="module">
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-		import { askNotification, getUuid } from "./util.js";
+		import { showNotification, getUuid } from "./util.js";
 
 		var uuid = undefined;
 
 		window.onload = async () => {
-			askNotification();
-
 			uuid = await getUuid();
 			console.log(uuid);
+
+			showNotification(uuid);
 		}
 
 		const inputForm = document.getElementById("input-form");
@@ -104,6 +104,7 @@
 
 				if (res.res === "OK") {
 					setResult.textContent = "アラーム設定完了！";
+					showNotification(uuid);
 				}
 			}
 		});
