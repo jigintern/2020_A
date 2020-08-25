@@ -10,7 +10,7 @@
 
 <body>
 	<header>
-		
+
 	</header>
 	<br>
 	<h1>ミッション選択画面</h1>
@@ -18,48 +18,48 @@
 	<div id=quest hidden>
 		<br>
 		<div class="kokuban-s2">
-		<h2>・今日のミッション</h2>
-		<br>
-		<h3>問題</h3>
-	
-		<p id="question"></p>
-		<br>
-		<h3>選択肢</h3>
-		<form id="answer-list"></form>
+			<h2>・今日のミッション</h2>
+			<br>
+			<h3>問題</h3>
+
+			<p id="question"></p>
+			<br>
+			<h3>選択肢</h3>
+			<form id="answer-list"></form>
 		</div>
 		<br>
 		<Button id="answer-send">回答送信！</Button>
 
 		<br><br>
-        <p1>
-		
-		<div id="answer-div" hidden>
-			<h4>結果</h4>
-			
-		</div>
+		<p1>
+
+			<div id="answer-div" hidden>
+				<h4>結果</h4>
+
+			</div>
 	</div>
 
-<br><br><br>
+	<br><br><br>
 	<h2>・ミッション一覧</h2>
 	<br><br>
 	<div id="missions">
 
 		<div class="cp_ipselect cp_sl04">
-		<span style="color:white">並び順：</span>
-		<select id="sort-type">
-			<option value="standard" >標準 </option>
-			<option value="difficulty-up">難易度（昇順）</option>
-			<option value="difficulty-down">難易度（降順）</option>
-			<option value="point">獲得ポイント</option>
-		</select>
+			<span style="color:white">並び順：</span>
+			<select id="sort-type">
+				<option value="standard">標準 </option>
+				<option value="difficulty-up">難易度（昇順）</option>
+				<option value="difficulty-down">難易度（降順）</option>
+				<option value="point">獲得ポイント</option>
+			</select>
 		</div>
 		<div class="box5">
-		<ul class="sample1">
-		<ul id="quests"></ul>
-		</ol>
+			<ul class="sample1">
+				<ul id="quests"></ul>
+				</ol>
+		</div>
 	</div>
-	</div>
-		
+
 
 	<script type="module">
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
@@ -71,9 +71,6 @@
 		let selectedQuestid = undefined;
 		window.onload = async () => {
 			uuid = await getUuid();
-			console.log(uuid);
-
-
 
 			getQuest();
 		}
@@ -116,8 +113,21 @@
 
 		async function getQuest() {
 			getJSON = await fetchJSON("/api/getquest", { id: uuid });
-			questJson = getJSON.quests;
-			document.getElementById("sort-type").onchange();
+			console.log(getJSON);
+			if (getJSON.res !== "OK") {
+				if (getJSON.res === "notset") {
+					window.alert("アラームが設定されていません。\nトップページに移動します。");
+				} else if (getJSON.res === "early") {
+					window.alert("設定時刻前です。\n設定時刻より後にもう一度アクセスしてください。\nトップページに移動します。");
+				} else if (getJSON.res === "timeover") {
+					window.alert("時間切れです。明日はちゃんとおきましょう。\nトップページに移動します。");
+				}
+
+				window.open("/index.html", "_self");
+			} else {
+				questJson = getJSON.quests;
+				document.getElementById("sort-type").onchange();
+			}
 		}
 
 		document.getElementById("sort-type").onchange = function () {
@@ -173,7 +183,7 @@
 		}
 
 	</script>
-	
+
 </body>
 
 </html>
