@@ -33,7 +33,7 @@ footer{
 .example p {
   position: absolute;/*絶対配置*/
   color: #000000;/*文字は白に*/
-  font-size: 50px;
+  font-size: 300%;
   right: 0; bottom: 0;
   font-weight: 900;
   }
