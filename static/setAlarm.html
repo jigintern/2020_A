@@ -40,8 +40,8 @@
 
 		<br><br>
 		<center>
-			
-				<input type="datetime-local" id="datetime">
+
+			<input type="datetime-local" id="datetime">
 
 			</lavel>
 			<lavel>
@@ -68,15 +68,15 @@
 
 	<script type="module">
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-		import { askNotification, getUuid } from "./util.js";
+		import { showNotification, getUuid } from "./util.js";
 
 		var uuid = undefined;
 
 		window.onload = async () => {
-			askNotification();
-
 			uuid = await getUuid();
 			console.log(uuid);
+
+			showNotification();
 		}
 
 		const inputForm = document.getElementById("input-form");

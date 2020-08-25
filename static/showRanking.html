@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+    <title>TOP5ランキング</title>
+</head>
+
+<body>
+    <h1>TOP5ランキング</h1>
+    <hr color="red">
+    <ul id="ranking"></ul>
+
+    <script type="module">
+
+        window.onload = async () => {
+            const reqJSON = await (await fetch("/api/getpointrank")).json();
+            console.log(reqJSON);
+        }
+    </script>
+</body>
+
+</html>
