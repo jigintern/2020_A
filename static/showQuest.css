@@ -8,9 +8,6 @@ h3{
     color:#ffffff;
     font-size:20px;
 }
-p1{
-  color:#ffffff;
-}
 
 
 
@@ -169,6 +166,14 @@ background    : #ffffff;     /* 文字色     */
 }
 
 *{
+  margin:0px;
+  padding:0px;
+}
+
+header{
+  background-color:#ffffff;
+  position: relative; top: 0; 
+  height:50px;
   margin:0px;
   padding:0px;
 }

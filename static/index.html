@@ -10,122 +10,54 @@
 </head>
 
 <body>
-<header>
-    <a href="index.html"><img src="logo.png" height="40px" ></a>
-</header>
-
-
-<div class="example">
-    <img src="clock4.jpg" width="100% auto" font color="black" />
-    <p>朝がつらい <br>
-        高専生のために<br>
-        朝起きれるようにするアプリ
-        
-        </p>	
-  </div>
-
-<br>
-
-<hr color="red">
-<br>
-
-<div class="box2">
-    <ul class="clearfix">
-        <h2>・起床時間の設定</h2>
-        <li><a href="setAlarm.html"><img src="clock1.jpg" alt="時計" width="300px" height="200px"> </a></li>
-        <h2>・ミッション一覧</h2>
-        <li><a href="showQuest.html"><img src="task.jpg" alt="課題" width="300px" height="200px"  </a> </li>
+    <header>
+        <a href="index.html"><img src="logo.png" height="40px"></a>
+      
+    </header>
+    <hr>
     
-   
-</ul>
-</div>
+
+
+    <div class="example">
+        <img src="clock4.jpg" width="100% auto" font color="black" />
+        <p>朝がつらい <br>
+            高専生のために<br>
+            朝起きれるようにするアプリ
+
+        </p>
+    </div>
+
+    <br>
+
+    
+    <br>
+
+    <div class="box2">
+        <ul class="clearfix">
+            <h2>・起床時間の設定</h2>
+            <li><a href="setAlarm.html"><img src="clock1.jpg" alt="時計" width="300px" height="200px"> </a></li>
+            <br>
+            <h2>・ミッション一覧</h2>
+            <li><a href="showQuest.html"><img src="task.jpg" alt="課題" width="300px" height="200px"> </a> </li>
+            <br>
+            <h2>・TOP5ランキング</h2>
+            <li><a href="showRanking.html"><img src="ranking.jpg" alt="課題" width="300px" height="200px"> </a> </li>
+
+
+        </ul>
+    </div>
 </body>
 </a>
 <footer>
-    <p>jig.jp  intern 2020</p>
+    <p>jig.jp intern 2020</p>
 </footer>
 
 <script type="module">
+    import { showNotification } from "./util.js";
 
-    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-    import { askNotification, getUuid } from "./util.js";
-    // import { compareTime } from "./js/compareTime.js";
-
-    let state = null;
-    // state -> 過ぎてたら 1 、ピッタリで 0、まだだったら -1
-
-    // 仮の設定時間の定義
     window.onload = async function () {
-
-        let uuid = (await (await fetch("/api/getid")).json()).id;
-        console.log(uuid);
-
-        //let myId = idCheck(uuid);
-        // document.getElementById("id").innerHTML= myId;
-
-        window.name = "aka-top";
-        console.log(window.name);
-
-        var json = await (await fetch("/api/getalarm")).json();
-        const dup = json.find((dat) => dat.id === uuid);
-        console.log(json);
-        if (dup === undefined) {
-            console.log("起きる時刻を設定してください");
-        } else {
-            console.log("----");
-            console.log(dup.id);
-            console.log(dup.time);
-
-            state = compareTime(dup.time);
-            console.log("compareTime", state);
-            if (state >= 0) {
-                // document.getElementById("text").innerHTML= "gone...";
-                /*var newData = json;
-                let delIndex = -1;
-                var f = newData.filter(function (item, index) {
-                    if (item.id === myId) {
-                        delIndex = index;
-                        return true;
-                    }
-                });
-                delete newData[delIndex];*/
-                // 過ぎていた場合データを消す。更新方法はまだ未定
-                // ↑過ぎていた場合はサーバ側で消せばいいと思う by すずとも
-
-            } else {
-
-                var cnt = setInterval(function () {
-                    state = compareTime(dup.time);
-                    if (state >= 0) {
-                        console.log("now");
-                        const notification = new Notification("It's time now!");
-                        notification.onclick = () => {
-                            window.open("?", "_self");
-                            //location.href("./index.html");
-                        }
-                        // document.getElementById("text").innerHTML= "good morning";
-                        clearInterval(cnt);
-                        // cmp(compareTimeの返り値)が0以上なら時間が過ぎているのでループを抜ける
-                    }
-
-                }, 200);
-                // 200msごとにまわしている
-            }
-        }
+        showNotification();
     }
-
-    function compareTime(setTime) {
-        var now = new Date();
-        var nowTime = now.getTime();
-        if (setTime < nowTime) {
-            return 1;
-        } else if (setTime > nowTime) {
-            return -1;
-        } else {
-            return 0;
-        }
-    }
-
 </script>
 
 </html>
