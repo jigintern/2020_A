@@ -26,7 +26,7 @@ export async function getUuid() {
 
     if (uuid === undefined) {
         uuid = await generateUuid();
-        document.cookie = "uuid=" + uuid + "; expires= Mon, 31 Aug 2030 00:00:00 GMT";   // cookie作成
+        document.cookie = "uuid=" + uuid + "; expires= Mon, 31 Aug 2030 00:00:00 GMT;SameSite=Lax";   // cookie作成
     }
 
     return uuid;
