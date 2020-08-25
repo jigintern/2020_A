@@ -128,6 +128,30 @@ class MyServer extends Server {
             }// 5位と同率でも送る
             return JSON.stringify(ret);
         }
+
+        // 課題を表示させるかどうか判定する ( req = {"id": ~~~} )
+        // 戻り値
+        //   アラームを設定していない -> notset
+        //   設定時刻の前 -> early
+        //   全問題時間切れ -> timeover
+        //   問題なし -> OK
+        else if (path === "/api/checkright") {
+            const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+            const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            const dup = ajson.find(dat => dat.id === req.id);
+            if (dup === undefined) {
+                return { res: "notset" };
+            } 
+            const elapsedTime = new Date().getTime() - dup.time;
+            if (elapsedTime < 0) {
+                return { res: "early" };
+            }
+            const longest = qjson.map(dat => dat.timeLimit).reduce((max, dat) => (max < dat) ? dat : max);
+            if (elapsedTime > (longest * 60000)) {
+                return { res: "timeover" };
+            }
+            return { res: "OK" };
+        }
     }
 }
 
