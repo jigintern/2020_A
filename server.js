@@ -105,7 +105,7 @@ class MyServer extends Server {
         }
 
         // ポイント上位5人の成績取得
-        else if (path = "/api/getpointrank") {
+        else if (path === "/api/getpointrank") {
             const json = JSON.parse(Deno.readTextFileSync('./point.json'));
             let align = json;
             if (json.length > 4){
@@ -120,7 +120,7 @@ class MyServer extends Server {
                 });
                 let tmp = align[0].point;
                 let ranking = 0;
-                let ret =[];
+                let ret = [];
                 let i = 1;
                 ret.push(align[0]);
                 for (; ranking < 5; i++) {
@@ -151,7 +151,7 @@ class MyServer extends Server {
             const dup = ajson.find(dat => dat.id === req.id);
             if (dup === undefined) {
                 return { res: "notset" };
-            } 
+            }
             const elapsedTime = new Date().getTime() - dup.time;
             if (elapsedTime < 0) {
                 return { res: "early" };
