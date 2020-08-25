@@ -52,6 +52,11 @@ class MyServer extends Server {
         }
         
         // 問題一覧を取得する ( req = {"id": ~~~} )
+        // 戻り値
+        //   アラームを設定していない -> notset
+        //   設定時刻の前 -> early
+        //   全問題時間切れ -> timeover
+        //   問題なし -> OK
         else if (path === "/api/getquest") {
             const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
@@ -59,11 +64,17 @@ class MyServer extends Server {
             qjson.map(dat => { delete dat.answer });
             const dup = ajson.find(dat => dat.id === req.id);
             if (dup === undefined) {
-                return { res: "Failed" };
-            } else {
-                const rtjson = { quests: qjson, difficultyChoice: dup.difficultyChoice }
-                return rtjson;
+                return { res: "notset", quests: [], difficultyChoice: null };
             }
+            const elapsedTime = new Date().getTime() - dup.time;
+            if (elapsedTime < 0) {
+                return { res: "early", quests: [], difficultyChoice: null };
+            }
+            const longest = qjson.map(dat => dat.timeLimit).reduce((max, dat) => (max < dat) ? dat : max);
+            if (elapsedTime > (longest * 60000)) {
+                return { res: "timeover", quests: [], difficultyChoice: null };
+            }
+            return { res: "OK", quests: qjson, difficultyChoice: dup.difficultyChoice }
         }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
@@ -137,30 +148,6 @@ class MyServer extends Server {
                 return json;
             }
 
-        }
-
-        // 課題を表示させるかどうか判定する ( req = {"id": ~~~} )
-        // 戻り値
-        //   アラームを設定していない -> notset
-        //   設定時刻の前 -> early
-        //   全問題時間切れ -> timeover
-        //   問題なし -> OK
-        else if (path === "/api/checkright") {
-            const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
-            const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
-            const dup = ajson.find(dat => dat.id === req.id);
-            if (dup === undefined) {
-                return { res: "notset" };
-            }
-            const elapsedTime = new Date().getTime() - dup.time;
-            if (elapsedTime < 0) {
-                return { res: "early" };
-            }
-            const longest = qjson.map(dat => dat.timeLimit).reduce((max, dat) => (max < dat) ? dat : max);
-            if (elapsedTime > (longest * 60000)) {
-                return { res: "timeover" };
-            }
-            return { res: "OK" };
         }
     }
 }
