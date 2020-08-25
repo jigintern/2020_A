@@ -123,3 +123,10 @@ h1::before {
   border-bottom: solid 15px transparent;
   border-right: solid 20px rgb(149, 158, 155);
 }
+footer{
+  background-color:#ffffff;
+    position: relative; top: 0; 
+    height:50px;
+    margin:0px;
+    padding:0px;
+}

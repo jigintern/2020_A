@@ -15,20 +15,20 @@ li {
     color: #ffffff;
     font-size: 30px;
 }
-li::before,
-li::after {
+li:before,
+li:after {
     position: absolute;
     left: 0px;
     width: 0px;
     height: 0px;
     content: "";
 }
-li::before {
+li:before {
     top: -1.25em;
     border: 1em solid transparent;
     border-bottom: 1.5em solid currentColor;
 }
-li::after {
+li:after {
     top: 0.25em;
     border: 0.5em solid transparent;
     border-left: 1em solid currentColor;
@@ -61,4 +61,11 @@ li:nth-of-type(5) {
     height:50px;
     margin:0px;
     padding:0px;
+  }
+  footer{ background-color:#ffffff;
+    position: relative; top: 0; 
+    height:50px;
+    margin:0px;
+    padding:0px;
+
   }

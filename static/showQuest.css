@@ -10,7 +10,9 @@ h3{
 }
 
 
-
+h2{
+  
+}
 
 
 
@@ -21,12 +23,13 @@ font-size     : 18pt;        /* 文字サイズ */
 text-align    : center;      /* 文字位置   */
 cursor        : pointer;     /* カーソル   */
 padding       : 12px 12px;   /* 余白       */
-background    : rgba(26, 26, 255, 0.80);     /* 背景色     */
-color         : #ffffff;     /* 文字色     */
+background    : #f0e76b;     /* 背景色     */
+color         : #000000;     /* 文字色     */
 line-height   : 1em;         /* 1行の高さ  */
 transition    : .3s;         /* なめらか変化 */
+font-weight: bold;
 
-border        : 2px solid rgba(26, 26, 255, 0.80);    /* 枠の指定 */
+border        : 2px solid #000000;    /* 枠の指定 */
 }
 Button:hover {
 box-shadow    : none;        /* カーソル時の影消去 */
@@ -84,31 +87,14 @@ background    : #ffffff;     /* 文字色     */
   position: relative;
   margin: 2em auto;
   padding: 1em;
-  width: 90%; /* ボックス幅 */
+  width: 80%; /* ボックス幅 */
   background: #006633; /* ボックス背景色 */
   color: #fff; /* 文章色 */
   border: 8px solid #b2771f; /* 枠線 */
   border-radius: 3px; /* 角の丸み */
   box-shadow: 0 0 5px #333, 0 0 5px #555 inset;
   }
-  .kokuban-s2::before,
-  .kokuban-s2::after {
-  position: absolute;
-  content: ”;
-  bottom: 0;
-  }
-  .kokuban-s2::before {
-  width: 20px;
-  right: 10px;
-  border: solid 3px #ffff00; /*チョーク（黄色）*/
-  border-radius: 3px 2px 0 2px;
-  }
-  .kokuban-s2::after {
-  width: 15px;
-  right: 45px;
-  border: solid 3px #fff; /*チョーク（白） */
-  border-radius: 8px 5px 2px 5px;
-  }
+ 
 
 
   ul.sample1{
@@ -171,6 +157,14 @@ background    : #ffffff;     /* 文字色     */
 }
 
 header{
+  background-color:#ffffff;
+  position: relative; top: 0; 
+  height:50px;
+  margin:0px;
+  padding:0px;
+}
+
+footer{
   background-color:#ffffff;
   position: relative; top: 0; 
   height:50px;
