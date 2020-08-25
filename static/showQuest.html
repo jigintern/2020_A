@@ -9,11 +9,15 @@
 </head>
 
 <body>
+	<header>
+		
+	</header>
 	<br>
 	<h1>ミッション選択画面</h1>
 	<hr color="red">
 	<div id=quest hidden>
 		<br>
+		<div class="kokuban-s2">
 		<h2>・今日のミッション</h2>
 		<br>
 		<h3>問題</h3>
@@ -22,23 +26,22 @@
 		<br>
 		<h3>選択肢</h3>
 		<form id="answer-list"></form>
+		</div>
 		<br>
 		<Button id="answer-send">回答送信！</Button>
 
 		<br><br>
         <p1>
-		res:</p1><br>
 		
-		<textarea id="ta" style="width:60vw; height:8em;"></textarea>
-
 		<div id="answer-div" hidden>
 			<h4>結果</h4>
-			<p></p>
+			
 		</div>
 	</div>
 
 <br><br><br>
 	<h2>・ミッション一覧</h2>
+	<br><br>
 	<div id="missions">
 
 		<div class="cp_ipselect cp_sl04">
@@ -50,8 +53,11 @@
 			<option value="point">獲得ポイント</option>
 		</select>
 		</div>
-		
+		<div class="box5">
+		<ul class="sample1">
 		<ul id="quests"></ul>
+		</ol>
+	</div>
 	</div>
 		
 
