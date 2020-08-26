@@ -42,9 +42,9 @@ class MyServer extends Server {
             // if (dup === undefined) {
             //     json.push(req);
             // } else {
-                dup.time = req.time + 86400000;
-                dup.difficultyChoice = req.difficultyChoice;
-                dup.repeat = req.repeat;
+                dup.time += 86400000;
+//                 dup.difficultyChoice = req.difficultyChoice;
+//                 dup.repeat = req.repeat;
             // }
             Deno.writeTextFileSync("./alarm.json", JSON.stringify(json));
             return { res: "OK" };
