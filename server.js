@@ -127,6 +127,24 @@ class MyServer extends Server {
             return { res: "OK", quests: notsol, difficultyChoice: dup.difficultyChoice };
 
         }
+        
+        // カテゴリごと一覧を返す (res = {"category": ~~~})
+        else if (path === "/api/getcategory") {
+            const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            const dup = json.filter(
+                function(item,index) {
+                if(item.category === req.category) {
+                    return true;
+                }
+            }
+            );
+            if (dup.length === 0) {
+                return { res: "NotFound"};
+            }
+            else {
+                return dup;
+            }
+        }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
         else if (path === "/api/checkans") {
