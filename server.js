@@ -243,7 +243,7 @@ class MyServer extends Server {
                 rank: userRank,
             };
         }
-
+        
         else if (path === "/api/slack") {
             const parsed =  ky.post(req.url, {json: {text: req.text}});
             return { res: "OK" };
