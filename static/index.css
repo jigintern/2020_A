@@ -14,29 +14,27 @@ footer{
 .example {/*親div*/
   position: relative;/*相対配置*/
   margin:0px;
-  
+  padding:0px;
   }
 
 .example p {
   position: absolute;/*絶対配置*/
   color: #000000;/*文字は白に*/
-  
   font-size: 5vw;
   right: 0; bottom: 0;
   font-weight: 600;
   }
-  .yoshiro{
+
+  .top-banner{
     display: flex;
-    justify-content: left;
-    align-items: left;
-    background-repeat: repeat-x;
-    
-    position: absolute;
-    bottom:0%; 
-    left:0%; 
-    width: 200px;
-    height: 140px;    
+    flex-wrap:wrap;
+    margin:0;
+    padding:0;
+    overflow: hidden;
+    height: 70px;
   }
+  
+ 
 
   p span{
     display        : inline-block;
