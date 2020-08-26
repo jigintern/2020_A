@@ -1,9 +1,7 @@
-
-
-h1,h2,h3{
-	color:#ffffff;
+.space{
+  margin:10px;
+  padding:10px;
 }
-
 ul {
   list-style: none;
 }

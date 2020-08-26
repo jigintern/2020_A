@@ -1,42 +1,7 @@
-body{
-	background-color:rgb(30,36,47);
-}
-h1,h2,h3,h4{
- color:#ffffff;
-}
+
 h3{
-    color:#ffffff;
     font-size:20px;
 }
-
-
-
-header{
-  background-color:#ffffff;
-  position: relative; top: 0; 
-  height:50px;
-  margin:0px;
-  padding:0px;
-}
-
-
-.midashi{
-    position: relative;
-    padding: 0.5em;
-    background: #a6d3c8;
-    color: white;
-  }
-  
-.midashi::before {
-    position: absolute;
-    content: '';
-    top: 100%;
-    left: 0;
-    border: none;
-    border-bottom: solid 15px transparent;
-    border-right: solid 20px rgb(149, 158, 155);
-  }
-
   .box5 {
     padding: 1em 2em;
     margin: 3em 0;
@@ -45,6 +10,10 @@ header{
 .box5 p {
     margin: 0; 
     padding: 0;
+}
+.radio{
+display: block; /* ブロックを作るように */
+margin: 5px 0; /* 前後のスペース */
 }
 
 .soushin{
