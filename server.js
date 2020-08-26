@@ -42,7 +42,7 @@ class MyServer extends Server {
             // if (dup === undefined) {
             //     json.push(req);
             // } else {
-                dup.time = 86400000;
+                dup.time += 86400000;
 //                 dup.difficultyChoice = req.difficultyChoice;
 //                 dup.repeat = req.repeat;
             // }
