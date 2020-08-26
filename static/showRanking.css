@@ -50,20 +50,6 @@ li:nth-of-type(5) {
     color: #ffffff;
 }
 
-*{
-    margin:0px;
-    padding:0px;
-  }
-
-  header{
-    background-color:#ffffff;
-    position: relative; top: 0; 
-    height:50px;
-    margin:0px;
-    padding:0px;
-  }
- 
-
   .midashi{
     position: relative;
     padding: 0.5em;
