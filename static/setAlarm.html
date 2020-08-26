@@ -45,9 +45,18 @@
 
 		<br><br>
 		<center>
-			
-				<input type="datetime-local" id="datetime" size=50 style="font-size:30px;">
-			
+		
+				<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
+
+			<div>
+				<span>現在設定されてる時刻：</span>
+				<span id="nowset-time"></span>
+			</div>
+			<div>
+				<span>前回設定した時刻：</span>
+				<span id="lastset-time"></span>
+			</div>
+
 			<br>
 			<div class="cp_ipselect cp_sl04">
 				<span style="color:white">難易度：</span>
@@ -86,6 +95,24 @@
 			console.log(uuid);
 
 			showNotification(uuid);
+
+			const date = new Date();
+			const now = {
+				Y: ("0000" + date.getFullYear()).slice(-4),
+				M: ("00" + (date.getMonth() + 1)).slice(-2),
+				D: ("00" + date.getDate()).slice(-2),
+				h: ("00" + date.getHours()).slice(-2),
+				m: ("00" + date.getMinutes()).slice(-2),
+			}
+			datetime.value = `${now.Y}-${now.M}-${now.D}T${now.h}:${now.m}`;
+
+			const getData = await fetchJSON("/api/getalarm", { id: uuid });
+			//console.log(new Date(getData.time).toLocaleString());
+			document.getElementById("nowset-time").textContent = new Date(getData.time).toLocaleString();
+
+			const lastsetTime = document.getElementById("lastset-time");
+			if (getData.prevTime === null) lastsetTime.textContent = "-";
+			else lastsetTime.textContent = new Date(getData.prevTime).toLocaleString();
 		}
 
 		const inputForm = document.getElementById("input-form");
@@ -94,6 +121,7 @@
 
 			const utc = new Date(datetime.value).getTime();
 
+			console.log(datetime.value);
 			const status = document.getElementById("status");
 			if (isNaN(utc)) {
 				window.alert("入力したデータが無効です");
