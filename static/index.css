@@ -33,9 +33,10 @@ footer{
 .example p {
   position: absolute;/*絶対配置*/
   color: #000000;/*文字は白に*/
-  font-size: 50px;
+  
+  font-size: 5vw;
   right: 0; bottom: 0;
-  font-weight: 900;
+  font-weight: 600;
   }
 
 .example img {
@@ -57,4 +58,9 @@ footer{
     font-size    : 3em;                /* 文字サイズ   */
     padding      : 0px 4px 0px 0px;    /* 余白         */
     color        : rgba(255, 0, 0, 0.73);            /* 文字の色     */
+  }
+
+  *{
+    margin:0px;
+    padding:0px;
   }
