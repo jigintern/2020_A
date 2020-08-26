@@ -108,6 +108,7 @@ class MyServer extends Server {
         // 一回解いたことがある問題は返さない
         // 戻り値
         //   アラームを設定していない -> notset
+        //   既に解いた  -> finish
         //   設定時刻の前 -> early
         //   全問題時間切れ -> timeover
         //   問題なし -> OK
@@ -117,9 +118,13 @@ class MyServer extends Server {
             const pjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
             // 解答データを削除
             qjson.map(dat => { delete dat.answer });
+            const p_dup = pjson.find(dat => dat.id === req.id);
             const dup = ajson.find(dat => dat.id === req.id);
             if (dup === undefined) {
                 return { res: "notset", quests: [], difficultyChoice: null };
+            }            
+            if (p_dup.solution) {
+                return { res: "finish", quests: [], difficultyChoice: null };
             }
             const elapsedTime = new Date().getTime() - dup.time;
             if (elapsedTime < 0) {
@@ -141,7 +146,7 @@ class MyServer extends Server {
                 }
                 return check;
             }
-            );
+            );　
 
             return { res: "OK", quests: notsol, difficultyChoice: dup.difficultyChoice };
 
