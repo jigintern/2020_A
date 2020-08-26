@@ -10,13 +10,44 @@ h3{
 }
 
 
-h2{
-  
+
+header{
+  background-color:#ffffff;
+  position: relative; top: 0; 
+  height:50px;
+  margin:0px;
+  padding:0px;
 }
 
 
+.midashi{
+    position: relative;
+    padding: 0.5em;
+    background: #a6d3c8;
+    color: white;
+  }
+  
+.midashi::before {
+    position: absolute;
+    content: '';
+    top: 100%;
+    left: 0;
+    border: none;
+    border-bottom: solid 15px transparent;
+    border-right: solid 20px rgb(149, 158, 155);
+  }
 
-Button{
+  .box5 {
+    padding: 1em 2em;
+    margin: 3em 0;
+    border: double 5px #4ec4d3;
+}
+.box5 p {
+    margin: 0; 
+    padding: 0;
+}
+
+.soushin{
 display       : inline-block;
 border-radius : 5%;          /* 角丸       */
 font-size     : 18pt;        /* 文字サイズ */
@@ -31,7 +62,29 @@ font-weight: bold;
 
 border        : 2px solid #000000;    /* 枠の指定 */
 }
-Button:hover {
+.soushin:hover {
+box-shadow    : none;        /* カーソル時の影消去 */
+color         : rgba(26, 26, 255, 0.80);     /* 背景色     */
+background    : #ffffff;     /* 文字色     */
+}
+
+.alarm{
+
+display       : inline-block;
+border-radius : 5%;          /* 角丸       */
+font-size     : 18pt;        /* 文字サイズ */
+text-align    : center;      /* 文字位置   */
+cursor        : pointer;     /* カーソル   */
+padding       : 12px 12px;   /* 余白       */
+background    : #97fcff;     /* 背景色     */
+color         : #000000;     /* 文字色     */
+line-height   : 1em;         /* 1行の高さ  */
+transition    : .3s;         /* なめらか変化 */
+font-weight: bold;
+
+border        : 2px solid #000000;    /* 枠の指定 */
+}
+.alarm:hover {
 box-shadow    : none;        /* カーソル時の影消去 */
 color         : rgba(26, 26, 255, 0.80);     /* 背景色     */
 background    : #ffffff;     /* 文字色     */
@@ -146,47 +199,6 @@ background    : #ffffff;     /* 文字色     */
 
   ul {
     list-style: none;
-  }
-
-  .box5 {
-    padding: 1em 2em;
-    margin: 3em 0;
-    border: double 5px #4ec4d3;
-}
-.box5 p {
-    margin: 0; 
-    padding: 0;
-}
-
-*{
-  margin:0px;
-  padding:0px;
-}
-
-header{
-  background-color:#ffffff;
-  position: relative; top: 0; 
-  height:50px;
-  margin:0px;
-  padding:0px;
-}
-
-
-.midashi{
-    position: relative;
-    padding: 0.5em;
-    background: #a6d3c8;
-    color: white;
-  }
-  
-.midashi::before {
-    position: absolute;
-    content: '';
-    top: 100%;
-    left: 0;
-    border: none;
-    border-bottom: solid 15px transparent;
-    border-right: solid 20px rgb(149, 158, 155);
   }
 
   .balloon2-left {

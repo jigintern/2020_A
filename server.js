@@ -1,5 +1,7 @@
 import { Server } from "https://code4sabae.github.io/js/Server.js"
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
+import  ky from 'https://unpkg.com/ky/index.js';
+
 
 
 class MyServer extends Server {
@@ -33,7 +35,7 @@ class MyServer extends Server {
                 return dup;
             }
         }
-        
+
         // 一日延ばして更新
         else if (path === "/api/updatealarm") {
             var json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
@@ -82,8 +84,9 @@ class MyServer extends Server {
                 return { res: "Failed" };
             }
         }
-        
+
         // 問題一覧を取得する ( req = {"id": ~~~} )
+        // 一回解いたことがある問題は返さない
         // 戻り値
         //   アラームを設定していない -> notset
         //   設定時刻の前 -> early
@@ -92,6 +95,7 @@ class MyServer extends Server {
         else if (path === "/api/getquest") {
             const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            const pjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
             // 解答データを削除
             qjson.map(dat => { delete dat.answer });
             const dup = ajson.find(dat => dat.id === req.id);
@@ -106,7 +110,22 @@ class MyServer extends Server {
             if (elapsedTime > (longest * 60000)) {
                 return { res: "timeover", quests: [], difficultyChoice: null };
             }
-            return { res: "OK", quests: qjson, difficultyChoice: dup.difficultyChoice };
+
+            const pdup = (pjson.find(dat => dat.id === req.id));
+            const notsol = qjson.filter(function (item,index) {
+                let i = 0;
+                let check = true;
+                for (i in pdup.solved) {
+                    if (pdup.solved[i] === item.questId) {
+                        check = false;
+                    }
+                }
+                return check;
+            }
+            );
+
+            return { res: "OK", quests: notsol, difficultyChoice: dup.difficultyChoice };
+
         }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
@@ -174,7 +193,7 @@ class MyServer extends Server {
                         ranking += 1;
                         tmp = align[i].point;
                     }
-                }   
+                }
                 return JSON.stringify(ret);
             }　else {
                 return json;
@@ -223,6 +242,11 @@ class MyServer extends Server {
                 point: userPoint,
                 rank: userRank,
             };
+        }
+        
+        else if (path === "/api/slack") {
+            const parsed =  ky.post(req.url, {json: {text: req.text}});
+            return { res: "OK" };
         }
     }
 }

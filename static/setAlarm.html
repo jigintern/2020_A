@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="./setAlarm.css">
+	<link rel="stylesheet" href="./all.css">
 	<title>時刻設定</title>
 
 </head>
@@ -14,20 +15,20 @@
 		<a href="index.html"><img src="logo.png" height="40px"></a>
 	</header>
 
-	
-<hr>
-<br><br>
-	
-		<h1>起床時間の設定</h1>
-	
-	
+
+	<hr>
+	<br><br>
+
+	<h1>起床時間の設定</h1>
+
+
 
 	<br><br><br>
 
 	<center>
-	
-			<font1 id="time"></font1>
-		
+
+		<font1 id="time"></font1>
+
 	</center>
 
 	<br><br>
@@ -45,8 +46,8 @@
 
 		<br><br>
 		<center>
-		
-				<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
+
+			<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
 
 			<br><br>
 			<div class="cp_ipselect cp_sl04">
@@ -64,18 +65,20 @@
 			<br><br><br>
 			<div>
 				<span style="color:white">現在設定されてる時刻：</span>
-				<span style="color:white" id="nowset-time"></span>
+				<span style="color:white" id="nowset-time">-</span>
 			</div>
 			<div>
 				<span style="color:white">前回設定した時刻：</span>
-				<span style="color:white" id="lastset-time"></span>
+				<span style="color:white" id="lastset-time">-</span>
 			</div>
-
+			<br><br><br>
+			<label><input type="checkbox" id="repeat">　繰り返し設定（毎日）</label>
+			
 			<br><br>
 			<input type="submit" value"送信" class="button">
 		</center>
 
-		<h3 id="set-result"></h3>
+		<h2 id="set-result"></h2>
 
 		<br>
 
@@ -83,7 +86,7 @@
 	<br>
 
 
-	
+
 
 	<script type="module">
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
@@ -93,9 +96,9 @@
 
 		window.onload = async () => {
 			uuid = await getUuid();
-			console.log(uuid);
+			console.log("id", uuid);
 
-			showNotification(uuid);
+
 
 			const date = new Date();
 			const now = {
@@ -107,13 +110,25 @@
 			}
 			datetime.value = `${now.Y}-${now.M}-${now.D}T${now.h}:${now.m}`;
 
+			dispUpdate();
+		}
+
+		async function dispUpdate() {
+			showNotification(uuid);
 			const getData = await fetchJSON("/api/getalarm", { id: uuid });
 			//console.log(new Date(getData.time).toLocaleString());
-			document.getElementById("nowset-time").textContent = new Date(getData.time).toLocaleString();
+			if (getData !== null) {
+				const nowsetTime = document.getElementById("nowset-time");
+				if (getData.time !== null) {
+					nowsetTime.textContent = new Date(getData.time).toLocaleString();
+				}
+				const lastsetTime = document.getElementById("lastset-time");
+				if (getData.prevTime !== null) {
+					lastsetTime.textContent = new Date(getData.prevTime).toLocaleString();
+				}
 
-			const lastsetTime = document.getElementById("lastset-time");
-			if (getData.prevTime === null) lastsetTime.textContent = "-";
-			else lastsetTime.textContent = new Date(getData.prevTime).toLocaleString();
+				repeat.checked = getData.repeat;
+			}
 		}
 
 		const inputForm = document.getElementById("input-form");
@@ -128,14 +143,13 @@
 				window.alert("入力したデータが無効です");
 			} else {
 				const res = await fetchJSON("/api/setalarm", {
-					id: uuid, time: utc, difficultyChoice: difficulty.value
+					id: uuid, time: utc, difficultyChoice: difficulty.value, repeat: repeat.checked
 				});
-				//ta.value = JSON.stringify(res);
 				const setResult = document.getElementById("set-result");
 
 				if (res.res === "OK") {
 					setResult.textContent = "アラーム設定完了！";
-					showNotification(uuid);
+					dispUpdate();
 				}
 			}
 		});
@@ -144,8 +158,9 @@
 
 	<footer>
 		<a href="index.html"><img src="parrot.gif" class="pos"></a>
-		<a href="index.html"><div class="balloon2-left">
-			<p>トップページにもどる</p>
+		<a href="index.html">
+			<div class="balloon2-left">
+				<p>トップページにもどる</p>
 		</a>
 		</div>
 	</footer>

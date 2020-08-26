@@ -1,7 +1,25 @@
 
-body{
+h1 {
+  position: relative;
+  padding: 0.5em;
+  background: #a6d3c8;
+  color: white;
+}
 
-    background-color: rgb(30,36,47);
+h1::before {
+  position: absolute;
+  content: '';
+  top: 100%;
+  left: 0;
+  border: none;
+  border-bottom: solid 15px transparent;
+  border-right: solid 20px rgb(149, 158, 155);
+}
+
+h2{
+  color:#ffffff;
+  
+ 
 }
 
 .back{
@@ -76,44 +94,24 @@ select {
  
 }
 
-h3{
-  color:#ffffff;
-  font-size:20px;
+label{
+  color:#ffffff
 }
-header{
-  background-color:#ffffff;
-  position: relative; top: 0; 
-  height:50px;
-  margin:0px;
-  padding:0px;
+label input[type="checkbox"] {
+  width         : 17pt;        /* 大きさ：横 */
+  height        : 17pt;        /* 大きさ：縦 */
+  vertical-align: top;         /* 並び位置   */
 }
-body {
-  padding: 0;
-  margin: 0;
-}
-
-*{
-  margin:0px;
-  padding:0px;
+ /* --- チェックボックス直後のlabel --- */
+ label input[type="checkbox"] + label {
+  padding       : 0 4px;                      /* labelの余白 */
+  font-size     : 15pt;                       /* labelの文字サイズ */
+  font-weight   : bold;                       /* 文字太さ   */
+  border-radius : 5px;                        /* labelの角丸 */
+  cursor        : pointer;                    /* カーソル設定 */
+  transition    : .2s;                        /* なめらか変化 */
 }
 
-
-h1 {
-  position: relative;
-  padding: 0.5em;
-  background: #a6d3c8;
-  color: white;
-}
-
-h1::before {
-  position: absolute;
-  content: '';
-  top: 100%;
-  left: 0;
-  border: none;
-  border-bottom: solid 15px transparent;
-  border-right: solid 20px rgb(149, 158, 155);
-}
 
 .balloon2-left {
   position: relative;
@@ -155,3 +153,4 @@ h1::before {
   margin: 0;
   padding: 0;
 }
+
