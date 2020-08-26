@@ -47,6 +47,11 @@
             </label>
         </div>
         <div>
+            <label>カテゴリー：
+                <input type="text" id="category" list="categories"><datalist id="categories"></datalist></input>
+            </label>
+        </div>
+        <div>
             <label>点数：<input type="number" id="point" required></input></label>
         </div>
         <div>
@@ -75,6 +80,16 @@
 
         window.onload = async () => {
             showNotification();
+            getCategory();
+        }
+
+        const getCategory = async () => {
+            const getCategories = (await (await fetch("/api/getcategory")).json()).category;
+            getCategories.forEach(c => {
+                const option = document.createElement("option");
+                option.value = c;
+                categories.appendChild(option);
+            });
         }
 
         document.getElementById("add-answer").onclick = (e) => {
@@ -124,6 +139,7 @@
                 answerList: answerList,
                 author: author.value,
                 difficulty: difficulty.value,
+                category: category.value,
                 point: point.value,
                 timeLimit: timeLimit.value,
             }
