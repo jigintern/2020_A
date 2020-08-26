@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>クエスト作成</title>
 </head>
 
 <body>
@@ -15,23 +15,21 @@
     <br><br>
 
     <h1 class="midashi">クエスト作成</h1>
-
+    <!--
+        <li>タグはこんな感じで生成されます。
+        <li>
+            <input type="radio" name="ans" required>
+            <input type="text" required>
+            <button>削除</button>
+        </li>    
+    -->
     <form id="quest-form">
         <div>
             <label>問題：<textarea id="question" required></textarea></label>
         </div>
         <div>
             <label>選択肢（答えにはチェックを入れる）：
-                <ul id="answers" required>
-                    <!--<li>タグはこんな感じで生成されます。
-                        <li>
-                            <input type="radio" name="ans" required>
-                            <input type="text" required>
-                            <button>削除</button>
-                        </li>    
-                    -->
-
-                </ul>
+                <ul id="answers" required></ul>
             </label>
             <button id="add-answer">回答追加</button>
         </div>
@@ -110,7 +108,7 @@
         document.getElementById("quest-form").onsubmit = async (e) => {
             e.preventDefault();
 
-            /*const lis = answers.childNodes;
+            const lis = answers.childNodes;
             const answerList = [];
             let answer = 0;
             for (let i = 0; i < lis.length; i++) {
@@ -135,7 +133,7 @@
             console.log(res);
             if (res.res === "OK") result.textContent = "クエスト作成成功！";
             else result.textContent = "クエスト作成失敗...";
-            */
+
         }
     </script>
 </body>
