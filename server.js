@@ -238,6 +238,24 @@ class MyServer extends Server {
 
         }
         
+        // プロフィールを設定 ( req = {"id": ~~~, "name": ~~~, "icon": ~~~, "introduction": ~~~} )
+        else if (path === "/api/setprofile") {
+            const json = JSON.parse(Deno.readTextFileSync('./profile.json'));
+            const dup = json.find(dat => dat.id === req.id);
+            if (dup === undefined) {
+                req.prevTime = null;
+                req.solution = null;
+                req.solved = [];
+                json.push(req);
+            } else {
+                dup.name = req.name;
+                dup.icon = req.icon;
+                dup.introduction = req.introduction;
+            }
+            Deno.writeTextFileSync("./profile.json", JSON.stringify(json));
+            return { res: "OK" };
+        }
+
         // 名前・アイコン・ポイント・順位を取得 ( req = {"id": ~~~} )
         else if (path === "/api/getprofile") {
             const pjson = JSON.parse(Deno.readTextFileSync('./point.json'));
