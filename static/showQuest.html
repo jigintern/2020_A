@@ -22,15 +22,18 @@
 			<h2>・今日のミッション</h2>
 			<h2>問題</h2>
 
-			<p id="question"></p>
+			<p class="quest" id="question"></p>
 			<h2>選択肢</h2>
 			
-			
-			<form id="answer-list"　class="radio"></form>
+			<div class="cp_ipradio">
+			<li class="list_item">
+			<form id="answer-list"></form>
+			</li>
+			</div>
 			
 
 			<div id="answer-div" hidden>
-				<h1 align="right" style="color:rgb(211, 70, 105)">結果</font>
+				<h1 align="right" class="result" style="color:rgb(211, 70, 105)">結果</font>
 				</h1>
 				<button id=update-alarm style="display:none" class="alarm">明日も同じ時間にアラームを登録する</button>
 			</div>

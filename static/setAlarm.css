@@ -14,10 +14,7 @@
 .date{
   margin-top:20px;
 }
-hr{
-  margin:0px;
-  padding:0px;
-}
+
 
 .button {
   display       : inline-block;
@@ -36,6 +33,11 @@ hr{
   color         : #007fff;    
   background    : #ffffff;    
 }
+.button:focus {
+  background:#bcfbfd;
+  color: #ffffff;
+}
+
 
 select {
   appearance: none;

@@ -1,7 +1,4 @@
-.space{
-  margin:10px;
-  padding:10px;
-}
+
 ul {
   list-style: none;
 }
@@ -27,6 +24,18 @@ footer{
   font-size: 5vw;
   right: 0; bottom: 0;
   font-weight: 600;
+  }
+  .yoshiro{
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    background-repeat: repeat-x;
+    
+    position: absolute;
+    bottom:0%; 
+    left:0%; 
+    width: 200px;
+    height: 140px;    
   }
 
   p span{
