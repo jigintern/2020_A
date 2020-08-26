@@ -1,5 +1,7 @@
 import { Server } from "https://code4sabae.github.io/js/Server.js"
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
+import  ky from 'https://unpkg.com/ky/index.js';
+
 
 
 class MyServer extends Server {
@@ -33,7 +35,7 @@ class MyServer extends Server {
                 return dup;
             }
         }
-        
+
         // 一日延ばして更新
         else if (path === "/api/updatealarm") {
             var json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
@@ -82,7 +84,7 @@ class MyServer extends Server {
                 return { res: "Failed" };
             }
         }
-        
+
         // 問題一覧を取得する ( req = {"id": ~~~} )
         // 戻り値
         //   アラームを設定していない -> notset
@@ -107,6 +109,26 @@ class MyServer extends Server {
                 return { res: "timeover", quests: [], difficultyChoice: null };
             }
             return { res: "OK", quests: qjson, difficultyChoice: dup.difficultyChoice };
+        }
+        
+        // カテゴリ一覧を取得 ( req = { "category": ~~~})
+        else if (path === "/api/getcategory") {
+            const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            const dup = json.filter(
+                function(item,index) {
+                if(item.category === req.category) {
+                    return true;
+                }
+            }
+            );
+            if (dup.length === 0) {
+                return { res: "NotFound"};
+            }
+            else {
+                return dup;
+            }
+
+
         }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
@@ -174,15 +196,17 @@ class MyServer extends Server {
                         ranking += 1;
                         tmp = align[i].point;
                     }
-                }   
+                }
                 return JSON.stringify(ret);
             }　else {
                 return json;
             }
 
         }
-        
-        
+        else if (path === "/api/slack") {
+            const parsed =  ky.post(req.url, {json: {text: req.text}});
+            return { res: "OK" };
+        }
     }
 }
 
