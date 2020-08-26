@@ -130,14 +130,34 @@ class MyServer extends Server {
             return { res: "OK", quests: notsol, difficultyChoice: dup.difficultyChoice };
 
         }
+        
+        // カテゴリごと一覧を返す (res = {"category": ~~~})
+        else if (path === "/api/getcategory") {
+            const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            const dup = json.filter(
+                function(item,index) {
+                if(item.category === req.category) {
+                    return true;
+                }
+            }
+            );
+            if (dup.length === 0) {
+                return { res: "NotFound"};
+            }
+            else {
+                return dup;
+            }
+        }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
         else if (path === "/api/checkans") {
             const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const pjson = JSON.parse(Deno.readTextFileSync('./point.json'));
             const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
+             const fjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
             // 問題の特定
             const org = qjson.find(dat => dat.questId === req.questId);
+            const fDup = fjson.find(dat => dat.id === req.id);
             var deltapt;
             if (org.answer === req.answer) {
                 var rlt = "correct";
@@ -159,6 +179,8 @@ class MyServer extends Server {
             } else {
                 dup.point += deltapt;
             }
+            fDup.solved.push(org.questId);
+            Deno.writeTextFileSync("./profile.json", JSON.stringify(fjson));
             Deno.writeTextFileSync("./point.json", JSON.stringify(pjson));
             return { result: rlt, answer: org.answer };
         }
