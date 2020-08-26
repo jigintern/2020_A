@@ -1,6 +1,7 @@
 import { Server } from "https://code4sabae.github.io/js/Server.js"
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
 
+
 class MyServer extends Server {
     api(path, req) {
 
@@ -11,7 +12,7 @@ class MyServer extends Server {
             const dup = json.find(dat => dat.id === req.id);
             if (dup === undefined) {
                 let pushData = req;
-                pushData.prevTime = -1;
+                pushData.prevTime = null;
                 json.push(req);
             } else {
                 dup.prevTime = dup.time;
@@ -32,6 +33,37 @@ class MyServer extends Server {
                 return dup;
             }
         }
+        
+        // 一日延ばして更新
+        else if (path === "/api/updatealarm") {
+            var json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+            // 重複を確認 なければ追加 あれば更新
+            const dup = json.find(dat => dat.id === req.id);
+            // if (dup === undefined) {
+            //     json.push(req);
+            // } else {
+                dup.time = req.time + 86400000;
+                dup.difficultyChoice = req.difficultyChoice;
+                dup.repeat = req.repeat;
+            // }
+            Deno.writeTextFileSync("./alarm.json", JSON.stringify(json));
+            return { res: "OK" };
+        }
+
+        // 任意のIDのアラームを一覧から消す
+        else if (path === "/api/delalarm") {
+                const json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+                const dup = json.filter(
+                    function(item,index) {
+                    if(item.id !== req) {
+                        return true;
+                    }
+                }
+                );
+                Deno.writeTextFileSync("./alarm.json", JSON.stringify(dup));
+                return {res: "OK"};
+        }
+
 
         // 問題を追加する ( req = {問題データ} )
         else if (path === "/api/setquest") {
@@ -52,6 +84,11 @@ class MyServer extends Server {
         }
         
         // 問題一覧を取得する ( req = {"id": ~~~} )
+        // 戻り値
+        //   アラームを設定していない -> notset
+        //   設定時刻の前 -> early
+        //   全問題時間切れ -> timeover
+        //   問題なし -> OK
         else if (path === "/api/getquest") {
             const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
@@ -59,11 +96,17 @@ class MyServer extends Server {
             qjson.map(dat => { delete dat.answer });
             const dup = ajson.find(dat => dat.id === req.id);
             if (dup === undefined) {
-                return { res: "Failed" };
-            } else {
-                const rtjson = { quests: qjson, difficultyChoice: dup.difficultyChoice }
-                return rtjson;
+                return { res: "notset", quests: [], difficultyChoice: null };
             }
+            const elapsedTime = new Date().getTime() - dup.time;
+            if (elapsedTime < 0) {
+                return { res: "early", quests: [], difficultyChoice: null };
+            }
+            const longest = qjson.map(dat => dat.timeLimit).reduce((max, dat) => (max < dat) ? dat : max);
+            if (elapsedTime > (longest * 60000)) {
+                return { res: "timeover", quests: [], difficultyChoice: null };
+            }
+            return { res: "OK", quests: qjson, difficultyChoice: dup.difficultyChoice };
         }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
@@ -105,7 +148,7 @@ class MyServer extends Server {
         }
 
         // ポイント上位5人の成績取得
-        else if (path = "/api/getpointrank") {
+        else if (path === "/api/getpointrank") {
             const json = JSON.parse(Deno.readTextFileSync('./point.json'));
             let align = json;
             if (json.length > 4){
@@ -120,7 +163,7 @@ class MyServer extends Server {
                 });
                 let tmp = align[0].point;
                 let ranking = 0;
-                let ret =[];
+                let ret = [];
                 let i = 1;
                 ret.push(align[0]);
                 for (; ranking < 5; i++) {
@@ -138,30 +181,8 @@ class MyServer extends Server {
             }
 
         }
-
-        // 課題を表示させるかどうか判定する ( req = {"id": ~~~} )
-        // 戻り値
-        //   アラームを設定していない -> notset
-        //   設定時刻の前 -> early
-        //   全問題時間切れ -> timeover
-        //   問題なし -> OK
-        else if (path === "/api/checkright") {
-            const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
-            const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
-            const dup = ajson.find(dat => dat.id === req.id);
-            if (dup === undefined) {
-                return { res: "notset" };
-            } 
-            const elapsedTime = new Date().getTime() - dup.time;
-            if (elapsedTime < 0) {
-                return { res: "early" };
-            }
-            const longest = qjson.map(dat => dat.timeLimit).reduce((max, dat) => (max < dat) ? dat : max);
-            if (elapsedTime > (longest * 60000)) {
-                return { res: "timeover" };
-            }
-            return { res: "OK" };
-        }
+        
+        
     }
 }
 
