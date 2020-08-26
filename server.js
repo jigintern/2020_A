@@ -122,13 +122,13 @@ class MyServer extends Server {
             const dup = ajson.find(dat => dat.id === req.id);
             if (dup === undefined) {
                 return { res: "notset", quests: [], difficultyChoice: null };
+            }            
+            if (p_dup.solution) {
+                return { res: "finish", quests: [], difficultyChoice: null };
             }
             const elapsedTime = new Date().getTime() - dup.time;
             if (elapsedTime < 0) {
                 return { res: "early", quests: [], difficultyChoice: null };
-            }
-            if (p_dup.solution) {
-                return { res: "finish", quests: [], difficultyChoice: null };
             }
             const longest = qjson.map(dat => dat.timeLimit).reduce((max, dat) => (max < dat) ? dat : max);
             if (elapsedTime > (longest * 60000)) {
