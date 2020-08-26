@@ -89,13 +89,20 @@ background    : #ffffff;     /* 文字色     */
   padding: 1em;
   width: 80%; /* ボックス幅 */
   background: #006633; /* ボックス背景色 */
-  color: #fff; /* 文章色 */
+  color: #ffffff; /* 文章色 */
   border: 8px solid #b2771f; /* 枠線 */
   border-radius: 3px; /* 角の丸み */
   box-shadow: 0 0 5px #333, 0 0 5px #555 inset;
   }
  
-
+.nittyoku
+{
+  -ms-writing-mode: tb-rl;
+  writing-mode: vertical-rl;
+  position: absolute; right: 0; bottom: 0;
+  font-weight: 300;
+  font-size: 18px;
+}
 
   ul.sample1{
     counter-reset:list;
