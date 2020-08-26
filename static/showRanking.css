@@ -1,0 +1,123 @@
+body{
+background-color:rgb(30,36,47);
+}
+
+h1{
+    color:#ffffff;
+}
+ul{
+    list-style: none;
+}
+
+li {
+    position: relative;
+    padding: 20px 0px 50px 2.5em;
+    color: #ffffff;
+    font-size: 30px;
+}
+li:before,
+li:after {
+    position: absolute;
+    left: 0px;
+    width: 0px;
+    height: 0px;
+    content: "";
+}
+li:before {
+    top: -1.25em;
+    border: 1em solid transparent;
+    border-bottom: 1.5em solid currentColor;
+}
+li:after {
+    top: 0.25em;
+    border: 0.5em solid transparent;
+    border-left: 1em solid currentColor;
+    border-right: 1em solid currentColor;
+}
+li:nth-of-type(1) {
+    color: #dbb400;
+}
+li:nth-of-type(2) {
+    color: #9fa0a0;
+}
+li:nth-of-type(3) {
+    color: #c47022;
+}
+li:nth-of-type(4) {
+    color: #ffffff;
+}
+li:nth-of-type(5) {
+    color: #ffffff;
+}
+
+*{
+    margin:0px;
+    padding:0px;
+  }
+
+  header{
+    background-color:#ffffff;
+    position: relative; top: 0; 
+    height:50px;
+    margin:0px;
+    padding:0px;
+  }
+ 
+
+  .midashi{
+    position: relative;
+    padding: 0.5em;
+    background: #a6d3c8;
+    color: white;
+  }
+  
+.midashi::before {
+    position: absolute;
+    content: '';
+    top: 100%;
+    left: 0;
+    border: none;
+    border-bottom: solid 15px transparent;
+    border-right: solid 20px rgb(149, 158, 155);
+  }
+
+  .balloon2-left {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #FFF;
+    border: solid 3px #555;
+    box-sizing: border-box;
+  }
+  
+  .balloon2-left:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    margin-top: -12px;
+    border: 12px solid transparent;
+    border-right: 12px solid #FFF;
+    z-index: 2;
+  }
+  
+  .balloon2-left:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -30px;
+    margin-top: -14px;
+    border: 14px solid transparent;
+    border-right: 14px solid #555;
+    z-index: 1;
+  }
+  
+  .balloon2-left p {
+    margin: 0;
+    padding: 0;
+  }

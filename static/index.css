@@ -33,11 +33,27 @@ footer{
 .example p {
   position: absolute;/*絶対配置*/
   color: #000000;/*文字は白に*/
-  font-size: 50px;
+  
+  font-size: 5vw;
   right: 0; bottom: 0;
-  font-weight: 900;
+  font-weight: 600;
   }
 
+  p span{
+    display        : inline-block;
+    color          : #ce5854;            /* 文字の色 */
+    font-size      : 7vw;               /* 文字のサイズ */
+    letter-spacing : 4px;                /* 文字間 */
+    text-shadow    : 
+         2px  2px 1px #524747,
+        -2px  2px 1px #524747,
+         2px -2px 1px #524747,
+        -2px -2px 1px #524747,
+         2px  0px 1px #524747,
+         0px  2px 1px #524747,
+        -2px  0px 1px #524747,
+         0px -2px 1px #524747;        /* 文字の影 */
+  }
 .example img {
   width: 100%;
   }
@@ -58,3 +74,10 @@ footer{
     padding      : 0px 4px 0px 0px;    /* 余白         */
     color        : rgba(255, 0, 0, 0.73);            /* 文字の色     */
   }
+
+  *{
+    margin:0px;
+    padding:0px;
+  }
+
+ 

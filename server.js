@@ -3,6 +3,7 @@ import { v4 } from "https://deno.land/std/uuid/mod.ts";
 import  ky from 'https://unpkg.com/ky/index.js';
 
 
+
 class MyServer extends Server {
     api(path, req) {
 
@@ -13,7 +14,7 @@ class MyServer extends Server {
             const dup = json.find(dat => dat.id === req.id);
             if (dup === undefined) {
                 let pushData = req;
-                pushData.prevTime = -1;
+                pushData.prevTime = null;
                 json.push(req);
             } else {
                 dup.prevTime = dup.time;
@@ -43,9 +44,9 @@ class MyServer extends Server {
             // if (dup === undefined) {
             //     json.push(req);
             // } else {
-                dup.time = req.time + 86400000;
-                dup.difficultyChoice = req.difficultyChoice;
-                dup.repeat = req.repeat;
+                dup.time += 86400000;
+//                 dup.difficultyChoice = req.difficultyChoice;
+//                 dup.repeat = req.repeat;
             // }
             Deno.writeTextFileSync("./alarm.json", JSON.stringify(json));
             return { res: "OK" };
@@ -182,7 +183,6 @@ class MyServer extends Server {
             }
 
         }
-
         else if (path === "/api/slack") {
             const parsed =  ky.post(req.url, {json: {text: req.text}});
             return { res: "OK" };
