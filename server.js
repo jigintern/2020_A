@@ -70,13 +70,16 @@ class MyServer extends Server {
         // 問題を追加する ( req = {問題データ} )
         else if (path === "/api/setquest") {
             const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
-            const jsondoc = json;
-            const reqdoc = req;
+            const jsondoc = JSON.parse(JSON.stringify(json));
             jsondoc.map(dat => { delete dat.questId });
-            delete reqdoc.questId;
+            delete jsondoc.questId;
             // 重複を確認 なければ追加 あればエラーを返す
-            const dup = jsondoc.find(dat => JSON.stringify(dat) === JSON.stringify(reqdoc));
+            const dup = jsondoc.find(dat => JSON.stringify(dat) === JSON.stringify(req));
             if (dup === undefined) {
+                const occupied = json.map(dat => dat.questId);
+                let newQuestId = 0;
+                for (; (occupied.find(dat => dat === newQuestId) !== undefined); newQuestId++);
+                req.questId = newQuestId;
                 json.push(req);
                 Deno.writeTextFileSync("./quest.json", JSON.stringify(json));
                 return { res: "OK" };
@@ -170,8 +173,7 @@ class MyServer extends Server {
         else if (path === "/api/getpointrank") {
             const json = JSON.parse(Deno.readTextFileSync('./point.json'));
             let align = json;
-            if (json.length > 4){
-                align.sort(function(val1,val2){
+            align.sort(function(val1,val2){
                 var val1 = val1.point;
                 var val2 = val2.point;
                 if( val1 < val2 ) {
@@ -180,6 +182,7 @@ class MyServer extends Server {
                         return -1;
                     }
                 });
+            if (json.length > 4){
                 let tmp = align[0].point;
                 let ranking = 0;
                 let ret = [];
@@ -194,9 +197,10 @@ class MyServer extends Server {
                         tmp = align[i].point;
                     }
                 }
+
                 return JSON.stringify(ret);
             }　else {
-                return json;
+                return align;
             }
 
         }
