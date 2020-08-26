@@ -169,6 +169,8 @@
 					window.alert("設定時刻前です。\n設定時刻より後にもう一度アクセスしてください。\nトップページに移動します。");
 				} else if (getJSON.res === "timeover") {
 					window.alert("時間切れです。明日はちゃんとおきましょう。\nトップページに移動します。");
+				} else if (getJSON.res === "finish") {
+					window.alert("今日のクエストは終了しました！また明日頑張りましょう！\nトップページに移動します。");
 				}
 
 				window.open("/index.html", "_self");
