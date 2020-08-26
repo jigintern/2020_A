@@ -128,22 +128,16 @@ class MyServer extends Server {
 
         }
         
-        // カテゴリごと一覧を返す (res = {"category": ~~~})
+        // カテゴリ一覧を返す 
         else if (path === "/api/getcategory") {
             const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
-            const dup = json.filter(
-                function(item,index) {
-                if(item.category === req.category) {
-                    return true;
-                }
+            let cat = [];
+            let i = 0;
+            for (i in json) {
+                cat.push(json[i].category);
             }
-            );
-            if (dup.length === 0) {
-                return { res: "NotFound"};
-            }
-            else {
-                return dup;
-            }
+            const ficat = Array.from(new Set(cat));
+            return {category: ficat};
         }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
