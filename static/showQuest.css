@@ -53,7 +53,7 @@ line-height   : 1em;         /* 1行の高さ  */
 transition    : .3s;         /* なめらか変化 */
 font-weight: bold;
 
-border        : 2px solid #000000;    /* 枠の指定 */
+border        : 2px solid #006633;    /* 枠の指定 */
 }
 
 .soushin:hover {
@@ -79,7 +79,7 @@ line-height   : 1em;         /* 1行の高さ  */
 transition    : .3s;         /* なめらか変化 */
 font-weight: bold;
 
-border        : 2px solid #000000;    /* 枠の指定 */
+border        : 2px solid #006633;    /* 枠の指定 */
 }
 
 .alarm:hover {

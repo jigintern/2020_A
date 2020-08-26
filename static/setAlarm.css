@@ -18,7 +18,8 @@
 
 .button {
   display       : inline-block;
-  font-size     : 18pt;       
+  font-size     : 18pt;  
+  font-weight: bold;     
   text-align    : center;      
   cursor        : pointer;    
   padding       : 12px 33px;   
@@ -28,15 +29,13 @@
   transition    : .3s;       
   border        : 2px solid #1a1aff; 
   margin:30px 
+  
 }
 .button:hover {
   color         : #007fff;    
   background    : #ffffff;    
 }
-.button:focus {
-  background:#bcfbfd;
-  color: #ffffff;
-}
+
 
 
 select {
