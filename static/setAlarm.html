@@ -14,20 +14,20 @@
 		<a href="index.html"><img src="logo.png" height="40px"></a>
 	</header>
 
-	
-<hr>
-<br><br>
-	
-		<h1>起床時間の設定</h1>
-	
-	
+
+	<hr>
+	<br><br>
+
+	<h1>起床時間の設定</h1>
+
+
 
 	<br><br><br>
 
 	<center>
-	
-			<font1 id="time"></font1>
-		
+
+		<font1 id="time"></font1>
+
 	</center>
 
 	<br><br>
@@ -45,16 +45,16 @@
 
 		<br><br>
 		<center>
-		
-				<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
+
+			<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
 
 			<div>
 				<span>現在設定されてる時刻：</span>
-				<span id="nowset-time"></span>
+				<span id="nowset-time">-</span>
 			</div>
 			<div>
 				<span>前回設定した時刻：</span>
-				<span id="lastset-time"></span>
+				<span id="lastset-time">-</span>
 			</div>
 
 			<br>
@@ -70,6 +70,7 @@
 					<option value="E">E</option>
 				</select>
 			</div>
+			<label><input type="checkbox" id="repeat">繰り返し設定（毎日）</label>
 			<br><br>
 			<input type="submit" value"送信" class="button">
 		</center>
@@ -92,9 +93,9 @@
 
 		window.onload = async () => {
 			uuid = await getUuid();
-			console.log(uuid);
+			console.log("id", uuid);
 
-			showNotification(uuid);
+
 
 			const date = new Date();
 			const now = {
@@ -106,13 +107,25 @@
 			}
 			datetime.value = `${now.Y}-${now.M}-${now.D}T${now.h}:${now.m}`;
 
+			dispUpdate();
+		}
+
+		async function dispUpdate() {
+			showNotification(uuid);
 			const getData = await fetchJSON("/api/getalarm", { id: uuid });
 			//console.log(new Date(getData.time).toLocaleString());
-			document.getElementById("nowset-time").textContent = new Date(getData.time).toLocaleString();
+			if (getData !== null) {
+				const nowsetTime = document.getElementById("nowset-time");
+				if (getData.time !== null) {
+					nowsetTime.textContent = new Date(getData.time).toLocaleString();
+				}
+				const lastsetTime = document.getElementById("lastset-time");
+				if (getData.prevTime !== null) {
+					lastsetTime.textContent = new Date(getData.prevTime).toLocaleString();
+				}
 
-			const lastsetTime = document.getElementById("lastset-time");
-			if (getData.prevTime === null) lastsetTime.textContent = "-";
-			else lastsetTime.textContent = new Date(getData.prevTime).toLocaleString();
+				repeat.checked = getData.repeat;
+			}
 		}
 
 		const inputForm = document.getElementById("input-form");
@@ -127,14 +140,13 @@
 				window.alert("入力したデータが無効です");
 			} else {
 				const res = await fetchJSON("/api/setalarm", {
-					id: uuid, time: utc, difficultyChoice: difficulty.value
+					id: uuid, time: utc, difficultyChoice: difficulty.value, repeat: repeat.checked
 				});
-				//ta.value = JSON.stringify(res);
 				const setResult = document.getElementById("set-result");
 
 				if (res.res === "OK") {
 					setResult.textContent = "アラーム設定完了！";
-					showNotification(uuid);
+					dispUpdate();
 				}
 			}
 		});

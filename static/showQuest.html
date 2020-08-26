@@ -10,7 +10,7 @@
 
 <body>
 	<header>
-			<a href="index.html"><img src="logo.png" height="40px"></a>
+		<a href="index.html"><img src="logo.png" height="40px"></a>
 	</header>
 	<hr>
 	<br>
@@ -20,28 +20,28 @@
 		<br>
 		<div class="kokuban-s2">
 
-		<h2>・今日のミッション</h2>
-		<br>
-		<h2>問題</h2>
-	
-		<p id="question"></p>
-		<br>
-		<h2>選択肢</h2>
-		<form id="answer-list"></form>
-		<br><br>
-		
-		<div id="answer-div" hidden>
-			<h1 align="right" style="color:rgb(211, 70, 105)">結果</font></h1>
+			<h2>・今日のミッション</h2>
+			<br>
+			<h2>問題</h2>
 
+			<p id="question"></p>
+			<br>
+			<h2>選択肢</h2>
+			<form id="answer-list"></form>
+			<br><br>
+
+			<div id="answer-div" hidden>
+				<h1 align="right" style="color:rgb(211, 70, 105)">結果</font>
+				</h1>
+
+				<button id=update-alarm style="display:none">明日も同じ時間にアラームを登録する</button>
+
+			</div>
+			</td>
+			<br>
+			<Button id="answer-send">回答送信！</Button>
 		</div>
-		</td>
-		<br>
-		<Button id="answer-send">回答送信！</Button>
 	</div>
-	</div>
-	
-
-		<br><br>
 
 	<br><br><br>
 	<h2>・ミッション一覧</h2>
@@ -58,13 +58,13 @@
 			</select>
 		</div>
 		<div class="box5">
-      
-		<ul class="sample1">
-		<ul id="quests"></ul>
-		
+
+			<ul class="sample1">
+				<ul id="quests"></ul>
+
+		</div>
 	</div>
-	</div>
-		<br><br>
+	<br><br>
 	<footer>
 		<a href="index.html">-トップページに戻る-</a>
 	</footer>
@@ -118,6 +118,27 @@
 				document.getElementById("answer-send").disabled = true;
 				form.childNodes.forEach(item => item.childNodes[0].disabled = true);
 				quests.childNodes.forEach(item => item.onclick = null);
+
+				const getAlarm = await fetchJSON("/api/getalarm", { id: uuid });
+				console.log(getAlarm);
+				if (getAlarm.repeat) {
+					const res = await fetchJSON("/api/updatealarm", { id: uuid });
+					const getData = await fetchJSON("/api/getalarm", { id: uuid });
+
+					window.alert(`繰り返し設定がONだったので自動更新。\n${new Date(getData.time).toLocaleString()}にアラームを設定しました！`);
+				} else {
+					console.log("a");
+					const updateAlarm = document.getElementById("update-alarm");
+					updateAlarm.style.display = "block";
+					updateAlarm.onclick = async (e) => {
+						const res = await fetchJSON("/api/updatealarm", { id: uuid });
+						//console.log(res);
+						e.target.disabled = true;
+
+						const getData = await fetchJSON("/api/getalarm", { id: uuid });
+						window.alert(`${new Date(getData.time).toLocaleString()}にアラームを設定しました！`);
+					}
+				}
 			}
 		}
 
