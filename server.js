@@ -200,6 +200,50 @@ class MyServer extends Server {
             }
 
         }
+        
+        // 名前・アイコン・ポイント・順位を取得 ( req = {"id": ~~~} )
+        else if (path === "/api/getprofile") {
+            const pjson = JSON.parse(Deno.readTextFileSync('./point.json'));
+            const fjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
+            const pDup = pjson.find(dat => dat.id === req.id);
+            // ポイントを取得
+            if (pDup === undefined) {
+                var userPoint = 0;
+            } else {
+                var userPoint = pDup.point;
+            }
+            // 順位を取得
+            pjson.sort(function(p1, p2) {
+                if (p1.point < p2.point) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
+            let userRank = -1;
+            for (let i = 0; i < pjson.length; i++) {
+                if (pjson[i].id === req.id) {
+                    userRank = i + 1;
+                    break;
+                }
+            }
+            // 名前とアイコンを取得
+            const fDup = fjson.find(dat => dat.id === req.id);
+            if (fDup === undefined) {
+                var userName = "noname";
+                var userIcon = 0;
+            } else {
+                var userName = fDup.name;
+                var userIcon = fDup.icon;
+            }
+            return {
+                name: userName,
+                icon: userIcon,
+                point: userPoint,
+                rank: userRank,
+            };
+        }
+        
         else if (path === "/api/slack") {
             const parsed =  ky.post(req.url, {json: {text: req.text}});
             return { res: "OK" };
