@@ -6,6 +6,7 @@
         "answerList": ["50", "55", "47", "70"],
         "author": "すずとも",
         "difficulty": "C",
+        "category": "math",
         "point": 10,
         "timeLimit": 5
     },
@@ -16,6 +17,7 @@
         "answerList": ["2", "-2", "±2", "定義されない"],
         "author": "はーど",
         "difficulty": "D",
+        "category": "math",
         "point": 15,
         "timeLimit": 5
     },
@@ -26,6 +28,7 @@
         "answerList": ["糖質", "ビタミン", "脂質", "カルシウム", "タンパク質"],
         "author": "すずとも",
         "difficulty": "B",
+        "category": "home economics",
         "point": 20,
         "timeLimit": 5
     },
@@ -36,6 +39,7 @@
         "answerList": ["1", "11", "8", "23", "52"],
         "author": "すずとも",
         "difficulty": "A",
+        "category": "program",
         "point": 30,
         "timeLimit": 5
     },
@@ -46,6 +50,7 @@
         "answerList": ["○", "×"],
         "author": "すずとも",
         "difficulty": "B",
+        "category": "program",
         "point": 20,
         "timeLimit": 5
     },
@@ -56,6 +61,7 @@
         "answerList": ["31", "63", "127", "255", "511", "1023"],
         "author": "すずとも",
         "difficulty": "A",
+        "category": "math",
         "point": 30,
         "timeLimit": 5
     }

@@ -110,6 +110,7 @@ class MyServer extends Server {
             if (elapsedTime > (longest * 60000)) {
                 return { res: "timeover", quests: [], difficultyChoice: null };
             }
+
             const pdup = (pjson.find(dat => dat.id === req.id));
             const notsol = qjson.filter(function (item,index) {
                 let i = 0;
@@ -124,6 +125,7 @@ class MyServer extends Server {
             );
 
             return { res: "OK", quests: notsol, difficultyChoice: dup.difficultyChoice };
+
         }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
