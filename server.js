@@ -122,7 +122,7 @@ class MyServer extends Server {
                 }
                 return check;
             }
-            );
+            );　
 
             return { res: "OK", quests: notsol, difficultyChoice: dup.difficultyChoice };
 
