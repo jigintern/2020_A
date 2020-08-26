@@ -146,14 +146,28 @@ class MyServer extends Server {
             return { res: "OK", quests: notsol, difficultyChoice: dup.difficultyChoice };
 
         }
+        
+        // カテゴリ一覧を返す 
+        else if (path === "/api/getcategory") {
+            const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            let cat = [];
+            let i = 0;
+            for (i in json) {
+                cat.push(json[i].category);
+            }
+            const ficat = Array.from(new Set(cat));
+            return {category: ficat};
+        }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
         else if (path === "/api/checkans") {
             const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const pjson = JSON.parse(Deno.readTextFileSync('./point.json'));
             const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
+             const fjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
             // 問題の特定
             const org = qjson.find(dat => dat.questId === req.questId);
+            const fDup = fjson.find(dat => dat.id === req.id);
             var deltapt;
             if (org.answer === req.answer) {
                 var rlt = "correct";
@@ -175,6 +189,9 @@ class MyServer extends Server {
             } else {
                 dup.point += deltapt;
             }
+            fDup.solution = true;
+            fDup.solved.push(org.questId);
+            Deno.writeTextFileSync("./profile.json", JSON.stringify(fjson));
             Deno.writeTextFileSync("./point.json", JSON.stringify(pjson));
             return { result: rlt, answer: org.answer };
         }
@@ -189,8 +206,7 @@ class MyServer extends Server {
         else if (path === "/api/getpointrank") {
             const json = JSON.parse(Deno.readTextFileSync('./point.json'));
             let align = json;
-            if (json.length > 4){
-                align.sort(function(val1,val2){
+            align.sort(function(val1,val2){
                 var val1 = val1.point;
                 var val2 = val2.point;
                 if( val1 < val2 ) {
@@ -199,6 +215,7 @@ class MyServer extends Server {
                         return -1;
                     }
                 });
+            if (json.length > 4){
                 let tmp = align[0].point;
                 let ranking = 0;
                 let ret = [];
@@ -213,9 +230,10 @@ class MyServer extends Server {
                         tmp = align[i].point;
                     }
                 }
+
                 return JSON.stringify(ret);
             }　else {
-                return json;
+                return align;
             }
 
         }
