@@ -249,18 +249,22 @@ class MyServer extends Server {
             // 名前とアイコンを取得
             const fDup = fjson.find(dat => dat.id === req.id);
             if (fDup === undefined) {
-                var userName = "noname";
-                var userIcon = 0;
+                return {
+                    id: req.id,
+                    name: null,
+                    icon: null,
+                    introduction: null,
+                    prevTime: null,
+                    solution: null,
+                    solved: [],
+                    point: userPoint,
+                    rank: userRank
+                };
             } else {
-                var userName = fDup.name;
-                var userIcon = fDup.icon;
+                fDup.point = userPoint;
+                fDup.rank = userRank;
+                return fDup;
             }
-            return {
-                name: userName,
-                icon: userIcon,
-                point: userPoint,
-                rank: userRank,
-            };
         }
         
         else if (path === "/api/slack") {
