@@ -133,8 +133,10 @@ class MyServer extends Server {
             const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const pjson = JSON.parse(Deno.readTextFileSync('./point.json'));
             const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
+             const fjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
             // 問題の特定
             const org = qjson.find(dat => dat.questId === req.questId);
+            const fDup = fjson.find(dat => dat.id === req.id);
             var deltapt;
             if (org.answer === req.answer) {
                 var rlt = "correct";
@@ -156,6 +158,8 @@ class MyServer extends Server {
             } else {
                 dup.point += deltapt;
             }
+            fDup.solved.push(org.questId);
+            Deno.writeTextFileSync("./profile.json", JSON.stringify(fjson));
             Deno.writeTextFileSync("./point.json", JSON.stringify(pjson));
             return { result: rlt, answer: org.answer };
         }
