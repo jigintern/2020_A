@@ -32,24 +32,7 @@ export async function getUuid() {
     return uuid;
 }
 
-async function generateUuid() {
-    const res = await (await fetch("/api/getid")).json();
-    console.log(res);
-    return res.id;
-    /*
-    let chars = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".split("");
-    for (let i = 0, len = chars.length; i < len; i++) {
-        switch (chars[i]) {
-            case "x":
-                chars[i] = Math.floor(Math.random() * 16).toString(16);
-                break;
-            case "y":
-                chars[i] = (Math.floor(Math.random() * 4) + 8).toString(16);
-                break;
-        }
-    }
-    return chars.join("");*/
-}
+const generateUuid = async () => (await (await fetch("/api/getid")).json()).id;
 
 export async function showNotification(uuid) {
     // 通知を許可するかユーザに問いかける
@@ -63,16 +46,16 @@ export async function showNotification(uuid) {
 
             if (uuid === undefined) uuid = await getUuid();
             var json = await fetchJSON("/api/getalarm", { id: uuid });
-            console.log(json);
+            //console.log(json);
             if (json === null) {
                 console.log("起きる時刻を設定してください");
             } else {
-                console.log("----");
+                /*console.log("----");
                 console.log(json.id);
                 console.log(json.time);
-
+                */
                 state = compareTime(json.time);
-                console.log("compareTime", state);
+                //console.log("compareTime", state);
                 if (state >= 0) {
                     // document.getElementById("text").innerHTML= "gone...";
                     /*var newData = json;
@@ -97,10 +80,6 @@ export async function showNotification(uuid) {
                             notification.onclick = () => {
                                 window.focus();
                                 window.open("/showQuest.html", "_top");
-                                //const w = window.open("/showQuest.html", "_blank");
-                                //w.focus();
-                                //w.document.focus();
-                                //window.location.replace("./showQuest.html");
                             }
                             // document.getElementById("text").innerHTML= "good morning";
                             clearInterval(cnt);
