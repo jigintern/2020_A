@@ -170,8 +170,7 @@ class MyServer extends Server {
         else if (path === "/api/getpointrank") {
             const json = JSON.parse(Deno.readTextFileSync('./point.json'));
             let align = json;
-            if (json.length > 4){
-                align.sort(function(val1,val2){
+            align.sort(function(val1,val2){
                 var val1 = val1.point;
                 var val2 = val2.point;
                 if( val1 < val2 ) {
@@ -180,6 +179,7 @@ class MyServer extends Server {
                         return -1;
                     }
                 });
+            if (json.length > 4){
                 let tmp = align[0].point;
                 let ranking = 0;
                 let ret = [];
@@ -194,9 +194,10 @@ class MyServer extends Server {
                         tmp = align[i].point;
                     }
                 }
+
                 return JSON.stringify(ret);
             }　else {
-                return json;
+                return align;
             }
 
         }
