@@ -91,16 +91,7 @@ body {
   padding: 0;
   margin: 0;
 }
-header nav ul {
-  height: 60px;
-  margin-top: 0;
-}
-.header-list {
-  height: 60px;
-  float: left;
-  list-style: none;
-  text-align: right;
-}
+
 *{
   margin:0px;
   padding:0px;
@@ -123,10 +114,44 @@ h1::before {
   border-bottom: solid 15px transparent;
   border-right: solid 20px rgb(149, 158, 155);
 }
-footer{
-  background-color:#ffffff;
-    position: relative; top: 0; 
-    height:50px;
-    margin:0px;
-    padding:0px;
+
+.balloon2-left {
+  position: relative;
+  display: inline-block;
+  margin: 1.5em 0 1.5em 15px;
+  padding: 7px 10px;
+  min-width: 120px;
+  max-width: 100%;
+  color: #555;
+  font-size: 16px;
+  background: #FFF;
+  border: solid 3px #555;
+  box-sizing: border-box;
+}
+
+.balloon2-left:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -24px;
+  margin-top: -12px;
+  border: 12px solid transparent;
+  border-right: 12px solid #FFF;
+  z-index: 2;
+}
+
+.balloon2-left:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -30px;
+  margin-top: -14px;
+  border: 14px solid transparent;
+  border-right: 14px solid #555;
+  z-index: 1;
+}
+
+.balloon2-left p {
+  margin: 0;
+  padding: 0;
 }
