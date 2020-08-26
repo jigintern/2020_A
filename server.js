@@ -86,6 +86,7 @@ class MyServer extends Server {
         }
 
         // 問題一覧を取得する ( req = {"id": ~~~} )
+        // 一回解いたことがある問題は返さない
         // 戻り値
         //   アラームを設定していない -> notset
         //   設定時刻の前 -> early
@@ -94,6 +95,7 @@ class MyServer extends Server {
         else if (path === "/api/getquest") {
             const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
+            const pjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
             // 解答データを削除
             qjson.map(dat => { delete dat.answer });
             const dup = ajson.find(dat => dat.id === req.id);
@@ -108,7 +110,22 @@ class MyServer extends Server {
             if (elapsedTime > (longest * 60000)) {
                 return { res: "timeover", quests: [], difficultyChoice: null };
             }
-            return { res: "OK", quests: qjson, difficultyChoice: dup.difficultyChoice };
+
+            const pdup = (pjson.find(dat => dat.id === req.id));
+            const notsol = qjson.filter(function (item,index) {
+                let i = 0;
+                let check = true;
+                for (i in pdup.solved) {
+                    if (pdup.solved[i] === item.questId) {
+                        check = false;
+                    }
+                }
+                return check;
+            }
+            );
+
+            return { res: "OK", quests: notsol, difficultyChoice: dup.difficultyChoice };
+
         }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
