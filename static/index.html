@@ -41,10 +41,13 @@
             <li><a href="showQuest.html"><img src="task.jpg" alt="課題" width="300px" height="200px"> </a> </li>
             <br>
             <h2>・TOP5ランキング</h2>
-            <li><a href="showRanking.html"><img src="ranking.jpg" alt="課題" width="300px" height="200px"> </a> </li>
+            <li><a href="showRanking.html"><img src="ranking.jpg" alt="ランキング" width="300px" height="200px"> </a> </li>
             <br>
             <h2>・クエスト作成</h2>
-            <li><a href="createQuest.html"><img src="ranking.jpg" alt="課題" width="300px" height="200px"> </a> </li>
+            <li><a href="createQuest.html"><img src="ranking.jpg" alt="クエスト作成" width="300px" height="200px"> </a> </li>
+            <br>
+            <h2>・マイプロフィール</h2>
+            <li><a id="profile"><img src="ranking.jpg" alt="プロフィール" width="300px" height="200px"> </a> </li>
         </ul>
     </div>
 </body>
@@ -53,10 +56,12 @@
 </footer>
 
 <script type="module">
-    import { showNotification } from "./util.js";
+    import { showNotification, getUuid } from "./util.js";
 
     window.onload = async function () {
         showNotification();
+
+        profile.href = `/profile.html?id=${await getUuid()}`;
     }
 </script>
 
