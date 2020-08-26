@@ -9,19 +9,35 @@ class MyServer extends Server {
 
         // アラームを追加する ( req = {"id": ~~~, "time": ~~~, "difficultyChoice": ~~~} )
         if (path === "/api/setalarm") {
-            var json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+            var ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
+            var fjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
+            let userPrevTime;
             // 重複を確認 なければ追加 あれば更新
-            const dup = json.find(dat => dat.id === req.id);
-            if (dup === undefined) {
-                let pushData = req;
-                pushData.prevTime = null;
-                json.push(req);
+            const aDup = ajson.find(dat => dat.id === req.id);
+            if (aDup === undefined) {
+                userPrevTime = null;
+                ajson.push(req);
             } else {
-                dup.prevTime = dup.time;
-                dup.time = req.time;
-                dup.difficultyChoice = req.difficultyChoice;
+                userPrevTime = aDup.time;
+                aDup.time = req.time;
+                aDup.difficultyChoice = req.difficultyChoice;
             }
-            Deno.writeTextFileSync("./alarm.json", JSON.stringify(json));
+            Deno.writeTextFileSync("./alarm.json", JSON.stringify(ajson));
+            const fDup = fjson.find(dat => dat.id === req.id);
+            if (fDup === undefined) {
+                fjson.push({
+                    "id": req.id,
+                    "name": null,
+                    "icon": null,
+                    "introduction": null,
+                    "prevTime": userPrevTime,
+                    "solution": null,
+                    "solved": []
+                });
+            } else {
+                fDup.prevTime = userPrevTime;
+            }
+            Deno.writeTextFileSync("./profile.json", JSON.stringify(fjson));
             return { res: "OK" };
         }
 
