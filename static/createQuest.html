@@ -53,10 +53,10 @@
             </label>
         </div>
         <div>
-            <label>点数：<input type="number" id="point" required></input></label>
+            <label>点数（0~100点）：<input type="number" id="point" max="100" min="0" required></input>点</label>
         </div>
         <div>
-            <label>回答制限時間：<input type="number" id="timeLimit" required></input>分</label>
+            <label>回答制限時間（1~60分）：<input type="number" id="timeLimit" max="60" min="1" required></input>分</label>
         </div>
         <div>
             <label>作成者名：<input type="text" id="author" required></input></label>
