@@ -127,9 +127,6 @@ class MyServer extends Server {
             if (p_dup !== undefined) {
                 const now = new Date();
                 const sol = new Date(p_dup.solution);
-                if (p_dup.solution) {
-                    return { res: "finish", quests: [], difficultyChoice: null };
-                }
                 if (now.getUTCDate() === sol.getUTCDate() && now.getMonth() === sol.getMonth()) { //TODO
                     return { res: "finish", quests: [], difficultyChoice: null };
                 }
