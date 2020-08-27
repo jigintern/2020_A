@@ -128,7 +128,7 @@ class MyServer extends Server {
             if (p_dup.solution) {
                 return { res: "finish", quests: [], difficultyChoice: null };
             }
-            if (now.getDate() === sol.getDate() && now.getMonth() === sol.getMonth()) { //TODO
+            if (now.getUTCDate() === sol.getUTCDate() && now.getMonth() === sol.getMonth()) { //TODO
                 return { res: "finish", quests: [], difficultyChoice: null };
             }
             const elapsedTime = new Date().getTime() - dup.time;
