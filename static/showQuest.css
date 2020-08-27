@@ -1,43 +1,19 @@
-body{
-	background-color:rgb(30,36,47);
+ul {
+  list-style: none;
 }
-h1,h2,h3,h4{
- color:#ffffff;
+h2{
+  font-size:24px;
 }
 h3{
-    color:#ffffff;
     font-size:20px;
 }
-
-
-
-header{
-  background-color:#ffffff;
-  position: relative; top: 0; 
-  height:50px;
-  margin:0px;
-  padding:0px;
+.result{
+  font-size:4vw;
 }
-
-
-.midashi{
-    position: relative;
-    padding: 0.5em;
-    background: #a6d3c8;
-    color: white;
-  }
-  
-.midashi::before {
-    position: absolute;
-    content: '';
-    top: 100%;
-    left: 0;
-    border: none;
-    border-bottom: solid 15px transparent;
-    border-right: solid 20px rgb(149, 158, 155);
-  }
-
-  .box5 {
+.quest{
+  font-size:24px;
+}
+.box5 {
     padding: 1em 2em;
     margin: 3em 0;
     border: double 5px #4ec4d3;
@@ -46,7 +22,6 @@ header{
     margin: 0; 
     padding: 0;
 }
-
 .soushin{
 display       : inline-block;
 border-radius : 5%;          /* 角丸       */
@@ -59,17 +34,18 @@ color         : #000000;     /* 文字色     */
 line-height   : 1em;         /* 1行の高さ  */
 transition    : .3s;         /* なめらか変化 */
 font-weight: bold;
-
-border        : 2px solid #000000;    /* 枠の指定 */
+border        : 2px solid #006633;    /* 枠の指定 */
 }
 .soushin:hover {
 box-shadow    : none;        /* カーソル時の影消去 */
 color         : rgba(26, 26, 255, 0.80);     /* 背景色     */
 background    : #ffffff;     /* 文字色     */
 }
-
+.soushin:disabled {
+  color:#6e6e6e;
+  background:#ccc;
+}
 .alarm{
-
 display       : inline-block;
 border-radius : 5%;          /* 角丸       */
 font-size     : 18pt;        /* 文字サイズ */
@@ -81,22 +57,23 @@ color         : #000000;     /* 文字色     */
 line-height   : 1em;         /* 1行の高さ  */
 transition    : .3s;         /* なめらか変化 */
 font-weight: bold;
-
-border        : 2px solid #000000;    /* 枠の指定 */
+border        : 2px solid #006633;    /* 枠の指定 */
 }
 .alarm:hover {
 box-shadow    : none;        /* カーソル時の影消去 */
 color         : rgba(26, 26, 255, 0.80);     /* 背景色     */
 background    : #ffffff;     /* 文字色     */
 }
-
-
-
+.alarm:disabled {
+  color:#6e6e6e;
+  background: #ccc;
+}
  select {
    appearance: none;
    -webkit-appearance: none;
    -moz-appearance: none;
  }
+
  .cp_ipselect {
 	overflow: hidden;
 	width: 40%;
@@ -116,7 +93,6 @@ background    : #ffffff;     /* 文字色     */
 	box-shadow: none;
 	-webkit-appearance: none;
   appearance: none;
-
 }
 .cp_ipselect select::-ms-expand {
     display: none;
@@ -127,15 +103,26 @@ background    : #ffffff;     /* 文字色     */
 	border: 2px solid #da3c41;
   border-radius: 50px;
   background: transparent;
- 
+  font-size: 24px;
 }
-
 .cp_ipselect.cp_sl04 select {
 	padding: 8px 38px 8px 8px;
   color: #da3c41;
-  
 }
-
+.cp_ipradio {
+  width: 90%;
+  margin: 2em auto;
+  text-align: left;
+  list-style: none;
+  font-size:24px;
+}
+.cp_ipradio label {
+  font-family: Arial, sans-serif;
+  line-height: 135%;
+  position: relative;
+  margin: 0.7rem;
+  cursor: pointer;
+}
 .kokuban-s2 {
   position: relative;
   margin: 2em auto;
@@ -147,7 +134,6 @@ background    : #ffffff;     /* 文字色     */
   border-radius: 3px; /* 角の丸み */
   box-shadow: 0 0 5px #333, 0 0 5px #555 inset;
   }
- 
 .nittyoku
 {
   -ms-writing-mode: tb-rl;
@@ -196,48 +182,6 @@ background    : #ffffff;     /* 文字色     */
     font-size: 25px;
     color: #FFA79F;
   }
+  
 
-  ul {
-    list-style: none;
-  }
-
-  .balloon2-left {
-    position: relative;
-    display: inline-block;
-    margin: 1.5em 0 1.5em 15px;
-    padding: 7px 10px;
-    min-width: 120px;
-    max-width: 100%;
-    color: #555;
-    font-size: 16px;
-    background: #FFF;
-    border: solid 3px #555;
-    box-sizing: border-box;
-  }
   
-  .balloon2-left:before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: -24px;
-    margin-top: -12px;
-    border: 12px solid transparent;
-    border-right: 12px solid #FFF;
-    z-index: 2;
-  }
-  
-  .balloon2-left:after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: -30px;
-    margin-top: -14px;
-    border: 14px solid transparent;
-    border-right: 14px solid #555;
-    z-index: 1;
-  }
-  
-  .balloon2-left p {
-    margin: 0;
-    padding: 0;
-  }

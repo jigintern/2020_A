@@ -4,11 +4,79 @@ header{
     height:50px;
   }
 
-body{
-    background-color:rgb(30,36,47);
+  h1,h2,h3,h4{
+    color:#ffffff;
   }
 
-  *{
+body{
+    background-color:rgb(30,36,47);
     margin:0px;
     padding:0px;
   }
+
+  hr{
+    margin:0px;
+    padding:0px;
+  }
+
+  .midashi{
+    position: relative;
+    padding: 0.5em;
+    background: #a6d3c8;
+    color: white;
+   
+  }
+  
+.midashi::before {
+    position: absolute;
+    content: '';
+    top: 100%;
+    left: 0;
+    border: none;
+    border-bottom: solid 15px transparent;
+    border-right: solid 20px rgb(149, 158, 155);
+  }
+
+  .space{
+    margin-top:50px;
+}
+.balloon2-left {
+  position: relative;
+  display: inline-block;
+  margin: 1.5em 0 1.5em 15px;
+  padding: 7px 10px;
+  min-width: 120px;
+  max-width: 100%;
+  color: #555;
+  font-size: 16px;
+  background: #FFF;
+  border: solid 3px #555;
+  box-sizing: border-box;
+}
+
+.balloon2-left:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -24px;
+  margin-top: -12px;
+  border: 12px solid transparent;
+  border-right: 12px solid #FFF;
+  z-index: 2;
+}
+
+.balloon2-left:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -30px;
+  margin-top: -14px;
+  border: 14px solid transparent;
+  border-right: 14px solid #555;
+  z-index: 1;
+}
+
+.balloon2-left p {
+  margin: 0;
+  padding: 0;
+}

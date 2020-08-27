@@ -18,21 +18,21 @@
 
 
 	<hr>
-	<br><br>
+	
 
-	<h1>起床時間の設定</h1>
+	<h1 class="midashi">起床時間の設定</h1>
 
 
 
-	<br><br><br>
+	
 
 	<center>
 
-		<font1 id="time"></font1>
+		<div class="timer" id="time"></div>
 
 	</center>
 
-	<br><br>
+
 
 	<script>
 		time();
@@ -45,12 +45,12 @@
 
 	<form id="input-form">
 
-		<br><br>
+	
 		<center>
-
+			<div class="date">
 			<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
-
-			<br><br>
+			</div>
+			
 			<div class="cp_ipselect cp_sl04">
 				<span style="color:white">課題の難易度：</span>
 				<select name="difficulty" id="difficulty">
@@ -63,7 +63,7 @@
 					<option value="E">E</option>
 				</select>
 			</div>
-			<br><br><br>
+			
 			<div>
 				<span style="color:white">現在設定されてる時刻：</span>
 				<span style="color:white" id="nowset-time">-</span>
@@ -72,19 +72,19 @@
 				<span style="color:white">前回設定した時刻：</span>
 				<span style="color:white" id="lastset-time">-</span>
 			</div>
-			<br><br><br>
+			
 			<label><input type="checkbox" id="repeat">　繰り返し設定（毎日）</label>
 
-			<br><br>
-			<input type="submit" value"送信" class="button">
+			
+			<input type="submit" value="送信" class="button">
 		</center>
 
 		<!--<h2 id="set-result"></h2>-->
 
-		<br>
+		
 
 	</form>
-	<br>
+	
 
 
 
