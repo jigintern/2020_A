@@ -121,16 +121,18 @@ class MyServer extends Server {
             qjson.map(dat => { delete dat.answer });
             const p_dup = pjson.find(dat => dat.id === req.id);
             const dup = ajson.find(dat => dat.id === req.id);
-            const now = new Date();
-            const sol = new Date(p_dup.solution);
             if (dup === undefined) {
                 return { res: "notset", quests: [], difficultyChoice: null };
-            }            
-            if (p_dup.solution) {
-                return { res: "finish", quests: [], difficultyChoice: null };
             }
-            if (now.getUTCDate() === sol.getUTCDate() && now.getMonth() === sol.getMonth()) { //TODO
-                return { res: "finish", quests: [], difficultyChoice: null };
+            if (p_dup !== undefined) {
+                const now = new Date();
+                const sol = new Date(p_dup.solution);
+                if (p_dup.solution) {
+                    return { res: "finish", quests: [], difficultyChoice: null };
+                }
+                if (now.getUTCDate() === sol.getUTCDate() && now.getMonth() === sol.getMonth()) { //TODO
+                    return { res: "finish", quests: [], difficultyChoice: null };
+                }
             }
             const elapsedTime = new Date().getTime() - dup.time;
             if (elapsedTime < 0) {
