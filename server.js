@@ -92,11 +92,12 @@ class MyServer extends Server {
             delete jsondoc.questId;
             // 重複を確認 なければ追加 あればエラーを返す
             const dup = jsondoc.find(dat => JSON.stringify(dat) === JSON.stringify(req));
-            if (dup === undefined) {
+            if (dup === undefined && req.answerList.length !== 1) {
                 const occupied = json.map(dat => dat.questId);
                 let newQuestId = 0;
                 for (; (occupied.find(dat => dat === newQuestId) !== undefined); newQuestId++);
                 req.questId = newQuestId;
+
                 json.push(req);
                 Deno.writeTextFileSync("./quest.json", JSON.stringify(json));
                 return { res: "OK" };
@@ -121,6 +122,11 @@ class MyServer extends Server {
             qjson.map(dat => { delete dat.answer });
             const p_dup = pjson.find(dat => dat.id === req.id);
             const dup = ajson.find(dat => dat.id === req.id);
+
+            const nowtime = new Date();
+            const now = new Date(nowtime.getTime() - nowtime.getTimezoneOffset()*60000);
+            const sol = new Date(p_dup.solution - nowtime.getTimezoneOffset()*60000);
+
             if (dup === undefined) {
                 return { res: "notset", quests: [], difficultyChoice: null };
             }
