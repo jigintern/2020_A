@@ -6,6 +6,7 @@ li {
     padding: 20px 0px 50px 2.5em;
     color: #ffffff;
     font-size: 30px;
+    
 }
 li:before,
 li:after {
@@ -42,7 +43,10 @@ li:nth-of-type(5) {
     color: #ffffff;
 }
 
- 
+a{
+    color:#ffefbc;
+}
+a:visited{
+    color : #ffefbc;
+  }
 
-  
-  
