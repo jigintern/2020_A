@@ -33,12 +33,11 @@
             <label>選択肢（答えにはチェックを入れる）：
                 <ul id="answers" required></ul>
             </label>
-            <button id="add-answer">回答追加</button>
+            <button type="button" id="add-answer">回答追加</button>
         </div>
         <div>
             <label>難易度：
                 <select id="difficulty">
-                    <option value="">なし</option>
                     <option value="S">S</option>
                     <option value="A">A</option>
                     <option value="B">B</option>
@@ -54,10 +53,10 @@
             </label>
         </div>
         <div>
-            <label>点数：<input type="number" id="point" required></input></label>
+            <label>点数（0~100点）：<input type="number" id="point" max="100" min="0" required></input>点</label>
         </div>
         <div>
-            <label>回答制限時間：<input type="number" id="timeLimit" required></input>分</label>
+            <label>回答制限時間（1~60分）：<input type="number" id="timeLimit" max="60" min="1" required></input>分</label>
         </div>
         <div>
             <label>作成者名：<input type="text" id="author" required></input></label>
@@ -78,11 +77,14 @@
     </footer>
     <script type="module">
         import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-        import { showNotification } from "./util.js";
+        import { showNotification, getUuid } from "./util.js";
 
         window.onload = async () => {
             showNotification();
             getCategory();
+
+            const profile = await fetchJSON("/api/getprofile", { id: await getUuid() });
+            author.value = profile.name;
         }
 
         const getCategory = async () => {
@@ -111,15 +113,19 @@
             li.appendChild(textarea);
 
             const delButton = document.createElement("button");
+            delButton.type = "button";
             delButton.textContent = "削除";
-            delButton.onclick = (e) => {
+            delButton.onclick = async (e) => {
                 e.preventDefault();
-                answers.removeChild(e.target.parentElement);
+                console.log(answers.childNodes);
+                if (answers.childNodes.length <= 2) await swal("", "選択肢が1つの問題は作れません。", "warning");
+                else answers.removeChild(e.target.parentElement);
             }
             li.appendChild(delButton);
 
             answers.appendChild(li);
         }
+        document.getElementById("add-answer").click();
         document.getElementById("add-answer").click();
 
         document.getElementById("quest-form").onsubmit = async (e) => {
