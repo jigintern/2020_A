@@ -21,6 +21,7 @@ class MyServer extends Server {
                 userPrevTime = aDup.time;
                 aDup.time = req.time;
                 aDup.difficultyChoice = req.difficultyChoice;
+                aDup.repeat = req.repeat;
             }
             Deno.writeTextFileSync("./alarm.json", JSON.stringify(ajson));
             const fDup = fjson.find(dat => dat.id === req.id);
