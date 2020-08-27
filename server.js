@@ -9,35 +9,19 @@ class MyServer extends Server {
 
         // アラームを追加する ( req = {"id": ~~~, "time": ~~~, "difficultyChoice": ~~~} )
         if (path === "/api/setalarm") {
-            var ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
-            var fjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
-            let userPrevTime;
+            var json = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             // 重複を確認 なければ追加 あれば更新
-            const aDup = ajson.find(dat => dat.id === req.id);
-            if (aDup === undefined) {
-                userPrevTime = null;
-                ajson.push(req);
+            const dup = json.find(dat => dat.id === req.id);
+            if (dup === undefined) {
+                let pushData = req;
+                pushData.prevTime = null;
+                json.push(req);
             } else {
-                userPrevTime = aDup.time;
-                aDup.time = req.time;
-                aDup.difficultyChoice = req.difficultyChoice;
+                dup.prevTime = dup.time;
+                dup.time = req.time;
+                dup.difficultyChoice = req.difficultyChoice;
             }
-            Deno.writeTextFileSync("./alarm.json", JSON.stringify(ajson));
-            const fDup = fjson.find(dat => dat.id === req.id);
-            if (fDup === undefined) {
-                fjson.push({
-                    "id": req.id,
-                    "name": null,
-                    "icon": null,
-                    "introduction": null,
-                    "prevTime": userPrevTime,
-                    "solution": null,
-                    "solved": []
-                });
-            } else {
-                fDup.prevTime = userPrevTime;
-            }
-            Deno.writeTextFileSync("./profile.json", JSON.stringify(fjson));
+            Deno.writeTextFileSync("./alarm.json", JSON.stringify(json));
             return { res: "OK" };
         }
 
@@ -86,16 +70,13 @@ class MyServer extends Server {
         // 問題を追加する ( req = {問題データ} )
         else if (path === "/api/setquest") {
             const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
-            const jsondoc = JSON.parse(JSON.stringify(json));
+            const jsondoc = json;
+            const reqdoc = req;
             jsondoc.map(dat => { delete dat.questId });
-            delete jsondoc.questId;
+            delete reqdoc.questId;
             // 重複を確認 なければ追加 あればエラーを返す
-            const dup = jsondoc.find(dat => JSON.stringify(dat) === JSON.stringify(req));
+            const dup = jsondoc.find(dat => JSON.stringify(dat) === JSON.stringify(reqdoc));
             if (dup === undefined) {
-                const occupied = json.map(dat => dat.questId);
-                let newQuestId = 0;
-                for (; (occupied.find(dat => dat === newQuestId) !== undefined); newQuestId++);
-                req.questId = newQuestId;
                 json.push(req);
                 Deno.writeTextFileSync("./quest.json", JSON.stringify(json));
                 return { res: "OK" };
@@ -105,26 +86,19 @@ class MyServer extends Server {
         }
 
         // 問題一覧を取得する ( req = {"id": ~~~} )
-        // 一回解いたことがある問題は返さない
         // 戻り値
         //   アラームを設定していない -> notset
-        //   既に解いた  -> finish
         //   設定時刻の前 -> early
         //   全問題時間切れ -> timeover
         //   問題なし -> OK
         else if (path === "/api/getquest") {
             const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
-            const pjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
             // 解答データを削除
             qjson.map(dat => { delete dat.answer });
-            const p_dup = pjson.find(dat => dat.id === req.id);
             const dup = ajson.find(dat => dat.id === req.id);
             if (dup === undefined) {
                 return { res: "notset", quests: [], difficultyChoice: null };
-            }            
-            if (p_dup.solution) {
-                return { res: "finish", quests: [], difficultyChoice: null };
             }
             const elapsedTime = new Date().getTime() - dup.time;
             if (elapsedTime < 0) {
@@ -134,34 +108,27 @@ class MyServer extends Server {
             if (elapsedTime > (longest * 60000)) {
                 return { res: "timeover", quests: [], difficultyChoice: null };
             }
-
-            const pdup = (pjson.find(dat => dat.id === req.id));
-            const notsol = qjson.filter(function (item,index) {
-                let i = 0;
-                let check = true;
-                for (i in pdup.solved) {
-                    if (pdup.solved[i] === item.questId) {
-                        check = false;
-                    }
-                }
-                return check;
-            }
-            );　
-
-            return { res: "OK", quests: notsol, difficultyChoice: dup.difficultyChoice };
-
+            return { res: "OK", quests: qjson, difficultyChoice: dup.difficultyChoice };
         }
         
-        // カテゴリ一覧を返す 
+        // カテゴリ一覧を取得 ( req = { "category": ~~~})
         else if (path === "/api/getcategory") {
             const json = JSON.parse(Deno.readTextFileSync('./quest.json'));
-            let cat = [];
-            let i = 0;
-            for (i in json) {
-                cat.push(json[i].category);
+            const dup = json.filter(
+                function(item,index) {
+                if(item.category === req.category) {
+                    return true;
+                }
             }
-            const ficat = Array.from(new Set(cat));
-            return {category: ficat};
+            );
+            if (dup.length === 0) {
+                return { res: "NotFound"};
+            }
+            else {
+                return dup;
+            }
+
+
         }
 
         // 答え合わせをしてポイントを変更する ( req = {"id": ~~~, "questId": ~~~, "answer": ~~~} )
@@ -169,10 +136,8 @@ class MyServer extends Server {
             const ajson = JSON.parse(Deno.readTextFileSync('./alarm.json'));
             const pjson = JSON.parse(Deno.readTextFileSync('./point.json'));
             const qjson = JSON.parse(Deno.readTextFileSync('./quest.json'));
-             const fjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
             // 問題の特定
             const org = qjson.find(dat => dat.questId === req.questId);
-            const fDup = fjson.find(dat => dat.id === req.id);
             var deltapt;
             if (org.answer === req.answer) {
                 var rlt = "correct";
@@ -194,9 +159,6 @@ class MyServer extends Server {
             } else {
                 dup.point += deltapt;
             }
-            fDup.solution = true;
-            fDup.solved.push(org.questId);
-            Deno.writeTextFileSync("./profile.json", JSON.stringify(fjson));
             Deno.writeTextFileSync("./point.json", JSON.stringify(pjson));
             return { result: rlt, answer: org.answer };
         }
@@ -211,7 +173,8 @@ class MyServer extends Server {
         else if (path === "/api/getpointrank") {
             const json = JSON.parse(Deno.readTextFileSync('./point.json'));
             let align = json;
-            align.sort(function(val1,val2){
+            if (json.length > 4){
+                align.sort(function(val1,val2){
                 var val1 = val1.point;
                 var val2 = val2.point;
                 if( val1 < val2 ) {
@@ -220,7 +183,6 @@ class MyServer extends Server {
                         return -1;
                     }
                 });
-            if (json.length > 4){
                 let tmp = align[0].point;
                 let ranking = 0;
                 let ret = [];
@@ -235,79 +197,12 @@ class MyServer extends Server {
                         tmp = align[i].point;
                     }
                 }
-
                 return JSON.stringify(ret);
             }　else {
-                return align;
+                return json;
             }
 
         }
-        
-        // プロフィールを設定 ( req = {"id": ~~~, "name": ~~~, "icon": ~~~, "introduction": ~~~} )
-        else if (path === "/api/setprofile") {
-            const json = JSON.parse(Deno.readTextFileSync('./profile.json'));
-            const dup = json.find(dat => dat.id === req.id);
-            if (dup === undefined) {
-                req.prevTime = null;
-                req.solution = null;
-                req.solved = [];
-                json.push(req);
-            } else {
-                dup.name = req.name;
-                dup.icon = req.icon;
-                dup.introduction = req.introduction;
-            }
-            Deno.writeTextFileSync("./profile.json", JSON.stringify(json));
-            return { res: "OK" };
-        }
-
-        // 名前・アイコン・ポイント・順位を取得 ( req = {"id": ~~~} )
-        else if (path === "/api/getprofile") {
-            const pjson = JSON.parse(Deno.readTextFileSync('./point.json'));
-            const fjson = JSON.parse(Deno.readTextFileSync('./profile.json'));
-            const pDup = pjson.find(dat => dat.id === req.id);
-            // ポイントを取得
-            if (pDup === undefined) {
-                var userPoint = 0;
-            } else {
-                var userPoint = pDup.point;
-            }
-            // 順位を取得
-            pjson.sort(function(p1, p2) {
-                if (p1.point < p2.point) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            });
-            let userRank = -1;
-            for (let i = 0; i < pjson.length; i++) {
-                if (pjson[i].id === req.id) {
-                    userRank = i + 1;
-                    break;
-                }
-            }
-            // 名前とアイコンを取得
-            const fDup = fjson.find(dat => dat.id === req.id);
-            if (fDup === undefined) {
-                return {
-                    id: req.id,
-                    name: null,
-                    icon: null,
-                    introduction: null,
-                    prevTime: null,
-                    solution: null,
-                    solved: [],
-                    point: userPoint,
-                    rank: userRank
-                };
-            } else {
-                fDup.point = userPoint;
-                fDup.rank = userRank;
-                return fDup;
-            }
-        }
-        
         else if (path === "/api/slack") {
             const parsed =  ky.post(req.url, {json: {text: req.text}});
             return { res: "OK" };

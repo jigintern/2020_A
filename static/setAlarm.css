@@ -1,41 +1,25 @@
 
-h1 {
-  position: relative;
-  padding: 0.5em;
-  background: #a6d3c8;
-  color: white;
-}
-
-h1::before {
-  position: absolute;
-  content: '';
-  top: 100%;
-  left: 0;
-  border: none;
-  border-bottom: solid 15px transparent;
-  border-right: solid 20px rgb(149, 158, 155);
-}
-
-h2{
-  color:#ffffff;
-  
- 
-}
-
 .back{
 	background-color:#ffffff;
 }
 
-font1{
+.timer{
     font-family: sans-serif;
     font-size: 50px;
     color:#ffffff;
     font-weight:bold;
+    margin-top:40px;
+   
 }
+.date{
+  margin-top:20px;
+}
+
 
 .button {
   display       : inline-block;
-  font-size     : 18pt;       
+  font-size     : 18pt;  
+  font-weight: bold;     
   text-align    : center;      
   cursor        : pointer;    
   padding       : 12px 33px;   
@@ -43,12 +27,16 @@ font1{
   color         : #ffffff;    
   line-height   : 1em;         
   transition    : .3s;       
-  border        : 2px solid #1a1aff;  
+  border        : 2px solid #1a1aff; 
+  margin:30px 
+  
 }
 .button:hover {
   color         : #007fff;    
   background    : #ffffff;    
 }
+
+
 
 select {
   appearance: none;
@@ -95,12 +83,15 @@ select {
 }
 
 label{
-  color:#ffffff
+  color:#ffffff;
+  
 }
 label input[type="checkbox"] {
   width         : 17pt;        /* 大きさ：横 */
   height        : 17pt;        /* 大きさ：縦 */
   vertical-align: top;         /* 並び位置   */
+  margin-top:45px;
+  padding:10px;
 }
  /* --- チェックボックス直後のlabel --- */
  label input[type="checkbox"] + label {

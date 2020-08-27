@@ -1,41 +1,34 @@
-body{
-	background-color:rgb(30,36,47);
+.result{
+  font-size:4vw;
 }
-h1,h2,h3,h4{
- color:#ffffff;
+h2{
+  font-size:24px;
 }
+
+.quest{
+  font-size:24px;
+}
+
 h3{
-    color:#ffffff;
     font-size:20px;
 }
 
+.cp_ipradio {
+  width: 90%;
+  margin: 2em auto;
+  text-align: left;
+  list-style: none;
+  font-size:24px;
 
-
-header{
-  background-color:#ffffff;
-  position: relative; top: 0; 
-  height:50px;
-  margin:0px;
-  padding:0px;
+}
+.cp_ipradio label {
+  font-family: Arial, sans-serif;
+  line-height: 135%;
+  position: relative;
+  margin: 0.7rem;
+  cursor: pointer;
 }
 
-
-.midashi{
-    position: relative;
-    padding: 0.5em;
-    background: #a6d3c8;
-    color: white;
-  }
-  
-.midashi::before {
-    position: absolute;
-    content: '';
-    top: 100%;
-    left: 0;
-    border: none;
-    border-bottom: solid 15px transparent;
-    border-right: solid 20px rgb(149, 158, 155);
-  }
 
   .box5 {
     padding: 1em 2em;
@@ -60,16 +53,20 @@ line-height   : 1em;         /* 1行の高さ  */
 transition    : .3s;         /* なめらか変化 */
 font-weight: bold;
 
-border        : 2px solid #000000;    /* 枠の指定 */
+border        : 2px solid #006633;    /* 枠の指定 */
 }
+
 .soushin:hover {
 box-shadow    : none;        /* カーソル時の影消去 */
 color         : rgba(26, 26, 255, 0.80);     /* 背景色     */
 background    : #ffffff;     /* 文字色     */
 }
+.soushin:disabled {
+  color:#6e6e6e;
+  background:#ccc;
+}
 
 .alarm{
-
 display       : inline-block;
 border-radius : 5%;          /* 角丸       */
 font-size     : 18pt;        /* 文字サイズ */
@@ -82,12 +79,17 @@ line-height   : 1em;         /* 1行の高さ  */
 transition    : .3s;         /* なめらか変化 */
 font-weight: bold;
 
-border        : 2px solid #000000;    /* 枠の指定 */
+border        : 2px solid #006633;    /* 枠の指定 */
 }
+
 .alarm:hover {
 box-shadow    : none;        /* カーソル時の影消去 */
 color         : rgba(26, 26, 255, 0.80);     /* 背景色     */
 background    : #ffffff;     /* 文字色     */
+}
+.alarm:disabled {
+  color:#6e6e6e;
+  background: #ccc;
 }
 
 
@@ -154,9 +156,8 @@ background    : #ffffff;     /* 文字色     */
   writing-mode: vertical-rl;
   position: absolute; right: 0; bottom: 0;
   font-weight: 300;
-  font-size: 18px;
+  font-size: 24px;
 }
-
   ul.sample1{
     counter-reset:list;
     list-style-type:none;
@@ -241,3 +242,4 @@ background    : #ffffff;     /* 文字色     */
     margin: 0;
     padding: 0;
   }
+

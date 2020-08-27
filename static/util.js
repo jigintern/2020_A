@@ -76,7 +76,7 @@ export async function showNotification(uuid) {
                         state = compareTime(json.time);
                         if (state >= 0) {
                             console.log("now");
-                            const notification = new Notification("起きる時間だよ！\n今日もクエスト頑張ろう！");
+                            const notification = new Notification("起きる時間だよ！\n今日もミッション頑張ろう！");
                             notification.onclick = () => {
                                 window.focus();
                                 window.open("/showQuest.html", "_top");

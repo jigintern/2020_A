@@ -1,9 +1,4 @@
 
-
-h1,h2,h3{
-	color:#ffffff;
-}
-
 ul {
   list-style: none;
 }
@@ -19,17 +14,27 @@ footer{
 .example {/*親div*/
   position: relative;/*相対配置*/
   margin:0px;
-  
+  padding:0px;
   }
 
 .example p {
   position: absolute;/*絶対配置*/
   color: #000000;/*文字は白に*/
-  
   font-size: 5vw;
   right: 0; bottom: 0;
   font-weight: 600;
   }
+
+  .top-banner{
+    display: flex;
+    flex-wrap:wrap;
+    margin:0;
+    padding:0;
+    overflow: hidden;
+    height: 70px;
+  }
+  
+ 
 
   p span{
     display        : inline-block;
