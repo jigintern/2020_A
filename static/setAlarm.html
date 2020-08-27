@@ -4,9 +4,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<link rel="stylesheet" href="./setAlarm.css">
 	<link rel="stylesheet" href="./all.css">
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<title>時刻設定</title>
 
 </head>
@@ -18,13 +18,13 @@
 
 
 	<hr>
-
+	
 
 	<h1 class="midashi">起床時間の設定</h1>
 
 
 
-
+	
 
 	<center>
 
@@ -45,12 +45,12 @@
 
 	<form id="input-form">
 
-
+	
 		<center>
 			<div class="date">
-				<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
+			<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
 			</div>
-
+			
 			<div class="cp_ipselect cp_sl04">
 				<span style="color:white">課題の難易度：</span>
 				<select name="difficulty" id="difficulty">
@@ -63,7 +63,7 @@
 					<option value="E">E</option>
 				</select>
 			</div>
-
+			
 			<div>
 				<span style="color:white">現在設定されてる時刻：</span>
 				<span style="color:white" id="nowset-time">-</span>
@@ -72,19 +72,19 @@
 				<span style="color:white">前回設定した時刻：</span>
 				<span style="color:white" id="lastset-time">-</span>
 			</div>
-
+			
 			<label><input type="checkbox" id="repeat">　繰り返し設定（毎日）</label>
 
-
+			
 			<input type="submit" value="送信" class="button">
 		</center>
 
 		<!--<h2 id="set-result"></h2>-->
 
-
+		
 
 	</form>
-
+	
 
 
 
