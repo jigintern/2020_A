@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<link rel="stylesheet" href="./showQuest.css">
 	<link rel="stylesheet" href="./all.css">
 	<title>クエスト一覧</title>
@@ -67,6 +68,7 @@
 				<option value="difficulty-up">難易度（昇順）</option>
 				<option value="difficulty-down">難易度（降順）</option>
 				<option value="point">獲得ポイント</option>
+				<option value="category">カテゴリ別</option>
 			</select>
 		</div>
 		<div class="box5">
@@ -108,7 +110,7 @@
 			const list = form.choices;
 			const answer = parseInt(list.value);
 			if (isNaN(answer)) {
-				window.alert("回答が選択されていません");
+				await swal("エラー", "回答が選択されていません", "error");
 			} else {
 				const res = await fetchJSON("/api/checkans", {
 					id: uuid,
@@ -144,7 +146,7 @@
 					const res = await fetchJSON("/api/updatealarm", { id: uuid });
 					const getData = await fetchJSON("/api/getalarm", { id: uuid });
 
-					window.alert(`繰り返し設定がONだったので自動更新。\n${new Date(getData.time).toLocaleString()}にアラームを設定しました！`);
+					await swal(`繰り返し設定がONだったので自動更新。\n${new Date(getData.time).toLocaleString()}にアラームを設定しました！`);
 				} else {
 					console.log("a");
 					const updateAlarm = document.getElementById("update-alarm");
@@ -155,7 +157,7 @@
 						e.target.disabled = true;
 
 						const getData = await fetchJSON("/api/getalarm", { id: uuid });
-						window.alert(`${new Date(getData.time).toLocaleString()}にアラームを設定しました！`);
+						await swal(`${new Date(getData.time).toLocaleString()}にアラームを設定しました！`);
 					}
 				}
 			}
@@ -166,15 +168,14 @@
 			console.log(getJSON);
 			if (getJSON.res !== "OK") {
 				if (getJSON.res === "notset") {
-					window.alert("アラームが設定されていません。\nトップページに移動します。");
+					await swal("エラー", "アラームが設定されていません。\nトップページに移動します。", "error");
 				} else if (getJSON.res === "early") {
-					window.alert("設定時刻前です。\n設定時刻より後にもう一度アクセスしてください。\nトップページに移動します。");
+					await swal("", "設定時刻前です。\n設定時刻より後にもう一度アクセスしてください。\nトップページに移動します。", "warning");
 				} else if (getJSON.res === "timeover") {
-					window.alert("時間切れです。明日はちゃんとおきましょう。\nトップページに移動します。");
+					await swal("エラー", "時間切れです。明日はちゃんとおきましょう。\nトップページに移動します。", "error");
 				} else if (getJSON.res === "finish") {
-					window.alert("今日のクエストは終了しました！また明日頑張りましょう！\nトップページに移動します。");
+					await swal("", "今日のクエストは終了しました！また明日頑張りましょう！\nトップページに移動します。", "success");
 				}
-
 				window.open("/index.html", "_self");
 			} else {
 				questJson = getJSON.quests;
@@ -182,7 +183,7 @@
 			}
 		}
 
-		document.getElementById("sort-type").onchange = function () {
+		document.getElementById("sort-type").onchange = async function () {
 			const difficultyList = ["S", "A", "B", "C", "D", "E"];
 			let questList = [];
 			if (this.value === "standard") {
@@ -202,13 +203,18 @@
 			} else if (this.value === "point") {
 				questList = questList.concat(questJson);
 				questList.sort((a, b) => b.point - a.point);
+			} else if (this.value === "category") {
+				const categories = (await (await fetch("/api/getcategory")).json()).category;
+				categories.forEach(c => {
+					questList = questList.concat(questJson.filter(e => e.category === c));
+				});
 			}
 
 			// リスト作成
 			quests.innerHTML = "";
 			for (let i = 0; i < questList.length; i++) {
 				const li = document.createElement("li");
-				li.textContent = `${questList[i].question} 難易度：${questList[i].difficulty} ポイント：${questList[i].point}`;
+				li.textContent = `${questList[i].question} 難易度：${questList[i].difficulty} ポイント：${questList[i].point} カテゴリー：${questList[i].category}`;
 				console.log(li.onclick);
 				li.onclick = () => {
 					selectedQuestid = questList[i].questId;
