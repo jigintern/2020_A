@@ -120,7 +120,7 @@
             solution.textContent = isSameDate(new Date(), new Date(profile.solution)) ? "解いた" : "まだ解いてない";
             solved.textContent = profile.solved.length;
             point.textContent = profile.point;
-            rank.textContent = profile.rank === null ? ":" : profile.rank;
+            rank.textContent = profile.rank === null ? "" : profile.rank;
         }
 
         function getQueryId() {
