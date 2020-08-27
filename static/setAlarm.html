@@ -13,16 +13,25 @@
 <body>
 	<header>
 		<a href="index.html"><img src="logo.png" height="40px"></a>
-		<hr>
 	</header>
-	
-<div class="space">
-	<h1 class="midashi">起床時間の設定</h1>
+
+
+	<hr>
+	<br><br>
+
+	<h1>起床時間の設定</h1>
+
+
+
+	<br><br><br>
+
 	<center>
 
-		<div class="timer" id="time"></div>
+		<font1 id="time"></font1>
 
-	
+	</center>
+
+	<br><br>
 
 	<script>
 		time();
@@ -34,10 +43,13 @@
 	</script>
 
 	<form id="input-form">
-			<div class="date">
+
+		<br><br>
+		<center>
+
 			<input type="datetime-local" id="datetime" size=50 style="font-size:30px;" required>
-			</div>
-		
+
+			<br><br>
 			<div class="cp_ipselect cp_sl04">
 				<span style="color:white">課題の難易度：</span>
 				<select name="difficulty" id="difficulty">
@@ -50,7 +62,7 @@
 					<option value="E">E</option>
 				</select>
 			</div>
-			
+			<br><br><br>
 			<div>
 				<span style="color:white">現在設定されてる時刻：</span>
 				<span style="color:white" id="nowset-time">-</span>
@@ -59,19 +71,19 @@
 				<span style="color:white">前回設定した時刻：</span>
 				<span style="color:white" id="lastset-time">-</span>
 			</div>
-			
+			<br><br><br>
 			<label><input type="checkbox" id="repeat">　繰り返し設定（毎日）</label>
-			
-			
-			<input type="submit" value="送信" class="button">
+
+			<br><br>
+			<input type="submit" value"送信" class="button">
 		</center>
 
 		<h2 id="set-result"></h2>
 
-		
+		<br>
 
 	</form>
-</div>
+	<br>
 
 
 
@@ -104,18 +116,21 @@
 		async function dispUpdate() {
 			showNotification(uuid);
 			const getData = await fetchJSON("/api/getalarm", { id: uuid });
+			const profile = await fetchJSON("/api/getprofile", { id: uuid });
 			//console.log(new Date(getData.time).toLocaleString());
 			if (getData !== null) {
 				const nowsetTime = document.getElementById("nowset-time");
 				if (getData.time !== null) {
 					nowsetTime.textContent = new Date(getData.time).toLocaleString();
 				}
-				const lastsetTime = document.getElementById("lastset-time");
-				if (getData.prevTime !== null) {
-					lastsetTime.textContent = new Date(getData.prevTime).toLocaleString();
-				}
-
 				repeat.checked = getData.repeat;
+			}
+			if (profile !== null) {
+				console.log(profile);
+				const lastsetTime = document.getElementById("lastset-time");
+				if (profile.prevTime !== null) {
+					lastsetTime.textContent = new Date(profile.prevTime).toLocaleString();
+				}
 			}
 		}
 
