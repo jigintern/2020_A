@@ -33,7 +33,7 @@
             <label>選択肢（答えにはチェックを入れる）：
                 <ul id="answers" required></ul>
             </label>
-            <button id="add-answer">回答追加</button>
+            <button type="button" id="add-answer">回答追加</button>
         </div>
         <div>
             <label>難易度：
@@ -113,6 +113,7 @@
             li.appendChild(textarea);
 
             const delButton = document.createElement("button");
+            delButton.type = "button";
             delButton.textContent = "削除";
             delButton.onclick = (e) => {
                 e.preventDefault();
