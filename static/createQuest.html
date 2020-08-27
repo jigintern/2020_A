@@ -115,14 +115,17 @@
             const delButton = document.createElement("button");
             delButton.type = "button";
             delButton.textContent = "削除";
-            delButton.onclick = (e) => {
+            delButton.onclick = async (e) => {
                 e.preventDefault();
-                answers.removeChild(e.target.parentElement);
+                console.log(answers.childNodes);
+                if (answers.childNodes.length <= 2) await swal("", "選択肢が1つの問題は作れません。", "warning");
+                else answers.removeChild(e.target.parentElement);
             }
             li.appendChild(delButton);
 
             answers.appendChild(li);
         }
+        document.getElementById("add-answer").click();
         document.getElementById("add-answer").click();
 
         document.getElementById("quest-form").onsubmit = async (e) => {
