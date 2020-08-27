@@ -101,8 +101,9 @@ class MyServer extends Server {
             qjson.map(dat => { delete dat.answer });
             const p_dup = pjson.find(dat => dat.id === req.id);
             const dup = ajson.find(dat => dat.id === req.id);
-            const now = new Date();
-            const sol = new Date(p_dup.solution);
+            const nowtime = new Date();
+            const now = new Date(nowtime.getTime() - nowtime.getTimezoneOffset()*60000);
+            const sol = new Date(p_dup.solution - nowtime.getTimezoneOffset()*60000);
             if (dup === undefined) {
                 return { res: "notset", quests: [], difficultyChoice: null };
             }
