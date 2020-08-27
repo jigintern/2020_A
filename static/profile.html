@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <title>プロフィール</title>
 </head>
 
@@ -75,8 +77,8 @@
                 introduction: introduction.value,
             });
             console.log(res);
-            if (res.res === "OK") window.alert("プロフィール更新完了！");
-            else window.alert("プロフィール更新失敗");
+            if (res.res === "OK") await swal("プロフィール更新完了！", "", "success");
+            else await swal("プロフィール更新失敗", "", "error");
         }
 
         const getProfile = async (showUuid) => {
