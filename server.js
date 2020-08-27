@@ -120,10 +120,15 @@ class MyServer extends Server {
             qjson.map(dat => { delete dat.answer });
             const p_dup = pjson.find(dat => dat.id === req.id);
             const dup = ajson.find(dat => dat.id === req.id);
+            const now = new Date();
+            const sol = new Date(p_dup.solution);
             if (dup === undefined) {
                 return { res: "notset", quests: [], difficultyChoice: null };
             }            
             if (p_dup.solution) {
+                return { res: "finish", quests: [], difficultyChoice: null };
+            }
+            if (now.getDate() === sol.getDate() && now.getMonth() === sol.getMonth()) { //TODO
                 return { res: "finish", quests: [], difficultyChoice: null };
             }
             const elapsedTime = new Date().getTime() - dup.time;
@@ -194,7 +199,7 @@ class MyServer extends Server {
             } else {
                 dup.point += deltapt;
             }
-            fDup.solution = true;
+            fDup.solution = new Date().getTime();
             fDup.solved.push(org.questId);
             Deno.writeTextFileSync("./profile.json", JSON.stringify(fjson));
             Deno.writeTextFileSync("./point.json", JSON.stringify(pjson));
