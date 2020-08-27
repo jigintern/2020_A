@@ -285,7 +285,7 @@ class MyServer extends Server {
                     return -1;
                 }
             });
-            let userRank = -1;
+            let userRank = null;
             for (let i = 0; i < pjson.length; i++) {
                 if (pjson[i].id === req.id) {
                     userRank = i + 1;
