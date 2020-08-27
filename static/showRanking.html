@@ -21,37 +21,46 @@
     
   
 <div class="space">
+
     <ul id="ranking">
     </ul>
 </div>
 
 
     
+<script type="module">
+    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+    import { showNotification, getUuid } from "./util.js";
 
-    <script type="module">
-        import { showNotification } from "./util.js";
+    window.onload = async () => {
+        showNotification();
 
-        window.onload = async () => {
-            showNotification();
+        const uuid = await getUuid();
 
-            const reqJSON = await (await fetch("/api/getpointrank")).json();
-            console.log(reqJSON);
+        const reqJSON = await (await fetch("/api/getpointrank")).json();
+        console.log(reqJSON);
 
-            let lastPoint = null;
-            let rank = 0;
-            reqJSON.forEach(item => {
-                if (lastPoint !== item.point) rank++;
+        let lastPoint = null;
+        let rank = 0;
+        for (const item of reqJSON) {
+            if (lastPoint !== item.point) rank++;
+            lastPoint = item.point;
+            console.log(rank);
 
-                const li = document.createElement("li");
-                li.textContent = `${rank}位：${item.point}点`;
-                ranking.appendChild(li);
-            });
-        }
-    </script>
+            const profile = await fetchJSON("/api/getprofile", { id: item.id });
+            console.log(profile);
+            const li = document.createElement("li");
+            const link = `/profile.html?id=${item.id}`
+            const name = profile.name === null ? "名無しの権兵衛" : profile.name;
+            li.innerHTML = `${rank}位：${item.point}点 <a href="${link}">${name}</a>`;
+            ranking.appendChild(li);
+        };
+    }
+</script>
     <footer>
 		<a href="index.html"><img src="ranking.gif" class="pos"></a>
-		<a href="index.html"><div class="balloon2-left">
-            <p>トップページにもどる</p>
+		<a href="index.html"><div class="balloon2-left" >
+            <p class="url">トップページにもどる</p>
             </a>
         </div>
         
