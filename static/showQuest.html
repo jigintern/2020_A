@@ -68,6 +68,7 @@
 				<option value="difficulty-up">難易度（昇順）</option>
 				<option value="difficulty-down">難易度（降順）</option>
 				<option value="point">獲得ポイント</option>
+				<option value="category">カテゴリ別</option>
 			</select>
 		</div>
 		<div class="box5">
@@ -182,7 +183,7 @@
 			}
 		}
 
-		document.getElementById("sort-type").onchange = function () {
+		document.getElementById("sort-type").onchange = async function () {
 			const difficultyList = ["S", "A", "B", "C", "D", "E"];
 			let questList = [];
 			if (this.value === "standard") {
@@ -202,13 +203,18 @@
 			} else if (this.value === "point") {
 				questList = questList.concat(questJson);
 				questList.sort((a, b) => b.point - a.point);
+			} else if (this.value === "category") {
+				const categories = (await (await fetch("/api/getcategory")).json()).category;
+				categories.forEach(c => {
+					questList = questList.concat(questJson.filter(e => e.category === c));
+				});
 			}
 
 			// リスト作成
 			quests.innerHTML = "";
 			for (let i = 0; i < questList.length; i++) {
 				const li = document.createElement("li");
-				li.textContent = `${questList[i].question} 難易度：${questList[i].difficulty} ポイント：${questList[i].point}`;
+				li.textContent = `${questList[i].question} 難易度：${questList[i].difficulty} ポイント：${questList[i].point} カテゴリー：${questList[i].category}`;
 				console.log(li.onclick);
 				li.onclick = () => {
 					selectedQuestid = questList[i].questId;
