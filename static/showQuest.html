@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="./showQuest.css">
 	<link rel="stylesheet" href="./all.css">
-	<title>ミッション一覧</title>
+	<title>クエスト一覧</title>
 </head>
 
 <body>
@@ -14,41 +14,52 @@
 		<a href="index.html"><img src="logo.png" height="40px"></a>
 	</header>
 	<hr>
-	<h1 class="midashi">ミッション選択画面</h1>
-	
+	<br><br>
+
+	<h1 class="midashi">クエスト選択画面</h1>
+
 	<div id=quest hidden>
+		<br>
+
 		<div class="kokuban-s2">
 
-			<h2>・今日のミッション</h2>
+			<h2>・今日のクエスト</h2>
+			<br>
 			<h2>問題</h2>
 
-			<p class="quest" id="question"></p>
+			<p id="question"></p>
+			<br>
 			<h2>選択肢</h2>
-			
-			<div class="cp_ipradio">
-			<li class="list_item">
 			<form id="answer-list"></form>
-			</li>
-			</div>
-			
+			<br><br>
 
 			<div id="answer-div" hidden>
-				<h1 align="right" class="result" style="color:rgb(211, 70, 105)">結果</font>
+				<h1 align="right" style="color:rgb(211, 70, 105)">結果</font>
 				</h1>
 				<button id=update-alarm style="display:none" class="alarm">明日も同じ時間にアラームを登録する</button>
+				<br>
 			</div>
-		
+
 			<button id="answer-send" class="soushin">回答送信！</button>
-			
+
 			<div class="nittyoku">
-				日直:よしろー　
+				日直:よしろー
 			</div>
 			</td>
+			<br>
+
 		</div>
+
+		<br>
+
+
 	</div>
 
-	<h2>・ミッション一覧</h2>
+	<br><br><br>
+	<h2>・クエスト一覧</h2>
+	<br><br>
 	<div id="missions">
+
 		<div class="cp_ipselect cp_sl04">
 			<span style="color:white">並び順：</span>
 			<select id="sort-type">
@@ -59,10 +70,13 @@
 			</select>
 		</div>
 		<div class="box5">
+
 			<ul class="sample1">
 				<ul id="quests"></ul>
+
 		</div>
 	</div>
+	<br><br>
 	<footer>
 		<a href="index.html"><img src="quest.gif" class="pos"></a>
 		<a href="index.html">
@@ -155,6 +169,8 @@
 					window.alert("設定時刻前です。\n設定時刻より後にもう一度アクセスしてください。\nトップページに移動します。");
 				} else if (getJSON.res === "timeover") {
 					window.alert("時間切れです。明日はちゃんとおきましょう。\nトップページに移動します。");
+				} else if (getJSON.res === "finish") {
+					window.alert("今日のクエストは終了しました！また明日頑張りましょう！\nトップページに移動します。");
 				}
 
 				window.open("/index.html", "_self");

@@ -1,4 +1,10 @@
+body{
+background-color:rgb(30,36,47);
+}
 
+h1{
+    color:#ffffff;
+}
 ul{
     list-style: none;
 }
@@ -44,6 +50,22 @@ li:nth-of-type(5) {
     color: #ffffff;
 }
 
+  .midashi{
+    position: relative;
+    padding: 0.5em;
+    background: #a6d3c8;
+    color: white;
+  }
+  
+.midashi::before {
+    position: absolute;
+    content: '';
+    top: 100%;
+    left: 0;
+    border: none;
+    border-bottom: solid 15px transparent;
+    border-right: solid 20px rgb(149, 158, 155);
+  }
 
   .balloon2-left {
     position: relative;
@@ -84,8 +106,4 @@ li:nth-of-type(5) {
   .balloon2-left p {
     margin: 0;
     padding: 0;
-  }
-
-  .space{
-      margin-top:50px;
   }
