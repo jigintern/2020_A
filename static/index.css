@@ -1,8 +1,4 @@
-body{
-  background-color:rgb(30,36,47);
-  margin:0;
-  padding:0;
-}
+
 
 h1,h2,h3{
 	color:#ffffff;
@@ -11,11 +7,7 @@ h1,h2,h3{
 ul {
   list-style: none;
 }
-header{
-  background-color:#ffffff;
-  position: relative; top: 0; 
-  height:50px;
-}
+
 footer{
   text-align:center;
   color:#ffffff;
@@ -75,9 +67,5 @@ footer{
     color        : rgba(255, 0, 0, 0.73);            /* 文字の色     */
   }
 
-  *{
-    margin:0px;
-    padding:0px;
-  }
-
+ 
  

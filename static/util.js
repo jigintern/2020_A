@@ -76,7 +76,7 @@ export async function showNotification(uuid) {
                         state = compareTime(json.time);
                         if (state >= 0) {
                             console.log("now");
-                            const notification = new Notification("起きる時間だよ！\n今日もミッション頑張ろう！");
+                            const notification = new Notification("起きる時間だよ！\n今日もクエスト頑張ろう！");
                             notification.onclick = () => {
                                 window.focus();
                                 window.open("/showQuest.html", "_top");
@@ -105,4 +105,9 @@ function compareTime(setTime) {
     } else {
         return 0;
     }
+}
+
+export const isSameDate = (t1, t2) => {
+    if (t1.getYear() === t2.getYear() && t1.getMonth() === t2.getMonth() && t1.getDate() === t2.getDate()) return true;
+    else return false;
 }

@@ -5,30 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./index.css">
-    <title>朝がつらい公選制のために朝起きれるようにするアプリ
-        </title>
+    <link rel="stylesheet" href="./all.css">
+    <title>朝がつらい高専生のために朝起きれるようにするアプリ
+    </title>
 </head>
 
 <body>
     <header>
         <a href="index.html"><img src="logo.png" height="40px"></a>
-      
+
     </header>
     <hr>
-    
+
 
 
     <div class="example">
         <img src="clock4.jpg" width="100% auto" font color="black" />
         <p><span>A</span>朝がつらい <br>
-        <span>K</span>高専生のために<br>
-        <span>A</span>朝起きれるようにするアプリ<br>
+            <span>K</span>高専生のために<br>
+            <span>A</span>朝起きれるようにするアプリ<br>
         </p>
     </div>
 
     <br>
 
-    
+
     <br>
 
     <div class="box2">
@@ -36,26 +37,31 @@
             <h2>・起床時間の設定</h2>
             <li><a href="setAlarm.html"><img src="clock1.jpg" alt="時計" width="300px" height="200px"> </a></li>
             <br>
-            <h2>・ミッション一覧</h2>
+            <h2>・クエスト一覧</h2>
             <li><a href="showQuest.html"><img src="task.jpg" alt="課題" width="300px" height="200px"> </a> </li>
             <br>
             <h2>・TOP5ランキング</h2>
-            <li><a href="showRanking.html"><img src="ranking.jpg" alt="課題" width="300px" height="200px"> </a> </li>
-
-
+            <li><a href="showRanking.html"><img src="ranking.jpg" alt="ランキング" width="300px" height="200px"> </a> </li>
+            <br>
+            <h2>・クエスト作成</h2>
+            <li><a href="createQuest.html"><img src="ranking.jpg" alt="クエスト作成" width="300px" height="200px"> </a> </li>
+            <br>
+            <h2>・マイプロフィール</h2>
+            <li><a id="profile"><img src="ranking.jpg" alt="プロフィール" width="300px" height="200px"> </a> </li>
         </ul>
     </div>
 </body>
-</a>
 <footer>
     <p>jig.jp intern 2020</p>
 </footer>
 
 <script type="module">
-    import { showNotification } from "./util.js";
+    import { showNotification, getUuid } from "./util.js";
 
     window.onload = async function () {
         showNotification();
+
+        profile.href = `/profile.html?id=${await getUuid()}`;
     }
 </script>
 

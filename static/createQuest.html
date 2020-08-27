@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <title>クエスト作成</title>
+</head>
+
+<body>
+    <header>
+        <a href="index.html"><img src="logo.png" height="40px"></a>
+    </header>
+    <hr>
+    <br><br>
+
+    <h1 class="midashi">クエスト作成</h1>
+    <!--
+        <li>タグはこんな感じで生成されます。
+        <li>
+            <input type="radio" name="ans" required>
+            <input type="text" required>
+            <button>削除</button>
+        </li>    
+    -->
+    <form id="quest-form">
+        <div>
+            <label>問題：<textarea id="question" required></textarea></label>
+        </div>
+        <div>
+            <label>選択肢（答えにはチェックを入れる）：
+                <ul id="answers" required></ul>
+            </label>
+            <button type="button" id="add-answer">回答追加</button>
+        </div>
+        <div>
+            <label>難易度：
+                <select id="difficulty">
+                    <option value="S">S</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                </select>
+            </label>
+        </div>
+        <div>
+            <label>カテゴリー：
+                <input type="text" id="category" list="categories"><datalist id="categories"></datalist></input>
+            </label>
+        </div>
+        <div>
+            <label>点数（0~100点）：<input type="number" id="point" max="100" min="0" required></input>点</label>
+        </div>
+        <div>
+            <label>回答制限時間（1~60分）：<input type="number" id="timeLimit" max="60" min="1" required></input>分</label>
+        </div>
+        <div>
+            <label>作成者名：<input type="text" id="author" required></input></label>
+        </div>
+        <input type="submit"></input>
+
+    </form>
+    <!--<h2 id="result"></h2>-->
+
+    <footer>
+        <a href="index.html"><img src="ranking.gif" class="pos"></a>
+        <a href="index.html">
+            <div class="balloon2-left">
+                <p>トップページにもどる</p>
+        </a>
+        </div>
+
+    </footer>
+    <script type="module">
+        import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+        import { showNotification, getUuid } from "./util.js";
+
+        window.onload = async () => {
+            showNotification();
+            getCategory();
+
+            const profile = await fetchJSON("/api/getprofile", { id: await getUuid() });
+            author.value = profile.name;
+        }
+
+        const getCategory = async () => {
+            const getCategories = (await (await fetch("/api/getcategory")).json()).category;
+            getCategories.forEach(c => {
+                const option = document.createElement("option");
+                option.value = c;
+                categories.appendChild(option);
+            });
+        }
+
+        document.getElementById("add-answer").onclick = (e) => {
+            e.preventDefault();
+
+            const li = document.createElement("li");
+
+            const radio = document.createElement("input");
+            radio.required = true;
+            radio.type = "radio";
+            radio.name = "ans"
+            li.appendChild(radio);
+
+            const textarea = document.createElement("input");
+            textarea.required = true;
+            textarea.type = "text";
+            li.appendChild(textarea);
+
+            const delButton = document.createElement("button");
+            delButton.type = "button";
+            delButton.textContent = "削除";
+            delButton.onclick = async (e) => {
+                e.preventDefault();
+                console.log(answers.childNodes);
+                if (answers.childNodes.length <= 2) await swal("", "選択肢が1つの問題は作れません。", "warning");
+                else answers.removeChild(e.target.parentElement);
+            }
+            li.appendChild(delButton);
+
+            answers.appendChild(li);
+        }
+        document.getElementById("add-answer").click();
+        document.getElementById("add-answer").click();
+
+        document.getElementById("quest-form").onsubmit = async (e) => {
+            e.preventDefault();
+
+            const lis = answers.childNodes;
+            const answerList = [];
+            let answer = 0;
+            for (let i = 0; i < lis.length; i++) {
+                if (lis[i].childNodes[0].checked) answer = i;
+                const input = lis[i].childNodes[1];
+                answerList.push(input.value);
+            }
+
+
+            const req = {
+                question: question.value,
+                answer: answer,
+                answerList: answerList,
+                author: author.value,
+                difficulty: difficulty.value,
+                category: category.value,
+                point: point.value,
+                timeLimit: timeLimit.value,
+            }
+            console.log(req);
+
+            const res = await fetchJSON("/api/setquest", req);
+            console.log(res);
+            if (res.res === "OK") await swal("クエスト作成成功！", "", "success");//result.textContent = "クエスト作成成功！";
+            else await swal("クエスト作成失敗...", "", "error");//result.textContent = "クエスト作成失敗...";
+        }
+    </script>
+</body>
+
+</html>
