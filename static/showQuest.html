@@ -125,13 +125,13 @@
 
 				if (res.result === "correct") {
 					text = "正解！！！";
-				} else if (res.result === "incorrect") {
-					text = `不正解！<br>正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
-				} else if (res.result === "timeover") {
-					text = `時間切れ～！<br>正解は${questJson[selectedQuestid].answerList[res.answer]}でした！`;
-				}
-				else {
-					text = JSON.stringify(res);
+				} else {
+					const resAnswer = questJson.find(q => q.questId === selectedQuestid).answerList[res.answer];
+					if (res.result === "incorrect") {
+						text = `不正解！<br>正解は${resAnswer}でした！`;
+					} else if (res.result === "timeover") {
+						text = `時間切れ～！<br>正解は${resAnswer}でした！`;
+					}
 				}
 				answerDiv.childNodes[1].innerHTML = text;
 
