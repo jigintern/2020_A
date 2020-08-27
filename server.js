@@ -76,7 +76,7 @@ class MyServer extends Server {
             delete reqdoc.questId;
             // 重複を確認 なければ追加 あればエラーを返す
             const dup = jsondoc.find(dat => JSON.stringify(dat) === JSON.stringify(reqdoc));
-            if (dup === undefined) {
+            if (dup === undefined && req.answerList.length !== 1) {
                 json.push(req);
                 Deno.writeTextFileSync("./quest.json", JSON.stringify(json));
                 return { res: "OK" };
