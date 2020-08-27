@@ -106,3 +106,8 @@ function compareTime(setTime) {
         return 0;
     }
 }
+
+export const isSameDate = (t1, t2) => {
+    if (t1.getYear() === t2.getYear() && t1.getMonth() === t2.getMonth() && t1.getDate() === t2.getDate()) return true;
+    else return false;
+}

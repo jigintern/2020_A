@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<link rel="stylesheet" href="./setAlarm.css">
 	<link rel="stylesheet" href="./all.css">
 	<title>時刻設定</title>
@@ -78,7 +79,7 @@
 			<input type="submit" value="送信" class="button">
 		</center>
 
-		<h2 id="set-result"></h2>
+		<!--<h2 id="set-result"></h2>-->
 
 		
 
@@ -90,15 +91,14 @@
 
 	<script type="module">
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-		import { showNotification, getUuid } from "./util.js";
+		import { showNotification, getUuid, isSameDate } from "./util.js";
 
 		var uuid = undefined;
+		let profile;
 
 		window.onload = async () => {
 			uuid = await getUuid();
 			console.log("id", uuid);
-
-
 
 			const date = new Date();
 			const now = {
@@ -116,8 +116,7 @@
 		async function dispUpdate() {
 			showNotification(uuid);
 			const getData = await fetchJSON("/api/getalarm", { id: uuid });
-			const profile = await fetchJSON("/api/getprofile", { id: uuid });
-			//console.log(new Date(getData.time).toLocaleString());
+			profile = await fetchJSON("/api/getprofile", { id: uuid });
 			if (getData !== null) {
 				const nowsetTime = document.getElementById("nowset-time");
 				if (getData.time !== null) {
@@ -138,12 +137,17 @@
 		inputForm.addEventListener('submit', async (event) => {
 			event.preventDefault();
 
-			const utc = new Date(datetime.value).getTime();
+			const setTime = new Date(datetime.value);
+			const utc = setTime.getTime();
 
 			console.log(datetime.value);
 			const status = document.getElementById("status");
 			if (isNaN(utc)) {
-				window.alert("入力したデータが無効です");
+				await swal("エラー", "入力したデータが無効です", "error");
+			} else if (utc < new Date().getTime()) {
+				swal("", "現在の時刻よりも前に設定しようとしています。", "warning");
+			} else if (isSameDate(setTime, new Date(profile.solution))) {
+				swal("", "今日は既にクエストを完了しています。\n明日以降の日付に設定してください。", "error");
 			} else {
 				const res = await fetchJSON("/api/setalarm", {
 					id: uuid, time: utc, difficultyChoice: difficulty.value, repeat: repeat.checked
@@ -151,8 +155,17 @@
 				const setResult = document.getElementById("set-result");
 
 				if (res.res === "OK") {
-					setResult.textContent = "アラーム設定完了！";
-					dispUpdate();
+					const isBack = await swal({
+						title: "起床時間 設定完了！",
+						text: "トップページに戻りますか？",
+						icon: "success",
+						buttons: true,
+					})
+					if (isBack) window.open("/index.html", "_self");
+					else {
+						//setResult.textContent = "アラーム設定完了！";
+						dispUpdate();
+					}
 				}
 			}
 		});
@@ -163,7 +176,7 @@
 		<a href="index.html"><img src="parrot.gif" class="pos"></a>
 		<a href="index.html">
 			<div class="balloon2-left">
-				<p class="url">トップページにもどる</p>
+				<p>トップページにもどる</p>
 		</a>
 		</div>
 	</footer>
