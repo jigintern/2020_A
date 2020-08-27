@@ -157,6 +157,7 @@ class MyServer extends Server {
             const org = qjson.find(dat => dat.questId === req.questId);
             const fDup = fjson.find(dat => dat.id === req.id);
             var deltapt;
+            fDup.solution = new Date().getTime();
             if (org.answer === req.answer) {
                 var rlt = "correct";
                 deltapt = org.point;
@@ -177,7 +178,6 @@ class MyServer extends Server {
             } else {
                 dup.point += deltapt;
             }
-            fDup.solution = new Date().getTime();
             fDup.solved.push(org.questId);
             Deno.writeTextFileSync("./profile.json", JSON.stringify(fjson));
             Deno.writeTextFileSync("./point.json", JSON.stringify(pjson));
