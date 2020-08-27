@@ -1,55 +1,35 @@
 
-h1 {
-  position: relative;
-  padding: 0.5em;
-  background: #a6d3c8;
-  color: white;
-}
-
-h1::before {
-  position: absolute;
-  content: '';
-  top: 100%;
-  left: 0;
-  border: none;
-  border-bottom: solid 15px transparent;
-  border-right: solid 20px rgb(149, 158, 155);
-}
-
-h2{
-  color:#ffffff;
-  
- 
-}
-
 .back{
 	background-color:#ffffff;
 }
-
-font1{
-    font-family: sans-serif;
-    font-size: 50px;
-    color:#ffffff;
-    font-weight:bold;
+.timer{
+  font-family: sans-serif;
+  font-size: 50px;
+  color:#ffffff;
+  font-weight:bold;
+  margin-top:40px;
 }
-
+.date{
+margin-top:20px;
+}
 .button {
   display       : inline-block;
   font-size     : 18pt;       
   text-align    : center;      
   cursor        : pointer;    
   padding       : 12px 33px;   
-  background    : #1a1aff;    
-  color         : #ffffff;    
+  background    : #f0e76b;    
+  color         : #000000;    
   line-height   : 1em;         
   transition    : .3s;       
-  border        : 2px solid #1a1aff;  
+  border        : 2px solid transparent;  
+  font-weight: bold;   
+  margin:30px 
 }
 .button:hover {
   color         : #007fff;    
   background    : #ffffff;    
 }
-
 select {
   appearance: none;
   -webkit-appearance: none;
@@ -74,7 +54,6 @@ select {
  box-shadow: none;
  -webkit-appearance: none;
  appearance: none;
-
 }
 .cp_ipselect select::-ms-expand {
    display: none;
@@ -85,22 +64,20 @@ select {
  border: 2px solid #da3c41;
  border-radius: 50px;
  background: transparent;
-
 }
-
 .cp_ipselect.cp_sl04 select {
  padding: 8px 38px 8px 8px;
  color: #da3c41;
- 
 }
-
 label{
-  color:#ffffff
+  color:#ffffff;
 }
 label input[type="checkbox"] {
   width         : 17pt;        /* 大きさ：横 */
   height        : 17pt;        /* 大きさ：縦 */
   vertical-align: top;         /* 並び位置   */
+  margin-top:45px;
+  padding:10px;
 }
  /* --- チェックボックス直後のlabel --- */
  label input[type="checkbox"] + label {
@@ -110,47 +87,8 @@ label input[type="checkbox"] {
   border-radius : 5px;                        /* labelの角丸 */
   cursor        : pointer;                    /* カーソル設定 */
   transition    : .2s;                        /* なめらか変化 */
+ 
 }
 
 
-.balloon2-left {
-  position: relative;
-  display: inline-block;
-  margin: 1.5em 0 1.5em 15px;
-  padding: 7px 10px;
-  min-width: 120px;
-  max-width: 100%;
-  color: #555;
-  font-size: 16px;
-  background: #FFF;
-  border: solid 3px #555;
-  box-sizing: border-box;
-}
-
-.balloon2-left:before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: -24px;
-  margin-top: -12px;
-  border: 12px solid transparent;
-  border-right: 12px solid #FFF;
-  z-index: 2;
-}
-
-.balloon2-left:after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: -30px;
-  margin-top: -14px;
-  border: 14px solid transparent;
-  border-right: 14px solid #555;
-  z-index: 1;
-}
-
-.balloon2-left p {
-  margin: 0;
-  padding: 0;
-}
 

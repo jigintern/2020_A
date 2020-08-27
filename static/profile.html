@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./createQuest.css">
+    <link rel="stylesheet" href="./all.css">
     <title>プロフィール</title>
 </head>
 
@@ -12,39 +14,60 @@
         <a href="index.html"><img src="logo.png" height="40px"></a>
     </header>
     <hr>
-    <br><br>
 
     <h1 class="midashi">プロフィール</h1>
 
+    <div class="quest">
     <form id="quest-form">
-        <div>
-            <label>ID：<span id="id"></span></label>
+    <div class="wboard-w1">
+        <div class="margin">
+
+          
+            <label class="black">
+                ID：<span id="id"></span>
+            </label>
         </div>
-        <div>
-            <label>表示名：<input type="text" id="screenname" disabled></input></label>
+        <div class="margin">
+            <label class="black">
+                表示名：<input type="text" id="screenname" disabled>
+            </input>
+        </label class="black">
         </div>
-        <div>
-            <label>自己紹介文：<textarea id="introduction" disabled></textarea></label>
+        <div class="margin">
+            <label class="black">自己紹介文：
+                <textarea id="introduction" disabled>
+
+                </textarea>
+            </label>
         </div>
-        <div>
-            <label>今日の問題を解いたか：<span id="solution"></span></label>
+        <div class="margin">
+            <label class="black">
+                今日の問題を解いたか：<span id="solution"></span></label>
         </div>
-        <div>
-            <label>今までに解いた問題数：<span id="solved"></span></label>
+        <div class="margin">
+            <label class="black">
+                今までに解いた問題数：<span id="solved"></span></label>
         </div>
-        <div>
-            <label>現在のポイント：<span id="point"></span></label>
+        <div class="margin">
+            <label class="black">
+                現在のポイント：<span id="point"></span></label>
         </div>
-        <div>
-            <label>ランキング：<span id="rank">-</span>位</label>
+        <div class="margin">
+            <label class="black">
+                ランキング：<span id="rank">-</span>位</label>
         </div>
-        <input type="submit" id="updatebtn" value="プロフィール更新！" disabled></input>
+    </div>
+
+        
+        <input type="submit" class="koushin" id="updatebtn" value="プロフィール更新！" disabled>
+        </input>
 
     </form>
+
     <h2 id="result"></h2>
 
     <footer>
-        <a href="index.html"><img src="ranking.gif" class="pos"></a>
+        <a href="index.html"><img src="cat.gif" class="pos"></a>
         <a href="index.html">
             <div class="balloon2-left">
                 <p>トップページにもどる</p>
@@ -52,6 +75,7 @@
         </div>
 
     </footer>
+</div>
     <script type="module">
         import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
         import { showNotification, getUuid } from "./util.js";
