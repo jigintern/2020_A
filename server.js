@@ -21,6 +21,7 @@ class MyServer extends Server {
                 userPrevTime = aDup.time;
                 aDup.time = req.time;
                 aDup.difficultyChoice = req.difficultyChoice;
+                aDup.repeat = req.repeat;
             }
             Deno.writeTextFileSync("./alarm.json", JSON.stringify(ajson));
             const fDup = fjson.find(dat => dat.id === req.id);
@@ -120,16 +121,18 @@ class MyServer extends Server {
             qjson.map(dat => { delete dat.answer });
             const p_dup = pjson.find(dat => dat.id === req.id);
             const dup = ajson.find(dat => dat.id === req.id);
-            const now = new Date();
-            const sol = new Date(p_dup.solution);
             if (dup === undefined) {
                 return { res: "notset", quests: [], difficultyChoice: null };
-            }            
-            if (p_dup.solution) {
-                return { res: "finish", quests: [], difficultyChoice: null };
             }
-            if (now.getUTCDate() === sol.getUTCDate() && now.getMonth() === sol.getMonth()) { //TODO
-                return { res: "finish", quests: [], difficultyChoice: null };
+            if (p_dup !== undefined) {
+                const now = new Date();
+                const sol = new Date(p_dup.solution);
+                if (p_dup.solution) {
+                    return { res: "finish", quests: [], difficultyChoice: null };
+                }
+                if (now.getUTCDate() === sol.getUTCDate() && now.getMonth() === sol.getMonth()) { //TODO
+                    return { res: "finish", quests: [], difficultyChoice: null };
+                }
             }
             const elapsedTime = new Date().getTime() - dup.time;
             if (elapsedTime < 0) {
@@ -285,7 +288,7 @@ class MyServer extends Server {
                     return -1;
                 }
             });
-            let userRank = -1;
+            let userRank = null;
             for (let i = 0; i < pjson.length; i++) {
                 if (pjson[i].id === req.id) {
                     userRank = i + 1;
