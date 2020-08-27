@@ -21,6 +21,7 @@ class MyServer extends Server {
                 userPrevTime = aDup.time;
                 aDup.time = req.time;
                 aDup.difficultyChoice = req.difficultyChoice;
+                aDup.repeat = req.repeat;
             }
             Deno.writeTextFileSync("./alarm.json", JSON.stringify(ajson));
             const fDup = fjson.find(dat => dat.id === req.id);
@@ -91,11 +92,12 @@ class MyServer extends Server {
             delete jsondoc.questId;
             // 重複を確認 なければ追加 あればエラーを返す
             const dup = jsondoc.find(dat => JSON.stringify(dat) === JSON.stringify(req));
-            if (dup === undefined) {
+            if (dup === undefined && req.answerList.length !== 1) {
                 const occupied = json.map(dat => dat.questId);
                 let newQuestId = 0;
                 for (; (occupied.find(dat => dat === newQuestId) !== undefined); newQuestId++);
                 req.questId = newQuestId;
+
                 json.push(req);
                 Deno.writeTextFileSync("./quest.json", JSON.stringify(json));
                 return { res: "OK" };
@@ -120,11 +122,17 @@ class MyServer extends Server {
             qjson.map(dat => { delete dat.answer });
             const p_dup = pjson.find(dat => dat.id === req.id);
             const dup = ajson.find(dat => dat.id === req.id);
+            
             if (dup === undefined) {
                 return { res: "notset", quests: [], difficultyChoice: null };
-            }            
-            if (p_dup.solution) {
-                return { res: "finish", quests: [], difficultyChoice: null };
+            }
+            if (p_dup !== undefined) {
+                const nowtime = new Date();
+                const now = new Date(nowtime.getTime() - nowtime.getTimezoneOffset()*60000);
+                const sol = new Date(p_dup.solution - nowtime.getTimezoneOffset()*60000);
+                if (now.getUTCDate() === sol.getUTCDate() && now.getMonth() === sol.getMonth()) { //TODO
+                    return { res: "finish", quests: [], difficultyChoice: null };
+                }
             }
             const elapsedTime = new Date().getTime() - dup.time;
             if (elapsedTime < 0) {
@@ -174,6 +182,7 @@ class MyServer extends Server {
             const org = qjson.find(dat => dat.questId === req.questId);
             const fDup = fjson.find(dat => dat.id === req.id);
             var deltapt;
+            fDup.solution = new Date().getTime();
             if (org.answer === req.answer) {
                 var rlt = "correct";
                 deltapt = org.point;
@@ -194,7 +203,6 @@ class MyServer extends Server {
             } else {
                 dup.point += deltapt;
             }
-            fDup.solution = true;
             fDup.solved.push(org.questId);
             Deno.writeTextFileSync("./profile.json", JSON.stringify(fjson));
             Deno.writeTextFileSync("./point.json", JSON.stringify(pjson));
@@ -280,7 +288,7 @@ class MyServer extends Server {
                     return -1;
                 }
             });
-            let userRank = -1;
+            let userRank = null;
             for (let i = 0; i < pjson.length; i++) {
                 if (pjson[i].id === req.id) {
                     userRank = i + 1;
