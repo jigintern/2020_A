@@ -90,9 +90,10 @@
 
 	<script type="module">
 		import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-		import { showNotification, getUuid } from "./util.js";
+		import { showNotification, getUuid, isSameDate } from "./util.js";
 
 		var uuid = undefined;
+		let profile;
 
 		window.onload = async () => {
 			uuid = await getUuid();
@@ -116,7 +117,7 @@
 		async function dispUpdate() {
 			showNotification(uuid);
 			const getData = await fetchJSON("/api/getalarm", { id: uuid });
-			const profile = await fetchJSON("/api/getprofile", { id: uuid });
+			profile = await fetchJSON("/api/getprofile", { id: uuid });
 			//console.log(new Date(getData.time).toLocaleString());
 			if (getData !== null) {
 				const nowsetTime = document.getElementById("nowset-time");
@@ -138,12 +139,17 @@
 		inputForm.addEventListener('submit', async (event) => {
 			event.preventDefault();
 
-			const utc = new Date(datetime.value).getTime();
+			const setTime = new Date(datetime.value);
+			const utc = setTime.getTime();
 
 			console.log(datetime.value);
 			const status = document.getElementById("status");
 			if (isNaN(utc)) {
 				window.alert("入力したデータが無効です");
+			} else if (utc < new Date().getTime()) {
+				window.alert("現在の時刻よりも前に設定しようとしています。");
+			} else if (isSameDate(setTime, new Date(profile.solution))) {
+				window.alert("今日は既にクエストを完了しています。明日以降の日付に設定してください。");
 			} else {
 				const res = await fetchJSON("/api/setalarm", {
 					id: uuid, time: utc, difficultyChoice: difficulty.value, repeat: repeat.checked
