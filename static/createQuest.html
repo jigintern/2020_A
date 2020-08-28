@@ -26,84 +26,74 @@
             <button>削除</button>
         </li>    
     -->
-<div class="quest">
-    
-    <form id="quest-form">
-        <div>
-            <label>問題：
-                <label>
-                <textarea id="question" rows="2" cols="40"  required>
-            </textarea>
-        </label>
-        </div>
-            <div class="margin1">
-            <label>選択肢（答えにはチェックを入れる）：
-                <div class="question">
-                <ul id="answers" required></ul>
-                </div>
-                </div>
-            </label>
-            <button type="button" class="add" id="add-answer">回答追加</button>
-        </div>
-            <label>
-                <div class="margin">
-                <span style="color:white">難易度：</span>
-                <div class="cp_ipselect cp_sl04">
-                <select id="difficulty">
-                    <option value="S">S</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                </select>
-                </div>
-            </div>
-            </label>
-        <div class="margin">
-            <div class="cp_iptxt">
-                <label class="ef">カテゴリー：
-                 <input type="text" placeholder="カテゴリーを入力"　id="category" list="categories"><datalist id="categories"> 
-                </datalist>
-                </input>
+    <div class="quest">
+
+        <form id="quest-form">
+            <div>
+                <label>問題：
+                    <textarea id="question" rows="2" cols="40" required></textarea>
                 </label>
             </div>
-        </div>
-        <div class="margin">
-        <div class="cp_iptxt1">
-            <label class="eg"> 点数（0~100点）：
-                <input type="number" placeholder="点数を入力" id="point" max="100" min="0" required>
-            </input>
-        </label>
-        </div>
-    </div>
-    <div class="margin">
-        <div class="cp_iptxt1">
-            <label class="eg">回答制限時間（1~60分）：<input type="number" placeholder="制限時間を入力(分)" id="timeLimit" max="60" min="1" required>
-            </input>
-        </label>
-        </div>
-    </div>
-        <div class="margin">
-        <div class="cp_iptxt">
-            <label class="ef">作成者名：
-                <input type="text" placeholder="作者名を入力"id="author" required></input></label>
-        <div>
-            <label>点数（0~100点）：<input type="number" id="point" max="100" min="0" required></input>点</label>
-        </div>
-        <div>
-            <label>回答制限時間（1~60分）：<input type="number" id="timeLimit" max="60" min="1" required></input>分</label>
-        </div>
-        <div>
-            <label>作成者名：<input type="text" id="author" required></input></label>
-        </div>
-    </div>
+            <div class="margin1">
+                <label>選択肢（答えにはチェックを入れる）：
+                    <div class="question">
+                        <ul id="answers" required></ul>
+                    </div>
+                </label>
+            </div>
+            <button type="button" class="add" id="add-answer">回答追加</button>
+            <!--</div>-->
+            <div class="margin">
+                <label>
+                    <span style="color:white">難易度：</span>
+                    <div class="cp_ipselect cp_sl04">
+                        <select id="difficulty">
+                            <option value="S">S</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                        </select>
+                    </div>
+                </label>
+            </div>
+            <div class="margin">
+                <div class="cp_iptxt">
+                    <label class="ef">カテゴリー：
+                        <input type="text" placeholder="カテゴリーを入力" id="category" list="categories"> </input>
+                        <datalist id="categories"></datalist>
+                    </label>
+                </div>
+            </div>
+            <div class="margin">
+                <div class="cp_iptxt1">
+                    <label class="eg"> 点数（0~100点）：
+                        <input type="number" placeholder="点数を入力" id="point" max="100" min="0" required> </input>
+                    </label>
+                </div>
+            </div>
+            <div class="margin">
+                <div class="cp_iptxt1">
+                    <label class="eg">回答制限時間（1~60分）：<input type="number" placeholder="制限時間を入力(分)" id="timeLimit"
+                            max="60" min="1" required>
+                        </input>
+                    </label>
+                </div>
+            </div>
+            <div class="margin">
+                <div class="cp_iptxt">
+                    <label class="ef">作成者名：
+                        <input type="text" placeholder="作者名を入力" id="author" required></input>
+                    </label>
+                </div>
 
-        <input type="submit" class="submit"></input>
-       
-    </div>
+                <input type="submit" class="submit"></input>
 
-    </form>
+            </div>
+
+        </form>
+    </div>
     <!--<h2 id="result"></h2>-->
 
     <footer>
@@ -180,7 +170,6 @@
                 answerList.push(input.value);
             }
 
-
             const req = {
                 question: question.value,
                 answer: answer,
@@ -195,8 +184,8 @@
 
             const res = await fetchJSON("/api/setquest", req);
             console.log(res);
-            if (res.res === "OK") await swal("クエスト作成成功！", "", "success");//result.textContent = "クエスト作成成功！";
-            else await swal("クエスト作成失敗...", "", "error");//result.textContent = "クエスト作成失敗...";
+            if (res.res === "OK") await swal("クエスト作成成功！", "", "success");
+            else await swal("クエスト作成失敗...", "", "error");
         }
     </script>
 </body>
