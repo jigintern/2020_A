@@ -230,7 +230,7 @@ class MyServer extends Server {
                 });
             if (json.length > 4){
                 let tmp = align[0].point;
-                let ranking = 0;
+                let ranking = 1;
                 let ret = [];
                 let i = 1;
                 ret.push(align[0]);
