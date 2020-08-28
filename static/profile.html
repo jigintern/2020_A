@@ -114,7 +114,7 @@
                 updatebtn.style.display = "inline";
             }
 
-            id.textContent = uuid;
+            id.textContent = profile.id;
             screenname.value = profile.name;
             introduction.value = profile.introduction;
             solution.textContent = isSameDate(new Date(), new Date(profile.solution)) ? "解いた" : "まだ解いてない";
