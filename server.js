@@ -244,7 +244,7 @@ class MyServer extends Server {
                     }
                 }
 
-                return JSON.stringify(ret);
+                return ret;
             }　else {
                 return align;
             }
